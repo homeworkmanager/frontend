@@ -23,6 +23,7 @@
   --max-width-desktop: 1000px;
 
   font-family: 'Inter', sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
 .html {

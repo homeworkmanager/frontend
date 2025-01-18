@@ -34,11 +34,11 @@ export const IndependentHomework = ({ Homeworks, currentValue }: IndependentHome
 
   return (
     <>
-      {!!Homeworks.length && !!addedHomeworks.length && (
+      {addedHomeworks.length > 0 && (
         <article className={styles['container']}>
           <Typhography tag="p" variant="primary" children={`Задания на день`} className={styles['title']} />
           <ul className={styles['content']}>
-            {Homeworks.map((homework) => (
+            {addedHomeworks.map((homework) => (
               <li key={homework.homeworkID}>{homework.homeworkText}</li>
             ))}
           </ul>

@@ -1,6 +1,5 @@
 .Button {
   color: var(--text-invert-color);
-  -webkit-tap-highlight-color: transparent;
   transition: rotate 0.15s ease-in-out;
 }
 

@@ -1,16 +1,17 @@
-/* .container {} */
+.container {
+  width: 100%;
+}
 
 .content {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   background-color: var(--component-background-color);
   width: 100%;
   border-radius: 4px;
   padding: 1rem 0.7rem;
+  margin-top: 16px;
   color: var(--text-invert-color);
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .mod-content {
@@ -24,7 +25,6 @@
   cursor: pointer;
   margin-bottom: 0.5rem;
   transition: all 0.2s ease-in-out;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .add-icon {

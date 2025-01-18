@@ -1,6 +1,6 @@
-type GetSubjectsResponse = {
-  [{
-    subject_id: number,
-    subject_name: string
-  }];
-} & BaseResponse;
+type GetSubjectsResponse = [
+  {
+    subject_id: number;
+    subject_name: string;
+  }
+];

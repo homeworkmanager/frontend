@@ -42,5 +42,6 @@ export const moderatorApi = createApi({
 export const {
   usePostModeratorAddHomeworkClassMutation,
   usePostModeratorAddHomeworkDateMutation,
-  useDeleteModeratorHomeworkMutation
+  useDeleteModeratorHomeworkMutation,
+  useGetSubjectsQuery
 } = moderatorApi;

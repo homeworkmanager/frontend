@@ -28,10 +28,10 @@ const useDropdown = <T extends HTMLElement = HTMLDivElement>() => {
   return { menuRef, isOpen, action };
 };
 
-type DropDownType<T extends HTMLElement = HTMLDivElement> = {
+type DropdownType<T extends HTMLElement = HTMLDivElement> = {
   menuRef: React.RefObject<T>;
   isOpen: boolean;
   action: { open: () => void; close: () => void; toggle: () => void };
 };
 
-export { useDropdown, type DropDownType };
+export { useDropdown, type DropdownType as DropDownType };
