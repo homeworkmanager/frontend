@@ -1,0 +1,42 @@
+.list {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.05rem;
+}
+
+.lect {
+  color: var(--lect-background-color);
+}
+
+.pract {
+  color: var(--pract-background-color);
+}
+
+.lab {
+  color: var(--lab-background-color);
+}
+
+.cons {
+  color: var(--cons-background-color);
+}
+
+.zach {
+  color: var(--zach-background-color);
+}
+
+.exam {
+  color: var(--exam-background-color);
+}
+
+.item::before {
+  border: 0.2em solid;
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+
+  @media (min-width: 547px) {
+    border: 0.25em solid;
+  }
+}

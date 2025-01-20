@@ -25,7 +25,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"]
-    }
+    },
+    "types": ["vite-plugin-pwa/client"]
   },
   "include": ["src/", "*.js", "**/*.ts", "**/*.tsx"]
 }

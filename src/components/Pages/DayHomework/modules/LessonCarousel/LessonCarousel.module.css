@@ -1,0 +1,44 @@
+.subjects {
+  margin-top: 24px;
+  margin-bottom: 6px;
+  padding: 0 16px;
+}
+
+.title {
+  width: fit-content;
+  margin: auto;
+}
+
+.swiper-container {
+  height: 210px;
+
+  @media (min-width: 1050px) {
+    height: 150px;
+  }
+}
+
+.swiper-elem {
+  display: flex !important;
+  opacity: 0.5;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  transition: all 0.3s ease-in-out;
+  width: fit-content;
+  margin: auto;
+}
+
+.text {
+  width: fit-content;
+  margin: auto;
+  text-align: center;
+}
+
+.subjects-padd {
+  padding: 0 8px;
+}
+
+.active {
+  opacity: 1;
+  border-color: var(--border-focus-color);
+}

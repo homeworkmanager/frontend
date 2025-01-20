@@ -19,22 +19,32 @@
   gap: 1.5rem;
 }
 
+.active {
+  border-color: var(--border-focus-color) !important;
+}
+
+.label {
+  color: var(--text-invert-color);
+  font-size: 16px;
+  margin-bottom: 5px;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .group-list {
   position: absolute;
-  top: 123%;
   left: 0;
   right: 0;
+  width: 50%;
+  border-radius: 8px;
+  border: 2px solid var(--border-base-color);
   max-height: 200px;
   overflow-y: auto;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: var(--invert-text-color);
+  background-color: var(--main-background-color);
+  color: var(--text-invert-color);
   z-index: 1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .group-name {
   padding: 10px;
   cursor: pointer;
-  border-bottom: 1px solid #ccc;
 }

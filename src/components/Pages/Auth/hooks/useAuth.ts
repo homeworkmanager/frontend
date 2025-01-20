@@ -1,65 +1,30 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { LogInSchema, RegisterSchema, RegisterSchemaType } from '../schemas';
 
+import { EntryContext } from '@/App/modules/AuthContext';
+import { getUserData } from '@/utils/api/requests/user/get';
+import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
 import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
+import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
 import { useFormik } from 'formik';
 
 export const useAuth = () => {
   const [stage, setStage] = React.useState<'login' | 'register'>('login');
+  const dispatch = useDispatch();
+  const { isEntry, setIsEntry } = React.useContext(EntryContext);
   const navigate = useNavigate();
 
-  const getAllGroups = useGetAllGroupsQuery(
-    { config: {} },
-    {
-      selectFromResult: (data) => {
-        return data;
-      }
+  const getAllGroups = useGetAllGroupsQuery(undefined, {
+    selectFromResult: (data) => {
+      return data;
     }
-  );
+  });
 
   const getAllGroupsResponse = getAllGroups?.data;
-  // console.log(getAllGroupsResponse);
-
-  // const getAllGroupsResponse = [
-  // 	{
-  // 		group_id: 1,
-  // 		name: 'БСБО-01-23',
-  // 		course: 2
-  // 	},
-  // 	{
-  // 		group_id: 2,
-  // 		name: 'БСБО-02-23',
-  // 		course: 2
-  // 	},
-  // 	{
-  // 		group_id: 3,
-  // 		name: 'БСБО-03-23',
-  // 		course: 2
-  // 	},
-  // 	{
-  // 		group_id: 4,
-  // 		name: 'БСБО-04-23',
-  // 		course: 2
-  // 	},
-  // 	{
-  // 		group_id: 5,
-  // 		name: 'БСБО-05-23',
-  // 		course: 2
-  // 	},
-  // 	{
-  // 		group_id: 6,
-  // 		name: 'БСБО-06-23',
-  // 		course: 2
-  // 	},
-  // 	{
-  // 		group_id: 7,
-  // 		name: 'БСБО-07-23',
-  // 		course: 2
-  // 	}
-  // ];
 
   const groupsList = getAllGroupsResponse?.reduce((acc: Record<string, number>, group) => {
     acc[group.name] = group.group_id;
@@ -98,6 +63,28 @@ export const useAuth = () => {
           isSuccess: isAuthSuccess
         };
 
+  const getUserAfterAuth = async () => {
+    try {
+      const { data } = await getUserData();
+      dispatch(
+        logIn({
+          role: 3, //data.role
+          name: data.name,
+          surname: data.surname,
+          email: data.email,
+          group_name: data.group_name
+        })
+      );
+      if (isEntry) {
+        setIsEntry();
+      }
+      setIsEntry();
+      navigate(JournalChooseMedia);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const setSubmit = async (values: RegisterSchemaType) => {
     if (stage !== 'login') {
       const postRegisterResponse = await postRegister({
@@ -107,8 +94,7 @@ export const useAuth = () => {
           email: values.email,
           password: values.password,
           groupId: groupsList?.[values.groupName] as number
-        },
-        config: {}
+        }
       });
 
       if (!postRegisterResponse.error) {
@@ -121,13 +107,10 @@ export const useAuth = () => {
         params: {
           email: values.email,
           password: values.password
-        },
-        config: {}
+        }
       });
       if (!postAuthResponse.error) {
-        navigate('/journal');
-      } else {
-        console.log(postAuthResponse.error);
+        getUserAfterAuth();
       }
     }
   };

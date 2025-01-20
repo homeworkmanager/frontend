@@ -6,7 +6,7 @@
 
 .label {
   color: var(--text-invert-color);
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 5px;
   -webkit-tap-highlight-color: transparent;
 }
@@ -18,11 +18,19 @@
   border-radius: 0.3rem;
   padding: 0.5rem;
   color: var(--text-invert-color);
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition: all 0.3s ease-in-out;
+}
 
+.onfocus {
   &:focus {
     border-color: var(--border-focus-color);
   }
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
 }

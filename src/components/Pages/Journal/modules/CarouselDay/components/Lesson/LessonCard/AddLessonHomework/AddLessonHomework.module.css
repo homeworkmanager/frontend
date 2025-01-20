@@ -1,0 +1,10 @@
+.section {
+  padding: 34px 20px;
+}
+
+.info {
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+}

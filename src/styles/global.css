@@ -1,12 +1,49 @@
 :root {
-  --main-background-color: #282c34;
-  --text-invert-color: #fff;
+  --main-background-color: #17171c;
+
+  --text-invert-color: #f8f9fa;
+  --time-color: #ae8bff;
   --border-base-color: gray;
-  --border-focus-color: #007bff;
-  --button-accept-color: #007bff;
-  --button-question-color: #6c757d;
+  --border-focus-color: #8a6bcc;
+
+  --button-accept-color: #ae8bff;
+  --button-question-color: #8793a6;
+
+  --component-background-color: #373d48;
+  --component-underline-color: #8793ab;
+
+  --lect-background-color: #5b40fd;
+  --pract-background-color: #e48cd1;
+  --lab-background-color: #ff0016;
+  --cons-background-color: #69ddcb;
+  --zach-background-color: #e7bd84;
+  --exam-background-color: #fb6a6a;
 
   --max-width-mobile: 547px;
+  --max-width-desktop: 1000px;
 
   font-family: 'Inter', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.html {
+  scrollbar-color: var(--button-question-color) #888;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  @media (max-width: 1050px) {
+    display: none;
+  }
+
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--button-question-color);
+  border-radius: 16px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
 }

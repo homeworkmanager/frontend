@@ -6,11 +6,11 @@ export interface TodosState {
 }
 const initialState: TodosState = {
   data: {
-    role: '',
+    role: 1,
     name: '',
     surname: '',
     email: '',
-    group_id: 0
+    group_name: ''
   }
 };
 
@@ -25,7 +25,7 @@ export const userSlice = createSlice({
         name: action.payload.name,
         surname: action.payload.surname,
         email: action.payload.email,
-        group_id: action.payload.group_id
+        group_name: action.payload.group_name
       };
 
       state.data = user;

@@ -1,0 +1,1 @@
+type ModeratorDeleteResponse = BaseResponse;

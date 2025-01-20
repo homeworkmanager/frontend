@@ -1,13 +1,30 @@
 .Button {
   color: var(--text-invert-color);
-  -webkit-tap-highlight-color: transparent;
+  transition: rotate 0.15s ease-in-out;
 }
 
 .accept {
   background-color: var(--button-accept-color);
   border: 1px solid var(--button-accept-color);
   border-radius: 12px;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
+  transition: all 0.15s ease-in-out;
+
+  &:active {
+    border-color: var(--border-focus-color);
+    scale: 0.95;
+  }
+
+  @media (min-width: 1050px) {
+    &:hover {
+      scale: 1.05;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: auto;
+  }
 }
 
 .question {
@@ -16,8 +33,7 @@
   text-decoration: underline;
   text-underline-offset: 4px;
   width: fit-content;
-  margin: auto;
-  /* padding: 0.5rem; */
+  margin: auto auto 2rem;
 }
 
 .menu-item {
@@ -29,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.15s ease-in-out;
+  transition: scale 0.15s ease-in-out;
 
   svg {
     width: 30px;
@@ -37,10 +53,11 @@
   }
 
   &:active {
-    opacity: 0.6;
+    scale: 0.8;
   }
 
   &:disabled {
+    scale: 1 !important;
     opacity: 0.4;
   }
 }

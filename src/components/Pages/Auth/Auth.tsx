@@ -1,35 +1,33 @@
-import { useState } from 'react';
-
 import styles from './Auth.module.css';
 import { useAuth } from './hooks/useAuth';
-import { RegisterSchemaType } from './schemas';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { CurrentGroup } from '@/utils/api/requests/group/getAllGroup/response';
-import { FormikTouched } from 'formik';
+import { Loader } from '@/components/ui/Loader';
+import { Typhography } from '@/components/ui/Typhography';
+import { useDropdown } from '@/utils/hooks/useDropdown';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const Auth = () => {
   const { form, stage, groups, func, state } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
+  const { menuRef, isOpen, action } = useDropdown();
 
   const acceptButtonText = stage === 'login' ? 'Войти' : 'Зарегистрироваться';
   const stageButtonText = stage === 'login' ? ' Нет аккаунта? Зарегистрироваться' : 'Есть аккаунт? Войти';
 
   type groupType = CurrentGroup;
 
-  const showGroups = (option: groupType) => {
-    setIsOpen(false);
-    form.setFieldValue('groupName', option.name);
+  const chooseGroup = (currentGroup: groupType) => {
+    form.setFieldValue('groupName', currentGroup.name);
+    action.close();
   };
 
-  const hideGroups = () => {
-    setIsOpen((prev) => !prev);
+  const getGroups = () => {
+    action.toggle();
   };
 
   return (
-    <div className={styles.container}>
+    <article className={styles.container}>
       <h1 className={styles.title}>Здесь будет какой-то заголовок и логотип</h1>
-
       <form onSubmit={form.handleSubmit} className={styles.form}>
         <div>
           {stage === 'register' && (
@@ -38,47 +36,61 @@ export const Auth = () => {
                 name="name"
                 label="Имя"
                 type="text"
+                variant="primary"
+                autoComplete="name"
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
-                value={(form.values as RegisterSchemaType).name}
-                {...((form.touched as FormikTouched<RegisterSchemaType>).name && {
-                  error: (form.errors as RegisterSchemaType).name
+                value={form.values.name}
+                {...(form.touched.name && {
+                  error: form.errors.name
                 })}
               />
               <Input
                 name="surname"
                 label="Фамилия"
                 type="text"
+                variant="primary"
+                autoComplete="family-name"
                 onChange={form.handleChange}
                 onBlur={form.handleBlur}
-                value={(form.values as RegisterSchemaType).surname}
-                {...((form.touched as FormikTouched<RegisterSchemaType>).surname && {
-                  error: (form.errors as RegisterSchemaType).surname
+                value={form.values.surname}
+                {...(form.touched.surname && {
+                  error: form.errors.surname
                 })}
               />
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: 'relative' }} ref={menuRef}>
                 <Input
                   name="group_Id"
                   label="Группа"
                   type="text"
+                  variant="primary"
+                  autoComplete="off"
                   readOnly={true}
-                  onClick={hideGroups}
-                  onChange={form.handleChange}
+                  onClick={getGroups}
                   onBlur={form.handleBlur}
-                  value={(form.values as RegisterSchemaType).groupName}
-                  {...((form.touched as FormikTouched<RegisterSchemaType>).groupName && {
-                    error: (form.errors as RegisterSchemaType).groupName
+                  onChange={form.handleChange}
+                  value={form.values.groupName}
+                  {...(form.touched.groupName && {
+                    error: form.errors.groupName
                   })}
                 />
-                {isOpen && (
-                  <div className={styles['group-list']}>
-                    {groups.map((group) => (
-                      <div className={styles['group-name']} key={group.group_id} onClick={() => showGroups(group)}>
-                        {group.name}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.ul
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25, ease: 'easeInOut' }}
+                      className={styles['group-list']}
+                    >
+                      {groups?.map((group) => (
+                        <li className={styles['group-name']} key={group.group_id} onClick={() => chooseGroup(group)}>
+                          {group.name}
+                        </li>
+                      ))}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
               </div>
             </>
           )}
@@ -86,6 +98,8 @@ export const Auth = () => {
             name="email"
             label="Почта"
             type="text"
+            variant="primary"
+            autoComplete="email"
             onChange={form.handleChange}
             onBlur={form.handleBlur}
             value={form.values.email}
@@ -95,6 +109,8 @@ export const Auth = () => {
             name="password"
             label="Пароль"
             type="password"
+            variant="primary"
+            autoComplete="current-password"
             onChange={form.handleChange}
             onBlur={form.handleBlur}
             value={form.values.password}
@@ -106,10 +122,12 @@ export const Auth = () => {
           type="submit"
           variant="accept"
           disabled={state.isLoading}
-          children={state.isLoading ? 'Отправка...' : acceptButtonText}
+          children={state.isLoading ? <Loader /> : acceptButtonText}
         />
+        {state.isError && <Typhography tag="h1" variant="secondary" children={'Ошибка, повторите попытку позже!'} />}
+
         <Button type="reset" variant="question" onClick={func.changeStage} children={stageButtonText} />
       </form>
-    </div>
+    </article>
   );
 };

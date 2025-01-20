@@ -4,7 +4,7 @@ import style from './Typhography.module.css';
 import clsx from 'clsx';
 
 type TyphographyTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
-type TyphographyVariant = 'primary' | 'secondary';
+type TyphographyVariant = 'header' | 'primary' | 'secondary' | 'thirdy' | 'small' | 'smallest' | 'additional';
 
 type TyphographyProps<Tag extends TyphographyTag> = React.ComponentProps<Exclude<Tag, 'span'>> & {
   tag: TyphographyTag;

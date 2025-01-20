@@ -1,0 +1,61 @@
+.carousel-week {
+  margin-bottom: 1.3rem;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2.5%;
+  margin-bottom: 1rem;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.carousel-week-slide {
+  display: flex !important;
+  flex-direction: row;
+  padding: 0 2%;
+}
+
+.carousel-date-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+  height: calc(100% / 7) !important;
+}
+
+.day {
+  padding-bottom: 1rem;
+  color: gray;
+  font-size: 0.8rem;
+}
+
+.date-card {
+  display: flex;
+  cursor: pointer;
+  color: var(--text-invert-color);
+  border-radius: 30%;
+  aspect-ratio: 1 / 1;
+  transition: background-color 0.3s ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  width: 75%;
+}
+
+.date {
+  margin: auto;
+  font-size: 0.8rem;
+  width: fit-content;
+
+  @media (min-width: 547px) {
+    font-size: 0.9rem;
+  }
+}
+
+.clicked {
+  background-color: var(--time-color);
+
+  p {
+    transform: scale(1.1);
+  }
+}
