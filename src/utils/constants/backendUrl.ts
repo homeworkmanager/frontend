@@ -1,1 +1,1 @@
-export const BackendUrl = `http://${import.meta.env.HOST??"localhost"}:${import.meta.env.PORT??"8888"}`;
+export const BackendUrl = `http://${process.env.HOST??"localhost"}:${process.env.PORT??"8888"}`;
