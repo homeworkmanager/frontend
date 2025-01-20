@@ -8,3 +8,8 @@
   font-size: 11px;
   text-transform: uppercase;
 }
+
+.error {
+  color: orange;
+  margin-top: 12px;
+}

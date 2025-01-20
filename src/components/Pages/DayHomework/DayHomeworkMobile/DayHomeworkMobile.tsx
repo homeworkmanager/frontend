@@ -30,7 +30,7 @@ for (let i = 0; i < 60; i++) {
 
 export const DayHomeworkMobile = () => {
   const [postModeratorAddHomeworkDateMutation, { isLoading, isError }] = usePostModeratorAddHomeworkDateMutation();
-  const { setIndependentHomeworks } = React.useContext(IHContext);
+  const { addIndependentHomework } = React.useContext(IHContext);
 
   const { values, currentDateIndex } = generateValues();
 
@@ -77,7 +77,7 @@ export const DayHomeworkMobile = () => {
       }
     });
     if (!postModeratorAddHomeworkDateResponse.error) {
-      setIndependentHomeworks(
+      addIndependentHomework(
         { homeworkText: homeworkText, homeworkID: postModeratorAddHomeworkDateResponse.data.homework_id },
         activeWeekNode
       );

@@ -44,10 +44,11 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         {isLoading ? <Loader /> : 'Добавить'}
       </Button>
       {isError && (
-        <Typhography tag="p" variant="thirdy">
+        <Typhography tag="p" variant="thirdy" className={styles['error']} >
           Ошибка
         </Typhography>
-      )}
-    </article>
+      )
+      }
+    </article >
   );
 };

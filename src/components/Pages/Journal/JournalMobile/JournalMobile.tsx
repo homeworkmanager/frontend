@@ -81,7 +81,6 @@ export const JournalMobile = () => {
               setClickedDate={onDateNodeClick}
             />
             <CarouselDay
-              values={values}
               currentDateIndex={activeWeekNode}
               apiDates={data}
               onDayNodeScroll={onDayNodeScroll}

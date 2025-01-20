@@ -47,7 +47,7 @@
 }
 
 .homework-list-item {
-  vertical-align: top;
+  vertical-align: middle;
   font-size: 15px;
   color: var(--text-invert-color);
 }

@@ -1,12 +1,19 @@
+import React from 'react';
+
 import styles from './IndependentHomework.module.css';
+import { IHContext } from '@/App/modules/IHContext';
 import { Typhography } from '@/components/ui/Typhography';
 
 interface IndependentHomeworkProps {
+  Index: number;
   Homeworks: RestructHomeworkElement[];
-  currentValue: ValuesDate;
 }
 
-export const IndependentHomework = ({ Homeworks }: IndependentHomeworkProps) => {
+export const IndependentHomework = ({ Index, Homeworks }: IndependentHomeworkProps) => {
+  const { removeIndependentHomework, changeIndependentHomework } = React.useContext(IHContext);
+
+  const deleteHomework = (value: RestructHomeworkElement) => removeIndependentHomework(value, Index);
+
   return (
     <>
       {Boolean(Homeworks && !!Homeworks.length) && (

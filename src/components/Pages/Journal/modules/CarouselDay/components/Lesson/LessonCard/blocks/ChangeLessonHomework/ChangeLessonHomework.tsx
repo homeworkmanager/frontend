@@ -1,0 +1,56 @@
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Loader } from '@/components/ui/Loader';
+import { Typhography } from '@/components/ui/Typhography';
+import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
+
+import styles from './ChangeLessonHomework.module.css';
+import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+
+interface ChangeLessonHomeworkProps {
+  HomeworkId: number;
+  removeHomeworkId: () => void;
+  changeHomework: (homework: RestructHomeworkElement) => void;
+}
+
+export const ChangeLessonHomework = ({ changeHomework, HomeworkId, removeHomeworkId }: ChangeLessonHomeworkProps) => {
+  const [patchModeratorHomeworkMutation, { isLoading, isError }] = usePatchModeratorHomeworkMutation();
+  const [homeworkText, setHomeworkText] = React.useState('');
+  const changeLessonHomework = async () => {
+    const response = await patchModeratorHomeworkMutation({
+      params: { homeworkID: HomeworkId, homeworkText: homeworkText }
+    });
+
+    if (!response.error) {
+      changeHomework({
+        homeworkID: HomeworkId,
+        homeworkText: homeworkText
+      });
+      removeHomeworkId();
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {HomeworkId !== -1 && (
+        <motion.aside initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={styles['section']}>
+          <Input
+            onChange={(e) => setHomeworkText(e.target.value)}
+            label="Изменить задание"
+            variant="homework"
+            name={`${6}`}
+          />
+          <Button variant="accept" disabled={isLoading || !homeworkText} onClick={changeLessonHomework}>
+            {isLoading ? <Loader /> : 'Изменить'}
+          </Button>
+          {isError && (
+            <Typhography tag="p" variant="thirdy" className={styles['error']}>
+              Ошибка
+            </Typhography>
+          )}
+        </motion.aside>
+      )}
+    </AnimatePresence>
+  );
+};

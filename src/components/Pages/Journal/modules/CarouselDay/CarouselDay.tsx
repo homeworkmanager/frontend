@@ -9,7 +9,6 @@ import { IHContext } from '@/App/modules/IHContext';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 interface CarouselDayProps extends React.ComponentProps<'div'> {
-  values: ValuesDates;
   currentDateIndex: number;
   apiDates: DaySchedule[];
   onDayNodeScroll: () => void;
@@ -19,7 +18,6 @@ interface CarouselDayProps extends React.ComponentProps<'div'> {
 export const CarouselDay = ({
   currentDateIndex,
   apiDates,
-  values,
   onDayNodeScroll,
   dayCarouselRef,
   ...props
@@ -42,6 +40,7 @@ export const CarouselDay = ({
         initialSlide={currentDateIndex}
         onSlideChange={onDayNodeScroll}
         autoHeight={true}
+        className={styles['swiper-env']}
       >
         {apiDates.map((apiData, index) => (
           <SwiperSlide key={index} tag="li" className={styles['swiper-layout']}>
@@ -50,7 +49,7 @@ export const CarouselDay = ({
               {apiData.outputClasses.map((value) => (
                 <Lesson key={value.class.startTime} apiData={value} updateHeight={updateHeight} />
               ))}
-              <IndependentHomework Homeworks={independentHomeworks[index]} currentValue={values[index]} />
+              <IndependentHomework Index={index} Homeworks={independentHomeworks[index]} />
             </div>
           </SwiperSlide>
         ))}

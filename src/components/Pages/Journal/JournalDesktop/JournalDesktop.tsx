@@ -58,7 +58,6 @@ export const JournalDesktop = () => {
             />
             <CarouselDay
               className={styles['desktop']}
-              values={values}
               currentDateIndex={activeWeekNode}
               apiDates={data}
               onDayNodeScroll={onDayNodeScroll}

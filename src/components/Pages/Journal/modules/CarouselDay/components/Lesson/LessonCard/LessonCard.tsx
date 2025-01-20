@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 
 import { convertSummary } from '../helpers/convertSummary';
 
-import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
+import { AddLessonHomework } from './blocks/AddLessonHomework/AddLessonHomework';
 import styles from './LessonCard.module.css';
 import { Button } from '@/components/ui/Button';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
@@ -12,6 +12,9 @@ import { BaseRole } from '@/utils/constants/userRoles';
 import { useDeleteModeratorHomeworkMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import { motion } from 'framer-motion';
+import React from 'react';
+import { ChangeLogo } from '@/components/ui/Icons/Change';
+import { ChangeLessonHomework } from './blocks/ChangeLessonHomework/ChangeLessonHomework';
 
 interface LessonInfoProps {
   apiData: OutputClass;
@@ -19,18 +22,40 @@ interface LessonInfoProps {
   addHomework: (homework: RestructHomeworkElement) => void;
   deleteHomework: (id: number) => void;
   showDetails: () => void;
+  changeHomework: (homework: RestructHomeworkElement) => void;
 }
 
 const RestructDescription = (description: string) => {
   return description.split(' ').splice(1).join(' ').split('\n')[0];
 };
 
-export const LessonCard = ({ apiData, homeworks, showDetails, addHomework, deleteHomework }: LessonInfoProps) => {
+export const LessonCard = ({
+  apiData,
+  homeworks,
+  showDetails,
+  addHomework,
+  deleteHomework,
+  changeHomework
+}: LessonInfoProps) => {
   const userRole = useSelector(getUserRole);
 
   const description = RestructDescription(apiData.class.description);
 
-  const [deleteModeratorHomeworkMutation] = useDeleteModeratorHomeworkMutation(); //потом попробую изолировать как-то
+  const [deleteModeratorHomeworkMutation] = useDeleteModeratorHomeworkMutation();
+
+  const [homeworkId, setHomeworkId] = React.useState(-1);
+
+  const removeHomeworkId = () => {
+    setHomeworkId(-1);
+  };
+
+  const addHomeworkId = (id: number) => {
+    if (homeworkId !== -1) {
+      removeHomeworkId();
+      return;
+    }
+    setHomeworkId(id);
+  };
 
   const deleteLessonHomework = async (id: number) => {
     const response = await deleteModeratorHomeworkMutation({ params: { homeworkID: id } });
@@ -87,18 +112,36 @@ export const LessonCard = ({ apiData, homeworks, showDetails, addHomework, delet
                     <p>{homework.homeworkText}</p>
                   </td>
                   {userRole > BaseRole && (
-                    <td>
-                      <Button
-                        variant="slide"
-                        onClick={() => deleteLessonHomework(homework.homeworkID)}
-                        children={<DeleteLogo className={styles['delete-icon']} />}
-                      />
-                    </td>
+                    <>
+                      {homeworkId === -1 || homeworkId === homework.homeworkID ? (
+                        <td>
+                          <Button
+                            variant="slide"
+                            onClick={() => addHomeworkId(homework.homeworkID)}
+                            children={<ChangeLogo className={styles['delete-icon']} />}
+                          />
+                        </td>
+                      ) : (
+                        <td />
+                      )}
+                      <td>
+                        <Button
+                          variant="slide"
+                          onClick={() => deleteLessonHomework(homework.homeworkID)}
+                          children={<DeleteLogo className={styles['delete-icon']} />}
+                        />
+                      </td>
+                    </>
                   )}
                 </motion.tr>
               ))}
             </tbody>
           </table>
+          <ChangeLessonHomework
+            HomeworkId={homeworkId}
+            removeHomeworkId={removeHomeworkId}
+            changeHomework={changeHomework}
+          />
         </article>
         <article className={styles['section']}>
           <Typhography tag="h3" variant="additional" className={styles['info']} children={'Место'} />

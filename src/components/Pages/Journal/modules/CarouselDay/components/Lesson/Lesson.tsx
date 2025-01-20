@@ -71,6 +71,18 @@ export const Lesson = ({ apiData, updateHeight }: LessonProps) => {
     updateHeight();
   };
 
+  const changeHomework = (homework: RestructHomeworkElement) => {
+    setHomeworks((prev) =>
+      prev.map((value) => {
+        if (value.homeworkID === homework.homeworkID) {
+          return { ...value, homeworkText: homework.homeworkText };
+        }
+        return value;
+      })
+    );
+    updateHeight();
+  };
+
   return (
     <React.Fragment>
       <section className={styles.container} onClick={showDetails}>
@@ -106,6 +118,7 @@ export const Lesson = ({ apiData, updateHeight }: LessonProps) => {
           showDetails={showDetails}
           addHomework={addHomework}
           deleteHomework={deleteHomework}
+          changeHomework={changeHomework}
         />
       </Modal>
     </React.Fragment>

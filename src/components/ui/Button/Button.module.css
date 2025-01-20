@@ -23,6 +23,7 @@
 
   &:disabled {
     opacity: 0.4;
+    scale: none;
     cursor: auto;
   }
 }
