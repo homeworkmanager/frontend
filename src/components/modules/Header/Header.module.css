@@ -28,3 +28,9 @@
   height: 1.5rem;
   cursor: pointer;
 }
+
+.add-icon {
+  margin: 0 auto;
+  width: 32px;
+  height: 32px;
+}

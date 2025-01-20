@@ -1,0 +1,59 @@
+.layout {
+  width: 100%;
+  margin: 0 auto;
+  max-width: var(--max-width-mobile);
+}
+
+.container {
+  padding: 0 16px;
+}
+
+.swiper-container {
+  height: 200px;
+}
+
+.swiper-elem {
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  transition: all 0.3s ease-in-out;
+  width: fit-content;
+  padding: 0 6px;
+}
+
+.section-title {
+  width: fit-content;
+  margin: auto;
+}
+
+.deadline {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  ul {
+    margin: 20px 0;
+  }
+}
+
+.deadline-active {
+  opacity: 1;
+  background-color: var(--border-focus-color);
+}
+
+.test {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  color: #fff;
+
+  p {
+    margin-bottom: 3px;
+    margin-right: 0.5px;
+  }
+}

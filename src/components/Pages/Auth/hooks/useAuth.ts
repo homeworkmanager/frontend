@@ -6,7 +6,7 @@ import { LogInSchema, RegisterSchema, RegisterSchemaType } from '../schemas';
 
 import { EntryContext } from '@/App/modules/AuthContext';
 import { getUserData } from '@/utils/api/requests/user/get';
-import { ChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
 import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
@@ -79,7 +79,7 @@ export const useAuth = () => {
         setIsEntry();
       }
       setIsEntry();
-      navigate(ChooseMedia);
+      navigate(JournalChooseMedia);
     } catch (error) {
       console.log(error);
     }

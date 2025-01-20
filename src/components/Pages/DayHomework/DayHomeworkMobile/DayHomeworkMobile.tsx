@@ -1,26 +1,22 @@
 import React from 'react';
 
+import { generateValues } from '../helpers/generateValues';
+import { LessonCarousel } from '../modules/LessonCarousel/LessonCarousel';
+import { SendHomework } from '../modules/SendHomework/SendHomework';
+
 import 'swiper/swiper-bundle.css';
-import styles from './AddHomework.module.css';
-import { Button } from '@/components/ui/Button';
-import { Slide } from '@/components/ui/Icons/Slide';
+import styles from './DayHomeworkMobile.module.css';
+import { IHContext } from '@/App/modules/IHContext';
+import { Header } from '@/components/modules/Header/Header';
+import { CarouselWeek } from '@/components/shared/CarouselWeek/CarouselWeek';
 import { Input } from '@/components/ui/Input';
-import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import {
-  useGetSubjectsQuery,
-  usePostModeratorAddHomeworkDateMutation
-} from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
+import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
+import { usePostModeratorAddHomeworkDateMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
-
-interface AddHomeworkProps {
-  currentValue: ValuesDate;
-  addHomework: (homework: HomeworkElement) => void;
-  onClose: () => void;
-}
 
 const minutes: string[] = [];
 const hours: string[] = [];
@@ -32,25 +28,42 @@ for (let i = 0; i < 60; i++) {
   }
 }
 
-export const AddHomework = ({ currentValue, addHomework, onClose }: AddHomeworkProps) => {
-  const { data, isSuccess } = useGetSubjectsQuery(undefined);
+export const DayHomeworkMobile = () => {
   const [postModeratorAddHomeworkDateMutation, { isLoading, isError }] = usePostModeratorAddHomeworkDateMutation();
+  const { setIndependentHomeworks } = React.useContext(IHContext);
+
+  const { values, currentDateIndex } = generateValues();
+
+  const [currentDate, setCurrentDate] = React.useState(() => ({
+    year: values[currentDateIndex].year,
+    month: values[currentDateIndex].month,
+    day: currentDateIndex
+  }));
+
   const [homeworkText, setHomeworkText] = React.useState('');
   const [homeworkId, setHomeworkId] = React.useState(1);
-  const [deadline, setDeadline] = React.useState({
+  const [homeworkDate, setHomeworkDate] = React.useState(() => ({
+    ...currentDate,
+    day: values[currentDateIndex].day
+  }));
+  const [deadline, setDeadline] = React.useState(() => ({
     minutes: '00',
     hours: '00'
-  });
+  }));
 
   const subjectRef = React.useRef<SwiperRef>(null);
   const hoursRef = React.useRef<SwiperRef>(null);
   const minutesRef = React.useRef<SwiperRef>(null);
 
+  const weekCarouselRef = React.useRef<SwiperRef>(null);
+
+  const activeWeekNode = React.useMemo(() => findIndexByDate(values, homeworkDate), [homeworkDate]);
+
   const sendLessonHomework = async () => {
     const date = new Date(
-      currentValue.year,
-      currentValue.month - 1,
-      currentValue.day + 1,
+      homeworkDate.year,
+      homeworkDate.month - 1,
+      homeworkDate.day + 1,
       Number(deadline.hours),
       Number(deadline.minutes)
     );
@@ -64,12 +77,39 @@ export const AddHomework = ({ currentValue, addHomework, onClose }: AddHomeworkP
       }
     });
     if (!postModeratorAddHomeworkDateResponse.error) {
-      addHomework({ homeworkText: homeworkText, homeworkID: postModeratorAddHomeworkDateResponse.data.homework_id });
+      setIndependentHomeworks(
+        { homeworkText: homeworkText, homeworkID: postModeratorAddHomeworkDateResponse.data.homework_id },
+        activeWeekNode
+      );
     }
   };
 
   const onScrollSubject = () => {
     setHomeworkId(subjectRef.current!.swiper.realIndex + 1);
+  };
+
+  const onClickChooseDate = (index: number) => {
+    setCurrentDate({ year: values[index].year, month: values[index].month, day: index });
+    setHomeworkDate({ year: values[index].year, month: values[index].month, day: values[index].day });
+  };
+
+  const onWeekNodeScroll = () => {
+    const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
+
+    if (weekNodeIndex * 7 <= activeWeekNode && weekNodeIndex * 7 + 6 > activeWeekNode) {
+      setCurrentDate({
+        year: values[activeWeekNode].year,
+        month: values[activeWeekNode].month,
+        day: activeWeekNode
+      });
+      return;
+    }
+
+    setCurrentDate({
+      year: values[weekNodeIndex * 7 + 6].year,
+      month: values[weekNodeIndex * 7 + 6].month,
+      day: weekNodeIndex * 7 + 6
+    });
   };
 
   const onScrollHours = () => {
@@ -95,60 +135,33 @@ export const AddHomework = ({ currentValue, addHomework, onClose }: AddHomeworkP
       }}
       className={styles['layout']}
     >
-      <header className={styles['header']}>
-        <Button variant="slide" rotate={true} className={styles['close']} onClick={onClose}>
-          <Slide />
-        </Button>
-        <Typhography tag="h3" variant="secondary" children={`Добавить задание`} />
-      </header>
-      <article>
+      <Header />
+      <article className={styles['container']}>
         <Input
           onChange={(e) => setHomeworkText(e.target.value)}
           label="Добавить задание"
           variant="homework"
-          name={`${currentValue.day} ${currentValue.month} ${currentValue.year}`}
+          name="homeworkText"
         />
       </article>
-      {isSuccess && !!data.length && (
-        <article className={styles['subjects']}>
-          <Typhography tag="h3" variant="thirdy" children={`Предмет`} />
-          <Swiper
-            ref={subjectRef}
-            direction="vertical"
-            slidesPerView={3}
-            spaceBetween={10}
-            loop={true}
-            tag="ul"
-            onSlideChange={onScrollSubject}
-            centeredSlides={true}
-            modules={[Mousewheel]}
-            mousewheel={{
-              sensitivity: 4,
-              forceToAxis: true,
-              releaseOnEdges: true,
-              thresholdTime: 100
-            }}
-            className={styles['swiper-container']}
-          >
-            {data.map((subject, index) => (
-              <SwiperSlide
-                tag="li"
-                key={subject.subject_id}
-                className={clsx(
-                  styles['swiper-elem'],
-                  styles['subjects-padd'],
-                  homeworkId === subject.subject_id && styles['active']
-                )}
-                onClick={() => onElemClick(subjectRef, index)}
-              >
-                <Typhography tag="p" variant="thirdy" children={subject.subject_name} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </article>
-      )}
-      <article className={styles['subjects']}>
-        <Typhography tag="h3" variant="thirdy" children={`Дедлайн`} />
+
+      <CarouselWeek
+        currentDate={currentDate}
+        values={values}
+        onWeekNodeScroll={onWeekNodeScroll}
+        setClickedDate={onClickChooseDate}
+        weekCarouselRef={weekCarouselRef}
+        activeWeekNode={activeWeekNode}
+      />
+
+      <LessonCarousel
+        onElemClick={onElemClick}
+        onScrollSubject={onScrollSubject}
+        subjectRef={subjectRef}
+        homeworkId={homeworkId}
+      />
+      <article className={styles['container']}>
+        <Typhography tag="h3" variant="thirdy" className={styles['section-title']} children={`Дедлайн`} />
         <div className={styles['deadline']}>
           <Swiper
             ref={hoursRef}
@@ -172,11 +185,7 @@ export const AddHomework = ({ currentValue, addHomework, onClose }: AddHomeworkP
               <SwiperSlide
                 tag="li"
                 key={value}
-                className={clsx(
-                  styles['swiper-elem'],
-                  styles['deadline-padd'],
-                  deadline.hours === value && styles['active'] && styles['deadline-active']
-                )}
+                className={clsx(styles['swiper-elem'], deadline.hours === value && styles['deadline-active'])}
                 onClick={() => onElemClick(hoursRef, index)}
               >
                 <Typhography tag="p" variant="thirdy" children={value} />
@@ -208,11 +217,7 @@ export const AddHomework = ({ currentValue, addHomework, onClose }: AddHomeworkP
               <SwiperSlide
                 tag="li"
                 key={value}
-                className={clsx(
-                  styles['swiper-elem'],
-                  styles['deadline-padd'],
-                  deadline.minutes === value && styles['active'] && styles['deadline-active']
-                )}
+                className={clsx(styles['swiper-elem'], deadline.minutes === value && styles['deadline-active'])}
                 onClick={() => onElemClick(minutesRef, index)}
               >
                 <Typhography tag="p" variant="thirdy" children={value} />
@@ -221,16 +226,12 @@ export const AddHomework = ({ currentValue, addHomework, onClose }: AddHomeworkP
           </Swiper>
         </div>
       </article>
-      <>
-        <Button variant="accept" disabled={isLoading || !homeworkText} onClick={sendLessonHomework}>
-          {isLoading ? <Loader /> : 'Добавить'}
-        </Button>
-        {isError && (
-          <Typhography tag="p" variant="thirdy">
-            Ошибка
-          </Typhography>
-        )}
-      </>
+      <SendHomework
+        isLoading={isLoading}
+        isError={isError}
+        homeworkText={homeworkText}
+        addHomework={sendLessonHomework}
+      />
     </motion.aside>
   );
 };

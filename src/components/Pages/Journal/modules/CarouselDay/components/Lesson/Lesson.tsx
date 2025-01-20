@@ -50,7 +50,7 @@ export const Lesson = ({ apiData, updateHeight }: LessonProps) => {
   const [showInfo, setShowInfo] = React.useState(false);
 
   const para = apiData.class;
-  const [homeworks, setHomeworks] = React.useState<HomeworkArray>(
+  const [homeworks, setHomeworks] = React.useState<RestructHomeworkArray>(
     apiData.homework.map((value) => {
       return { homeworkText: value.homeworkText, homeworkID: value.homeworkID };
     })
@@ -61,7 +61,7 @@ export const Lesson = ({ apiData, updateHeight }: LessonProps) => {
 
   const showDetails = () => setShowInfo((prev) => !prev);
 
-  const addHomework = (homework: HomeworkElement) => {
+  const addHomework = (homework: RestructHomeworkElement) => {
     setHomeworks((prev) => [...prev, homework]);
     updateHeight();
   };

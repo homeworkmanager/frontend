@@ -1,4 +1,8 @@
-const routes = ['/journal-desktop', '/journal-mobile'];
+const journalRoutes = ['journal-desktop', 'journal-mobile'];
+const moderatorRoutes = ['moderator-desktop', 'moderator-mobile'];
 const isMobile = Number(window.matchMedia('screen and (max-width: 1050px)').matches);
 
-export const ChooseMedia = routes[isMobile];
+const JournalChooseMedia = journalRoutes[isMobile];
+const ModeratorChooseMedia = moderatorRoutes[isMobile];
+
+export { JournalChooseMedia, ModeratorChooseMedia };

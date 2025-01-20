@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { findIndexByDate } from '../../../../utils/helpers/findIndexByDate';
 import { today } from '../constants';
-import { createDate } from '../helpers/createDate';
-import { findIndexByDate } from '../helpers/findIndexByDate';
 
+import { IHContext } from '@/App/modules/IHContext';
+import { createDate } from '@/utils/helpers/createDate';
 import { useGetAllScheduleQuery } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 
 export const useRestructSheduleData = () => {
@@ -29,6 +30,20 @@ export const useRestructSheduleData = () => {
   const data = React.useMemo(transformData, [getScheduleResponse]);
 
   const scheduleLessons = React.useMemo(() => data.map((item) => item.outputClasses).reverse(), [data]);
+
+  const { init } = React.useContext(IHContext);
+
+  const processedData = React.useMemo(() => {
+    return data.map((item) => {
+      return item.independentHomeworks.map((homework) => {
+        return { homeworkID: homework.homeworkID, homeworkText: homework.homeworkText };
+      });
+    });
+  }, [data]);
+
+  React.useEffect(() => {
+    init(processedData);
+  }, [init, processedData]);
 
   const values = React.useMemo(
     () =>

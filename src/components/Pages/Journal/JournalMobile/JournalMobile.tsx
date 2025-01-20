@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Header } from '../../../modules/Header/Header';
 import { useRestructSheduleData } from '../hooks/useRestructSheduleData';
 import { CarouselDay } from '../modules/CarouselDay/CarouselDay';
-import { CarouselWeek } from '../modules/CarouselWeek/CarouselWeek';
 
 import styles from './JournalMobile.module.css';
+import { Header } from '@/components/modules/Header/Header';
+import { CarouselWeek } from '@/components/shared/CarouselWeek/CarouselWeek';
 import { Loader } from '@/components/ui/Loader';
 import { SwiperRef } from 'swiper/react';
 
@@ -25,6 +25,17 @@ export const JournalMobile = () => {
 
   const onWeekNodeScroll = () => {
     const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
+    if (dayCarouselRef.current) {
+      const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
+      if (weekNodeIndex * 7 <= activeWeekNode && weekNodeIndex * 7 + 6 > activeWeekNode) {
+        setCurrentDate({
+          year: values[dayNodeIndex].year,
+          month: values[dayNodeIndex].month,
+          day: dayNodeIndex
+        });
+        return;
+      }
+    }
 
     setCurrentDate({
       year: values[weekNodeIndex * 7 + 6].year,
@@ -48,6 +59,12 @@ export const JournalMobile = () => {
     weekNode.slideTo(Math.ceil((dayNodeIndex + 1) / 7) - 1, 400);
   };
 
+  const onDateNodeClick = (index: number) => {
+    if (dayCarouselRef) {
+      (dayCarouselRef.current as SwiperRef).swiper.slideTo(index, 0);
+    }
+  };
+
   return (
     <article className={styles.container}>
       {getScheduleStatus.loading && <Loader />}
@@ -61,7 +78,7 @@ export const JournalMobile = () => {
               values={values}
               onWeekNodeScroll={onWeekNodeScroll}
               weekCarouselRef={weekCarouselRef}
-              dayCarouselRef={dayCarouselRef}
+              setClickedDate={onDateNodeClick}
             />
             <CarouselDay
               values={values}

@@ -5,7 +5,7 @@ interface createDateProps {
   currentMonthIndex: MonthsIndexes;
   currentDayIndex: DaysIndexes;
   daysCount: number;
-  AllLessons: AllLessons;
+  AllLessons?: AllLessons;
 }
 
 export const createDate = ({
@@ -13,7 +13,7 @@ export const createDate = ({
   currentMonthIndex,
   currentDayIndex,
   daysCount,
-  AllLessons
+  AllLessons = []
 }: createDateProps) => {
   const monthData: MonthDataType[] = [
     { month: 1, days: 31 },
@@ -41,7 +41,7 @@ export const createDate = ({
     }
 
     return [
-      { year, month: currentMonth.month, day: dayIndex, lessons: AllLessons[remaining - 1] },
+      { year, month: currentMonth.month, day: dayIndex, lessons: AllLessons.length ? AllLessons[remaining - 1] : [] },
       ...generateValues(year, monthIndex, dayIndex + 1, remaining - 1)
     ];
   };

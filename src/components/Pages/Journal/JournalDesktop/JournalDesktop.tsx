@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Header } from '../../../modules/Header/Header';
 import { useRestructSheduleData } from '../hooks/useRestructSheduleData';
 import { CarouselDay } from '../modules/CarouselDay/CarouselDay';
-import { CarouselMonth } from '../modules/CarouselMonth/CarouselMonth';
 
 import styles from './JournalDesktop.module.css';
+import { Header } from '@/components/modules/Header/Header';
+import { CarouselMonth } from '@/components/shared/CarouselMonth/CarouselMonth';
 import { Loader } from '@/components/ui/Loader';
 import { SwiperRef } from 'swiper/react';
 
@@ -22,6 +22,10 @@ export const JournalDesktop = () => {
 
   const dayCarouselRef = React.useRef<SwiperRef>(null);
   const monthCarouselRef = React.useRef<SwiperRef>(null);
+
+  const onMonthNodeClick = (dayIndex: number) => {
+    dayCarouselRef.current?.swiper.slideTo(dayIndex, 0);
+  };
 
   const onDayNodeScroll = () => {
     const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
@@ -48,9 +52,9 @@ export const JournalDesktop = () => {
             <CarouselMonth
               values={values}
               currentDate={currentDate}
-              activeDateNode={activeWeekNode}
+              activeMonthNode={activeWeekNode}
               monthCarouselRef={monthCarouselRef}
-              dayCarouselRef={dayCarouselRef}
+              setClickedDate={onMonthNodeClick}
             />
             <CarouselDay
               className={styles['desktop']}

@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 
-import { firstSessionDay, monthsNumbers, weekDays } from '../../constants';
-import { findDayIndex } from '../../helpers/findDayIndex';
-import { findIndexByDate } from '../../helpers/findIndexByDate';
-import { getDaysForOtherCarousels } from '../../helpers/getDaysForOtherCarousels';
-import { LessonsList } from '../shared/LessonsList/LessonsList';
-import { WeekHeader } from '../shared/WeekHeader/WeekHeader';
+import { findIndexByDate } from '../../../utils/helpers/findIndexByDate';
+import { firstSessionDay, monthsNumbers, weekDays } from '../../Pages/Journal/constants';
+import { findDayIndex } from '../../Pages/Journal/helpers/findDayIndex';
+import { getDaysForOtherCarousels } from '../../Pages/Journal/helpers/getDaysForOtherCarousels';
+import { LessonsList } from '../modules/LessonsList/LessonsList';
+import { WeekHeader } from '../modules/WeekHeader/WeekHeader';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselWeek.module.css';
@@ -21,8 +21,8 @@ interface carouselWeekProps {
   activeWeekNode: number;
   values: ValuesDates;
   onWeekNodeScroll: () => void;
+  setClickedDate: (index: number) => void;
   weekCarouselRef: React.RefObject<SwiperRef>;
-  dayCarouselRef: React.RefObject<SwiperRef>;
 }
 
 export const CarouselWeek = ({
@@ -31,12 +31,8 @@ export const CarouselWeek = ({
   values,
   onWeekNodeScroll,
   weekCarouselRef,
-  dayCarouselRef
+  setClickedDate
 }: carouselWeekProps) => {
-  const onDateNodeClick = (index: number) => {
-    (dayCarouselRef.current as SwiperRef).swiper.slideTo(index, 0);
-  };
-
   const daysByWeeks = React.useMemo(() => getDaysForOtherCarousels(values, 7), []);
 
   const [currentSlide, dayIndexInSlide] = React.useMemo(
@@ -82,7 +78,7 @@ export const CarouselWeek = ({
                 <li
                   key={dayIndex}
                   className={styles['carousel-date-item']}
-                  onClick={() => onDateNodeClick(findIndexByDate(values, value))}
+                  onClick={() => setClickedDate(findIndexByDate(values, value))}
                 >
                   <p className={styles['day']}>{weekDays[dayIndex]}</p>
                   <div

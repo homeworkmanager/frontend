@@ -15,8 +15,8 @@ import { motion } from 'framer-motion';
 
 interface LessonInfoProps {
   apiData: OutputClass;
-  homeworks: HomeworkArray;
-  addHomework: (homework: HomeworkElement) => void;
+  homeworks: RestructHomeworkArray;
+  addHomework: (homework: RestructHomeworkElement) => void;
   deleteHomework: (id: number) => void;
   showDetails: () => void;
 }

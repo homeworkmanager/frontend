@@ -2,23 +2,32 @@ import { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 
-import { ChooseMedia } from '../../../utils/helpers/ChooseMedia';
 import { Layout } from '../Layout/Layout';
+import { SpecialLayout } from '../SpecialLayout/SpecialLayout';
 
-import { AdminPanel, Auth, JournalDesktop, JournalMobile, ProfileSettings } from './constants.module';
+import {
+  AdminPanel,
+  Auth,
+  DayHomeworkDesktop,
+  DayHomeworkMobile,
+  JournalDesktop,
+  JournalMobile,
+  ProfileSettings
+} from './constants.module';
 import { Loader } from '@/components/ui/Loader';
-import { AdminRole } from '@/utils/constants/userRoles';
+import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
+import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 
 export const Router = () => {
   const isAuth = !!document.cookie.match('session_key=');
   const userRole = useSelector(getUserRole);
-  const screenType = ChooseMedia;
+  const journalType = JournalChooseMedia;
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route element={<Layout />}>
-        <Route path="/" element={<Navigate to={isAuth ? screenType : '/auth'} replace />} />
+        <Route path="/" element={<Navigate to={isAuth ? `user/${journalType}` : '/auth'} replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
 
         <Route
@@ -32,23 +41,49 @@ export const Router = () => {
         {isAuth && (
           <>
             <Route
-              path="/journal-mobile"
+              path="/user"
               element={
                 <Suspense fallback={<Loader />}>
-                  {screenType === '/journal-mobile' ? <JournalMobile /> : <Navigate to={screenType} />}
+                  <SpecialLayout />
                 </Suspense>
               }
-            />
+            >
+              <Route
+                path="journal-mobile"
+                element={
+                  <Suspense fallback={<Loader />}>
+                    {journalType === 'journal-mobile' ? <JournalMobile /> : <Navigate to={journalType} />}
+                  </Suspense>
+                }
+              />
 
-            <Route
-              path="/journal-desktop"
-              element={
-                <Suspense fallback={<Loader />}>
-                  {screenType === '/journal-desktop' ? <JournalDesktop /> : <Navigate to={screenType} />}
-                </Suspense>
-              }
-            />
+              <Route
+                path="journal-desktop"
+                element={
+                  <Suspense fallback={<Loader />}>
+                    {journalType === 'journal-desktop' ? <JournalDesktop /> : <Navigate to={journalType} />}
+                  </Suspense>
+                }
+              />
 
+              <Route
+                path="moderator-mobile"
+                element={
+                  <Suspense fallback={<Loader />}>
+                    {userRole >= ModeratorRole ? <DayHomeworkMobile /> : <Navigate to={journalType} />}
+                  </Suspense>
+                }
+              />
+
+              <Route
+                path="moderator-desktop"
+                element={
+                  <Suspense fallback={<Loader />}>
+                    {userRole >= ModeratorRole ? <DayHomeworkDesktop /> : <Navigate to={journalType} />}
+                  </Suspense>
+                }
+              />
+            </Route>
             <Route
               path="/profile"
               element={
@@ -62,7 +97,7 @@ export const Router = () => {
               path="/admin"
               element={
                 <Suspense fallback={<Loader />}>
-                  {userRole === AdminRole ? <AdminPanel /> : <Navigate to={screenType} />}
+                  {userRole === AdminRole ? <AdminPanel /> : <Navigate to={journalType} />}
                 </Suspense>
               }
             />

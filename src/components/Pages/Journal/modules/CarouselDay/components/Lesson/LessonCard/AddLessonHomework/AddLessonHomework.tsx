@@ -9,7 +9,7 @@ import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlice
 
 interface ModeratorBlockProps {
   apiData: OutputClass;
-  addHomework: (homework: HomeworkElement) => void;
+  addHomework: (homework: RestructHomeworkElement) => void;
 }
 
 export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps) => {

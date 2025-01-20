@@ -1,4 +1,4 @@
-type Homework = {
+type HomeworkElement = {
   homeworkID: number;
   classSemNumber: number | null;
   subjectId: number;
@@ -19,12 +19,12 @@ type ClassDetails = {
 
 type OutputClass = {
   class: ClassDetails;
-  homework: Homework[];
+  homework: HomeworkElement[];
 };
 
 type DaySchedule = {
   outputClasses: OutputClass[];
-  independentHomeworks: Homework[];
+  independentHomeworks: HomeworkElement[];
 };
 
 type AllScheduleResponse = {

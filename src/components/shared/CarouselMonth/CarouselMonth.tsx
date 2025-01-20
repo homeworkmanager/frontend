@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 
-import { firstSessionDay, monthData, monthsNumbers, weekDays } from '../../constants';
-import { createfirstMonthsNodes } from '../../helpers/createfirstMonthsNodes';
-import { findDayIndex } from '../../helpers/findDayIndex';
-import { findIndexByDate } from '../../helpers/findIndexByDate';
-import { getDaysForOtherCarousels } from '../../helpers/getDaysForOtherCarousels';
-import { LessonsList } from '../shared/LessonsList/LessonsList';
-import { WeekHeader } from '../shared/WeekHeader/WeekHeader';
+import { LessonsList } from '../modules/LessonsList/LessonsList';
+import { WeekHeader } from '../modules/WeekHeader/WeekHeader';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselMonth.module.css';
+import { firstSessionDay, monthData, monthsNumbers, weekDays } from '@/components/Pages/Journal/constants';
+import { createfirstMonthsNodes } from '@/components/Pages/Journal/helpers/createfirstMonthsNodes';
+import { findDayIndex } from '@/components/Pages/Journal/helpers/findDayIndex';
+import { getDaysForOtherCarousels } from '@/components/Pages/Journal/helpers/getDaysForOtherCarousels';
 import { Button } from '@/components/ui/Button';
+import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import { useDropdown } from '@/utils/hooks/useDropdown';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -19,23 +19,25 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 interface carouselWeekProps {
   currentDate: CustomDate;
-  activeDateNode: number;
+  activeMonthNode: number;
   values: ValuesDates;
   monthCarouselRef: React.RefObject<SwiperRef>;
-  dayCarouselRef: React.RefObject<SwiperRef>;
+  moderator?: boolean;
+  setClickedDate: (index: number) => void;
 }
 
 export const CarouselMonth = ({
-  activeDateNode,
+  activeMonthNode,
   values,
   monthCarouselRef,
   currentDate,
-  dayCarouselRef
+  setClickedDate,
+  moderator = false
 }: carouselWeekProps) => {
   const daysByMonth = React.useMemo(() => getDaysForOtherCarousels(values, 35), []);
   const [currentSlide, dayIndexInSlide] = React.useMemo(
-    () => findDayIndex(values[activeDateNode], daysByMonth),
-    [activeDateNode, daysByMonth]
+    () => findDayIndex(values[activeMonthNode], daysByMonth),
+    [activeMonthNode, daysByMonth]
   );
   const firstMonthsNodes = React.useMemo(() => createfirstMonthsNodes(values), []);
 
@@ -46,8 +48,15 @@ export const CarouselMonth = ({
   };
 
   const onScrollClick = (dayIndex: number) => {
-    dayCarouselRef.current?.swiper.slideTo(dayIndex, 0);
+    setClickedDate(dayIndex);
     action.close();
+  };
+
+  const onDropDownScroll = (dayIndex: number) => {
+    if (moderator) {
+      monthCarouselRef.current?.swiper.slideTo(Math.ceil((dayIndex + 1) / 35 - 1), 0);
+    }
+    onScrollClick(dayIndex);
   };
 
   return (
@@ -77,7 +86,7 @@ export const CarouselMonth = ({
                   className={styles['dropdown-content']}
                 >
                   {firstMonthsNodes.map((value, index) => (
-                    <li key={index} className={styles['dropdown-item']} onClick={() => onScrollClick(value[1])}>
+                    <li key={index} className={styles['dropdown-item']} onClick={() => onDropDownScroll(value[1])}>
                       {monthData[value[0]]}
                     </li>
                   ))}
