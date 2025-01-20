@@ -1,4 +1,4 @@
-FROM node as build
+FROM node AS build
 
 COPY package.json package.json
 RUN npm install
