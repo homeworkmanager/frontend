@@ -3,34 +3,35 @@
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
   background-color: var(--component-background-color);
   width: 100%;
+  height: auto;
   border-radius: 4px;
   padding: 1rem 0.7rem;
   margin-top: 16px;
-  color: var(--text-invert-color);
-  cursor: pointer;
 }
 
-.mod-content {
-  display: flex;
-  margin: 0 auto;
-  background-color: var(--component-background-color);
-  width: 40%;
-  border-radius: 16px;
-  padding: 1rem 0.7rem;
-  color: var(--text-invert-color);
-  cursor: pointer;
-  margin-bottom: 0.5rem;
-  transition: all 0.2s ease-in-out;
+.table {
+  width: 100%;
+
+  @media (min-width: 1050px) {
+    width: fit-content;
+  }
 }
 
-.add-icon {
-  margin: 0 auto;
-  width: 40px;
-  height: 40px;
+.mobile {
+  @media (max-width: 1050px) {
+    width: 0;
+  }
+}
+
+.icon {
+  margin-left: 10px;
+
+  svg {
+    width: 25px;
+    height: 25px;
+  }
 }
 
 .active {

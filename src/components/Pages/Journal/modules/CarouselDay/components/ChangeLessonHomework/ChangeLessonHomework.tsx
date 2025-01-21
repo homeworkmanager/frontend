@@ -1,11 +1,11 @@
+import React from 'react';
+
+import styles from './ChangeLessonHomework.module.css';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
 import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
-
-import styles from './ChangeLessonHomework.module.css';
-import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface ChangeLessonHomeworkProps {
@@ -34,7 +34,13 @@ export const ChangeLessonHomework = ({ changeHomework, HomeworkId, removeHomewor
   return (
     <AnimatePresence>
       {HomeworkId !== -1 && (
-        <motion.aside initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={styles['section']}>
+        <motion.aside
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className={styles['section']}
+        >
           <Input
             onChange={(e) => setHomeworkText(e.target.value)}
             label="Изменить задание"

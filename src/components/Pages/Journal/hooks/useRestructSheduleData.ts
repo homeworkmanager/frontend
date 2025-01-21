@@ -3,6 +3,7 @@ import React from 'react';
 import { findIndexByDate } from '../../../../utils/helpers/findIndexByDate';
 import { today } from '../constants';
 
+import { HContext } from '@/App/modules/HContext';
 import { IHContext } from '@/App/modules/IHContext';
 import { createDate } from '@/utils/helpers/createDate';
 import { useGetAllScheduleQuery } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
@@ -27,13 +28,14 @@ export const useRestructSheduleData = () => {
 
   const transformData = () => (success ? Object.values(getScheduleResponse as AllScheduleResponse) : []);
 
-  const data = React.useMemo(transformData, [getScheduleResponse]);
+  const data: DaySchedule[] = React.useMemo(transformData, [getScheduleResponse]);
 
   const scheduleLessons = React.useMemo(() => data.map((item) => item.outputClasses).reverse(), [data]);
 
-  const { init } = React.useContext(IHContext);
+  const { initIH } = React.useContext(IHContext);
+  const { initH } = React.useContext(HContext);
 
-  const processedData = React.useMemo(() => {
+  const processedIH = React.useMemo(() => {
     return data.map((item) => {
       return item.independentHomeworks.map((homework) => {
         return { homeworkID: homework.homeworkID, homeworkText: homework.homeworkText };
@@ -41,9 +43,21 @@ export const useRestructSheduleData = () => {
     });
   }, [data]);
 
-  React.useEffect(() => {
-    init(processedData);
-  }, [init, processedData]);
+  const processedH = React.useMemo(() => {
+    return data.map((item) =>
+      item.outputClasses.map((lesson) =>
+        lesson.homework.map((hw) => ({
+          homeworkID: hw.homeworkID,
+          homeworkText: hw.homeworkText
+        }))
+      )
+    );
+  }, [data]);
+
+  React.useLayoutEffect(() => {
+    initIH(processedIH);
+    initH(processedH);
+  }, [initIH, processedIH, initH, processedH]);
 
   const values = React.useMemo(
     () =>

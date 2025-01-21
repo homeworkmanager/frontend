@@ -2,15 +2,15 @@ import React, { ReactNode } from 'react';
 
 type IHType = {
   independentHomeworks: RestructHomeworkArray[];
-  init: (initArray: RestructHomeworkArray[]) => void;
+  initIH: (initArray: RestructHomeworkArray[]) => void;
   addIndependentHomework: (element: RestructHomeworkElement, index: number) => void;
   removeIndependentHomework: (element: RestructHomeworkElement, index: number) => void;
   changeIndependentHomework: (element: RestructHomeworkElement, index: number) => void;
 };
 
 export const IHContext = React.createContext<IHType>({
-  independentHomeworks: [[]],
-  init: () => {},
+  independentHomeworks: [],
+  initIH: () => {},
   addIndependentHomework: () => {},
   removeIndependentHomework: () => {},
   changeIndependentHomework: () => {}
@@ -32,7 +32,7 @@ export const IHProvider = ({ children }: { children: ReactNode }) => {
     setIndependentHomeworks((prev) => [
       ...prev.slice(0, index),
       prev[index].filter(
-        (homework) => homework.homeworkID !== element.homeworkID && homework.homeworkText !== element.homeworkText
+        (homework) => homework.homeworkID !== element.homeworkID || homework.homeworkText !== element.homeworkText
       ),
       ...prev.slice(index + 1)
     ]);
@@ -58,7 +58,7 @@ export const IHProvider = ({ children }: { children: ReactNode }) => {
     <IHContext.Provider
       value={{
         independentHomeworks,
-        init: initValues,
+        initIH: initValues,
         addIndependentHomework,
         removeIndependentHomework,
         changeIndependentHomework

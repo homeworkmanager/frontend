@@ -1,10 +1,13 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { convertSummary } from '../helpers/convertSummary';
 
-import { AddLessonHomework } from './blocks/AddLessonHomework/AddLessonHomework';
+import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
+import { ChangeLessonHomework } from '../../ChangeLessonHomework/ChangeLessonHomework';
 import styles from './LessonCard.module.css';
 import { Button } from '@/components/ui/Button';
+import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Slide } from '@/components/ui/Icons/Slide';
 import { Typhography } from '@/components/ui/Typhography';
@@ -12,16 +15,13 @@ import { BaseRole } from '@/utils/constants/userRoles';
 import { useDeleteModeratorHomeworkMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import { motion } from 'framer-motion';
-import React from 'react';
-import { ChangeLogo } from '@/components/ui/Icons/Change';
-import { ChangeLessonHomework } from './blocks/ChangeLessonHomework/ChangeLessonHomework';
 
 interface LessonInfoProps {
   apiData: OutputClass;
   homeworks: RestructHomeworkArray;
-  addHomework: (homework: RestructHomeworkElement) => void;
-  deleteHomework: (id: number) => void;
   showDetails: () => void;
+  addHomework: (homework: RestructHomeworkElement) => void;
+  deleteHomework: (homework: RestructHomeworkElement) => void;
   changeHomework: (homework: RestructHomeworkElement) => void;
 }
 
@@ -57,11 +57,12 @@ export const LessonCard = ({
     setHomeworkId(id);
   };
 
-  const deleteLessonHomework = async (id: number) => {
-    const response = await deleteModeratorHomeworkMutation({ params: { homeworkID: id } });
+  const deleteLessonHomework = async (homework: RestructHomeworkElement) => {
+    const response = await deleteModeratorHomeworkMutation({ params: { homeworkID: homework.homeworkID } });
 
     if (!response.error) {
-      deleteHomework(id);
+      deleteHomework(homework);
+      removeHomeworkId();
     }
   };
 
@@ -127,7 +128,7 @@ export const LessonCard = ({
                       <td>
                         <Button
                           variant="slide"
-                          onClick={() => deleteLessonHomework(homework.homeworkID)}
+                          onClick={() => deleteLessonHomework(homework)}
                           children={<DeleteLogo className={styles['delete-icon']} />}
                         />
                       </td>

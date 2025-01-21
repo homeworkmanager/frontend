@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 
 import { Layout } from '../Layout/Layout';
-import { SpecialLayout } from '../SpecialLayout/SpecialLayout';
 
 import {
   AdminPanel,
@@ -27,7 +26,7 @@ export const Router = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route element={<Layout />}>
-        <Route path="/" element={<Navigate to={isAuth ? `user/${journalType}` : '/auth'} replace />} />
+        <Route path="/" element={<Navigate to={isAuth ? journalType : '/auth'} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
 
         <Route
@@ -41,49 +40,40 @@ export const Router = () => {
         {isAuth && (
           <>
             <Route
-              path="/user"
+              path="/journal-mobile"
               element={
                 <Suspense fallback={<Loader />}>
-                  <SpecialLayout />
+                  {journalType === '/journal-mobile' ? <JournalMobile /> : <Navigate to={journalType} />}
                 </Suspense>
               }
-            >
-              <Route
-                path="journal-mobile"
-                element={
-                  <Suspense fallback={<Loader />}>
-                    {journalType === 'journal-mobile' ? <JournalMobile /> : <Navigate to={journalType} />}
-                  </Suspense>
-                }
-              />
+            />
 
-              <Route
-                path="journal-desktop"
-                element={
-                  <Suspense fallback={<Loader />}>
-                    {journalType === 'journal-desktop' ? <JournalDesktop /> : <Navigate to={journalType} />}
-                  </Suspense>
-                }
-              />
+            <Route
+              path="/journal-desktop"
+              element={
+                <Suspense fallback={<Loader />}>
+                  {journalType === '/journal-desktop' ? <JournalDesktop /> : <Navigate to={journalType} />}
+                </Suspense>
+              }
+            />
 
-              <Route
-                path="moderator-mobile"
-                element={
-                  <Suspense fallback={<Loader />}>
-                    {userRole >= ModeratorRole ? <DayHomeworkMobile /> : <Navigate to={journalType} />}
-                  </Suspense>
-                }
-              />
+            <Route
+              path="/moderator-mobile"
+              element={
+                <Suspense fallback={<Loader />}>
+                  {userRole >= ModeratorRole ? <DayHomeworkMobile /> : <Navigate to={journalType} />}
+                </Suspense>
+              }
+            />
 
-              <Route
-                path="moderator-desktop"
-                element={
-                  <Suspense fallback={<Loader />}>
-                    {userRole >= ModeratorRole ? <DayHomeworkDesktop /> : <Navigate to={journalType} />}
-                  </Suspense>
-                }
-              />
-            </Route>
+            <Route
+              path="/moderator-desktop"
+              element={
+                <Suspense fallback={<Loader />}>
+                  {userRole >= ModeratorRole ? <DayHomeworkDesktop /> : <Navigate to={journalType} />}
+                </Suspense>
+              }
+            />
             <Route
               path="/profile"
               element={

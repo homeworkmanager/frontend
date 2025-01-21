@@ -3,12 +3,16 @@ import React from 'react';
 import { convertSummary } from './helpers/convertSummary';
 import styles from './Lesson.module.css';
 import { LessonCard } from './LessonCard/LessonCard';
+import { HContext } from '@/App/modules/HContext';
 import { Modal } from '@/components/ui/Modal';
 import { Typhography } from '@/components/ui/Typhography';
 import clsx from 'clsx';
 
 interface LessonProps {
   apiData: OutputClass;
+  homeworks: RestructHomeworkArray;
+  dayIndex: number;
+  lessonIndex: number;
   updateHeight: () => void;
 }
 
@@ -46,40 +50,30 @@ const getTeacher = (rawDescrciption: string) => {
   return `${stageB[0]} ${stageB[1]?.substring(0, 1)}. ${stageB[2]?.substring(0, 1)}.`;
 };
 
-export const Lesson = ({ apiData, updateHeight }: LessonProps) => {
+export const Lesson = ({ apiData, homeworks, dayIndex, lessonIndex, updateHeight }: LessonProps) => {
   const [showInfo, setShowInfo] = React.useState(false);
 
+  const { addHomework, removeHomework, changeHomework } = React.useContext(HContext);
+
   const para = apiData.class;
-  const [homeworks, setHomeworks] = React.useState<RestructHomeworkArray>(
-    apiData.homework.map((value) => {
-      return { homeworkText: value.homeworkText, homeworkID: value.homeworkID };
-    })
-  );
 
   const paraBegin = convertDateToTime(para.startTime);
   const paraEnd = convertDateToTime(para.endTime);
 
   const showDetails = () => setShowInfo((prev) => !prev);
 
-  const addHomework = (homework: RestructHomeworkElement) => {
-    setHomeworks((prev) => [...prev, homework]);
+  const addLessonHomework = (homework: RestructHomeworkElement) => {
+    addHomework(homework, dayIndex, lessonIndex);
     updateHeight();
   };
 
-  const deleteHomework = (id: number) => {
-    setHomeworks((prev) => prev.filter((homework) => homework.homeworkID !== id));
+  const deleteLessonHomework = (homework: RestructHomeworkElement) => {
+    removeHomework(homework, dayIndex, lessonIndex);
     updateHeight();
   };
 
-  const changeHomework = (homework: RestructHomeworkElement) => {
-    setHomeworks((prev) =>
-      prev.map((value) => {
-        if (value.homeworkID === homework.homeworkID) {
-          return { ...value, homeworkText: homework.homeworkText };
-        }
-        return value;
-      })
-    );
+  const changeLessonHomework = (homework: RestructHomeworkElement) => {
+    changeHomework(homework, dayIndex, lessonIndex);
     updateHeight();
   };
 
@@ -116,9 +110,9 @@ export const Lesson = ({ apiData, updateHeight }: LessonProps) => {
           apiData={apiData}
           homeworks={homeworks}
           showDetails={showDetails}
-          addHomework={addHomework}
-          deleteHomework={deleteHomework}
-          changeHomework={changeHomework}
+          addHomework={addLessonHomework}
+          deleteHomework={deleteLessonHomework}
+          changeHomework={changeLessonHomework}
         />
       </Modal>
     </React.Fragment>

@@ -48,11 +48,6 @@
   justify-content: center;
   transition: scale 0.15s ease-in-out;
 
-  svg {
-    width: 30px;
-    height: 30px;
-  }
-
   &:active {
     scale: 0.8;
   }

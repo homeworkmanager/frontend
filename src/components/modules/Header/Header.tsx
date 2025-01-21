@@ -17,7 +17,7 @@ export const Header = () => {
 
   return (
     <header className={styles.header}>
-      <Link to={`/user/${JournalChooseMedia}`} replace>
+      <Link to={JournalChooseMedia} replace>
         <Typhography tag="h1" variant="header" children={group_name} />
       </Link>
       <div className={styles.container}>
@@ -26,7 +26,7 @@ export const Header = () => {
             <AdminLogo className={styles['icon']} />
           </Link>
         )}
-        <Link to={`/user/${ModeratorChooseMedia}`}>
+        <Link to={ModeratorChooseMedia}>
           <AddLogo className={styles['add-icon']} />
         </Link>
         <Link to="/profile">
