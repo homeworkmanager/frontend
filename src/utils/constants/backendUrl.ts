@@ -1,1 +1,1 @@
-export const BackendUrl = `http://${process.env.HOST??"localhost"}:${process.env.PORT??"8888"}`;
+export const BackendUrl = "http://localhost:8888";
