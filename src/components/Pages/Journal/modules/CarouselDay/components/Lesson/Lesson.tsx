@@ -53,7 +53,7 @@ const getTeacher = (rawDescrciption: string) => {
 export const Lesson = ({ apiData, homeworks, dayIndex, lessonIndex, updateHeight }: LessonProps) => {
   const [showInfo, setShowInfo] = React.useState(false);
 
-  const { addHomework, removeHomework, changeHomework } = React.useContext(HContext);
+  const { addHomework, removeHomework, changeHomework, changeHomeworkStatus } = React.useContext(HContext);
 
   const para = apiData.class;
 
@@ -77,6 +77,11 @@ export const Lesson = ({ apiData, homeworks, dayIndex, lessonIndex, updateHeight
     updateHeight();
   };
 
+  const changeLessonHomeworkStatus = (homework: RestructHomeworkElement) => {
+    changeHomeworkStatus(homework, dayIndex, lessonIndex);
+    updateHeight();
+  };
+
   return (
     <React.Fragment>
       <section className={styles.container} onClick={showDetails}>
@@ -89,9 +94,13 @@ export const Lesson = ({ apiData, homeworks, dayIndex, lessonIndex, updateHeight
         {homeworks.length > 0 && (
           <ol className={styles['homework-info']}>
             <h4>Задание</h4>
-            {homeworks.map((homework) => (
+            {homeworks.map((homework, index) => (
               <li key={homework.homeworkID} className={styles['task']}>
-                {homework.homeworkText}
+                <div className={styles['task-text']}>
+                  <p>{`${index + 1}. `}</p>
+                  <p>{homework.homeworkText}</p>
+                  <p>{` (${homework.isCompleted ? 'Выполнено' : 'Не выполнено'})`}</p>
+                </div>
               </li>
             ))}
           </ol>
@@ -105,7 +114,7 @@ export const Lesson = ({ apiData, homeworks, dayIndex, lessonIndex, updateHeight
           <Typhography tag="p" variant="additional" children={getTeacher(para.description)} />
         </article>
       </section>
-      <Modal modalId="journal" showInfo={showInfo} showDetails={showDetails}>
+      <Modal showInfo={showInfo} showDetails={showDetails}>
         <LessonCard
           apiData={apiData}
           homeworks={homeworks}
@@ -113,6 +122,7 @@ export const Lesson = ({ apiData, homeworks, dayIndex, lessonIndex, updateHeight
           addHomework={addLessonHomework}
           deleteHomework={deleteLessonHomework}
           changeHomework={changeLessonHomework}
+          changeHomeworkStatus={changeLessonHomeworkStatus}
         />
       </Modal>
     </React.Fragment>

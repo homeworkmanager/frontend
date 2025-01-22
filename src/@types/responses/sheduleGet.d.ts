@@ -1,6 +1,6 @@
 type HomeworkElement = {
   homeworkID: number;
-  classSemNumber: number | null;
+  isCompleted: boolean;
   subjectId: number;
   homeworkText: string;
   dueDate: string; // ISO 8601 format

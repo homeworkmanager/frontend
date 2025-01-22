@@ -6,6 +6,7 @@ type IHType = {
   addIndependentHomework: (element: RestructHomeworkElement, index: number) => void;
   removeIndependentHomework: (element: RestructHomeworkElement, index: number) => void;
   changeIndependentHomework: (element: RestructHomeworkElement, index: number) => void;
+  changeIndependentHomeworkStatus: (element: RestructHomeworkElement, index: number) => void;
 };
 
 export const IHContext = React.createContext<IHType>({
@@ -13,7 +14,8 @@ export const IHContext = React.createContext<IHType>({
   initIH: () => {},
   addIndependentHomework: () => {},
   removeIndependentHomework: () => {},
-  changeIndependentHomework: () => {}
+  changeIndependentHomework: () => {},
+  changeIndependentHomeworkStatus: () => {}
 });
 
 export const IHProvider = ({ children }: { children: ReactNode }) => {
@@ -45,7 +47,24 @@ export const IHProvider = ({ children }: { children: ReactNode }) => {
         if (homework.homeworkID === element.homeworkID) {
           return {
             ...homework,
-            homeworkText: element.homeworkText
+            homeworkText: element.homeworkText,
+            isCompleted: false
+          };
+        }
+        return homework;
+      }),
+      ...prev.slice(index + 1)
+    ]);
+  };
+
+  const changeIndependentHomeworkStatus = (element: RestructHomeworkElement, index: number) => {
+    setIndependentHomeworks((prev) => [
+      ...prev.slice(0, index),
+      prev[index].map((homework) => {
+        if (homework.homeworkID === element.homeworkID) {
+          return {
+            ...homework,
+            isCompleted: !element.isCompleted
           };
         }
         return homework;
@@ -61,7 +80,8 @@ export const IHProvider = ({ children }: { children: ReactNode }) => {
         initIH: initValues,
         addIndependentHomework,
         removeIndependentHomework,
-        changeIndependentHomework
+        changeIndependentHomework,
+        changeIndependentHomeworkStatus
       }}
     >
       {children}

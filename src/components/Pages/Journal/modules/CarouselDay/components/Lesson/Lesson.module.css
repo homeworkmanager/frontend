@@ -79,6 +79,13 @@
   color: gray;
   padding: 0 1rem;
   font-size: small;
+  display: flex;
+  flex-direction: column;
+  white-space: pre;
+}
+
+.task-text {
+  display: flex;
 }
 
 .lect {

@@ -6,6 +6,7 @@ type HType = {
   addHomework: (element: RestructHomeworkElement, dayIndex: number, lessonIndex: number) => void;
   removeHomework: (element: RestructHomeworkElement, dayIndex: number, lessonIndex: number) => void;
   changeHomework: (element: RestructHomeworkElement, dayIndex: number, lessonIndex: number) => void;
+  changeHomeworkStatus: (element: RestructHomeworkElement, dayIndex: number, lessonIndex: number) => void;
 };
 
 export const HContext = React.createContext<HType>({
@@ -13,7 +14,8 @@ export const HContext = React.createContext<HType>({
   initH: () => {},
   addHomework: () => {},
   removeHomework: () => {},
-  changeHomework: () => {}
+  changeHomework: () => {},
+  changeHomeworkStatus: () => {}
 });
 
 export const HProvider = ({ children }: { children: ReactNode }) => {
@@ -59,7 +61,28 @@ export const HProvider = ({ children }: { children: ReactNode }) => {
           if (homework.homeworkID === element.homeworkID) {
             return {
               ...homework,
-              homeworkText: element.homeworkText
+              homeworkText: element.homeworkText,
+              isCompleted: false
+            };
+          }
+          return homework;
+        }),
+        ...prev[dayIndex].slice(lessonIndex + 1)
+      ],
+      ...prev.slice(dayIndex + 1)
+    ]);
+  };
+
+  const changeHomeworkStatus = (element: RestructHomeworkElement, dayIndex: number, lessonIndex: number) => {
+    setHomeworks((prev) => [
+      ...prev.slice(0, dayIndex),
+      [
+        ...prev[dayIndex].slice(0, lessonIndex),
+        prev[dayIndex][lessonIndex].map((homework) => {
+          if (homework.homeworkID === element.homeworkID) {
+            return {
+              ...homework,
+              isCompleted: !element.isCompleted
             };
           }
           return homework;
@@ -77,7 +100,8 @@ export const HProvider = ({ children }: { children: ReactNode }) => {
         initH: initValues,
         addHomework,
         removeHomework,
-        changeHomework
+        changeHomework,
+        changeHomeworkStatus
       }}
     >
       {children}

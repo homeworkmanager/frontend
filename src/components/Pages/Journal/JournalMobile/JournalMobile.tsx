@@ -71,7 +71,7 @@ export const JournalMobile = () => {
       {getScheduleStatus.success && (
         <React.Fragment>
           <Header />
-          <div className={styles['journal-body']} id="journal">
+          <div className={styles['journal-body']}>
             <CarouselWeek
               currentDate={currentDate}
               activeWeekNode={activeWeekNode}

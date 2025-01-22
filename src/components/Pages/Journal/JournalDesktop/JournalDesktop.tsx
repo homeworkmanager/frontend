@@ -48,7 +48,7 @@ export const JournalDesktop = () => {
       {getScheduleStatus.success && (
         <React.Fragment>
           <Header />
-          <div className={styles['journal-body']} id="journal">
+          <div className={styles['journal-body']}>
             <CarouselMonth
               values={values}
               currentDate={currentDate}

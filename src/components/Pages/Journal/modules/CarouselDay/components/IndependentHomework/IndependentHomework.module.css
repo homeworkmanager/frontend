@@ -11,27 +11,14 @@
   margin-top: 16px;
 }
 
-.table {
-  width: 100%;
-
-  @media (min-width: 1050px) {
-    width: fit-content;
-  }
-}
-
-.mobile {
-  @media (max-width: 1050px) {
-    width: 0;
-  }
-}
-
 .icon {
-  margin-left: 10px;
+  margin-left: 8px;
+  width: 24px;
+  height: 24px;
+}
 
-  svg {
-    width: 25px;
-    height: 25px;
-  }
+.active {
+  color: var(--button-accept-color);
 }
 
 .active {

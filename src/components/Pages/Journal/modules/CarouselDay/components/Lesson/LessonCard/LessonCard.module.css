@@ -42,7 +42,6 @@
 }
 
 .homework-list {
-  margin: 0;
   width: fit-content;
 }
 
@@ -52,10 +51,14 @@
   color: var(--text-invert-color);
 }
 
-.delete-icon {
+.icon {
   margin-left: 8px;
   width: 24px !important;
   height: 24px !important;
+}
+
+.active {
+  color: var(--button-accept-color);
 }
 
 .moderator {

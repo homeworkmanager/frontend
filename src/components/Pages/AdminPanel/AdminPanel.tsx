@@ -36,7 +36,7 @@ export const AdminPanel = () => {
   const onRefreshClick = () => setIsOpen((prev) => !prev);
 
   return (
-    <article className={styles.container} id="admin">
+    <article className={styles.container}>
       <Header />
       <Typhography
         tag="h2"
@@ -106,7 +106,7 @@ export const AdminPanel = () => {
           </div>
         </div>
       </div>
-      <Modal modalId="admin" showInfo={isOpen} showDetails={onRefreshClick}>
+      <Modal showInfo={isOpen} showDetails={onRefreshClick}>
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

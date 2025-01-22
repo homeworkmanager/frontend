@@ -1,20 +1,23 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import { ChangeLessonHomework } from '../../ChangeLessonHomework/ChangeLessonHomework';
 import { convertSummary } from '../helpers/convertSummary';
 
 import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
-import { ChangeLessonHomework } from '../../ChangeLessonHomework/ChangeLessonHomework';
 import styles from './LessonCard.module.css';
 import { Button } from '@/components/ui/Button';
+import { HomeworkList } from '@/components/ui/HomeworkList/HomeworkList';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Slide } from '@/components/ui/Icons/Slide';
 import { Typhography } from '@/components/ui/Typhography';
-import { BaseRole } from '@/utils/constants/userRoles';
+import { ModeratorRole } from '@/utils/constants/userRoles';
 import { useDeleteModeratorHomeworkMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
+import { usePostHomeworkStatusMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 
 interface LessonInfoProps {
   apiData: OutputClass;
@@ -23,6 +26,7 @@ interface LessonInfoProps {
   addHomework: (homework: RestructHomeworkElement) => void;
   deleteHomework: (homework: RestructHomeworkElement) => void;
   changeHomework: (homework: RestructHomeworkElement) => void;
+  changeHomeworkStatus: (homework: RestructHomeworkElement) => void;
 }
 
 const RestructDescription = (description: string) => {
@@ -35,13 +39,15 @@ export const LessonCard = ({
   showDetails,
   addHomework,
   deleteHomework,
-  changeHomework
+  changeHomework,
+  changeHomeworkStatus,
 }: LessonInfoProps) => {
   const userRole = useSelector(getUserRole);
 
   const description = RestructDescription(apiData.class.description);
 
   const [deleteModeratorHomeworkMutation] = useDeleteModeratorHomeworkMutation();
+  const [postHomeworkStatusMutation] = usePostHomeworkStatusMutation();
 
   const [homeworkId, setHomeworkId] = React.useState(-1);
 
@@ -62,9 +68,17 @@ export const LessonCard = ({
 
     if (!response.error) {
       deleteHomework(homework);
-      removeHomeworkId();
+      if (homeworkId === homework.homeworkID) removeHomeworkId();
     }
   };
+
+  const changeLessonHomeworkStatus = async (homework: RestructHomeworkElement) => {
+    const response = await postHomeworkStatusMutation({ params: { homeworkID: homework.homeworkID, status: homework.isCompleted } });
+
+    if (!response.error) {
+      changeHomeworkStatus(homework);
+    }
+  }
 
   return (
     <motion.aside
@@ -95,49 +109,44 @@ export const LessonCard = ({
         <article className={styles['section']}>
           <Typhography tag="h3" variant="additional" className={styles['info']} children={'Задание'} />
           {homeworks.length === 0 && <Typhography tag="h3" variant="thirdy" children={'Отсутствует'} />}
-          <table className={styles['homework-list']}>
-            <tbody>
-              {homeworks.map((homework, index) => (
-                <motion.tr
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.35, ease: 'easeInOut' }}
-                  key={homework.homeworkID}
-                  className={styles['homework-list-item']}
-                >
-                  <td>
-                    <p>{`${index + 1}. `}</p>
-                  </td>
-                  <td>
-                    <p>{homework.homeworkText}</p>
-                  </td>
-                  {userRole > BaseRole && (
-                    <>
-                      {homeworkId === -1 || homeworkId === homework.homeworkID ? (
-                        <td>
-                          <Button
-                            variant="slide"
-                            onClick={() => addHomeworkId(homework.homeworkID)}
-                            children={<ChangeLogo className={styles['delete-icon']} />}
-                          />
-                        </td>
-                      ) : (
-                        <td />
-                      )}
-                      <td>
+          <HomeworkList>
+            {homeworks.map((homework, index) => (
+              <HomeworkList.Row key={homework.homeworkID}>
+                <HomeworkList.Column isMobile={true}>
+                  <Typhography tag="p" variant="thirdy" children={`${index + 1}. `} />
+                </HomeworkList.Column>
+                <HomeworkList.Column>
+                  <Typhography tag="p" variant="thirdy" children={homework.homeworkText} />
+                </HomeworkList.Column>
+                {userRole > ModeratorRole && (
+                  <>
+                    {homeworkId === -1 || homeworkId === homework.homeworkID ? (
+                      <HomeworkList.Column isMobile={true}>
                         <Button
                           variant="slide"
-                          onClick={() => deleteLessonHomework(homework)}
-                          children={<DeleteLogo className={styles['delete-icon']} />}
+                          onClick={() => addHomeworkId(homework.homeworkID)}
+                          children={
+                            <ChangeLogo
+                              className={clsx(styles['icon'], homeworkId === homework.homeworkID && styles['active'])}
+                            />
+                          }
                         />
-                      </td>
-                    </>
-                  )}
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
+                      </HomeworkList.Column>
+                    ) : (
+                      <HomeworkList.Column children={''} />
+                    )}
+                    <HomeworkList.Column isMobile={true}>
+                      <Button
+                        variant="slide"
+                        onClick={() => deleteLessonHomework(homework)}
+                        children={<DeleteLogo className={styles['icon']} />}
+                      />
+                    </HomeworkList.Column>
+                  </>
+                )}
+              </HomeworkList.Row>
+            ))}
+          </HomeworkList>
           <ChangeLessonHomework
             HomeworkId={homeworkId}
             removeHomeworkId={removeHomeworkId}
@@ -152,7 +161,7 @@ export const LessonCard = ({
           <Typhography tag="h3" variant="additional" className={styles['info']} children={'Преподаватель'} />
           <Typhography tag="p" variant="thirdy" children={description} />
         </article>
-        {userRole > BaseRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
+        {userRole > ModeratorRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
       </section>
     </motion.aside>
   );

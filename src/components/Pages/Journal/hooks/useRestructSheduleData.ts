@@ -37,8 +37,8 @@ export const useRestructSheduleData = () => {
 
   const processedIH = React.useMemo(() => {
     return data.map((item) => {
-      return item.independentHomeworks.map((homework) => {
-        return { homeworkID: homework.homeworkID, homeworkText: homework.homeworkText };
+      return item.independentHomeworks.map((hw) => {
+        return { homeworkID: hw.homeworkID, homeworkText: hw.homeworkText, isCompleted: hw.isCompleted };
       });
     });
   }, [data]);
@@ -48,7 +48,8 @@ export const useRestructSheduleData = () => {
       item.outputClasses.map((lesson) =>
         lesson.homework.map((hw) => ({
           homeworkID: hw.homeworkID,
-          homeworkText: hw.homeworkText
+          homeworkText: hw.homeworkText,
+          isCompleted: hw.isCompleted
         }))
       )
     );

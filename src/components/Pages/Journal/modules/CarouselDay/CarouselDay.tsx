@@ -60,7 +60,11 @@ export const CarouselDay = ({
                     updateHeight={updateHeight}
                   />
                 ))}
-              <IndependentHomework Index={dayIndex} Homeworks={independentHomeworks[dayIndex]} updateHeight={updateHeight} />
+              <IndependentHomework
+                Index={dayIndex}
+                Homeworks={independentHomeworks[dayIndex]}
+                updateHeight={updateHeight}
+              />
             </div>
           </SwiperSlide>
         ))}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { LogInSchema, RegisterSchema, RegisterSchemaType } from '../schemas';
@@ -9,12 +8,13 @@ import { getUserData } from '@/utils/api/requests/user/get';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
 import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
+import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
 import { useFormik } from 'formik';
 
 export const useAuth = () => {
   const [stage, setStage] = React.useState<'login' | 'register'>('login');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isEntry, setIsEntry } = React.useContext(EntryContext);
   const navigate = useNavigate();
 
