@@ -1,1 +1,1 @@
-export const BackendUrl = "http://localhost:3000/api";
+export const BackendUrl = "http://unihelper.ru:80/api";
