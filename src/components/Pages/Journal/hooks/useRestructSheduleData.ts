@@ -7,14 +7,12 @@ import { createDate } from '@/utils/helpers/createDate';
 import { useGetAllScheduleQuery } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 
 export const useRestructSheduleData = () => {
-  const getSchedule = useGetAllScheduleQuery(
-    {
-      params: {
-        from_time: '02.09.2024',
-        days_count: 154
-      }
+  const getSchedule = useGetAllScheduleQuery({
+    params: {
+      from_time: '02.09.2024',
+      days_count: 154
     }
-  );
+  });
 
   const getScheduleResponse = getSchedule?.data;
   const success = getSchedule.isSuccess;

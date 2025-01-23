@@ -5,6 +5,7 @@ import { ChangeLessonHomework } from '../ChangeLessonHomework/ChangeLessonHomewo
 
 import styles from './IndependentHomework.module.css';
 import { Button } from '@/components/ui/Button';
+import { Checkbox } from '@/components/ui/Checkbox';
 import { HomeworkList } from '@/components/ui/HomeworkList/HomeworkList';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
@@ -16,7 +17,6 @@ import {
 } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
-import { Checkbox } from '@/components/ui/Checkbox';
 
 interface IndependentHomeworkProps {
   Homeworks: RestructHomeworkElement[];
@@ -51,7 +51,7 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
     const response = await deleteModeratorHomeworkMutation({ params: { homeworkID: homework.homeworkID } });
 
     if (!response.error) {
-      setIndependentHomeworks((prev) => (prev.filter((item) => item.homeworkID !== homework.homeworkID)));
+      setIndependentHomeworks((prev) => prev.filter((item) => item.homeworkID !== homework.homeworkID));
       if (homeworkId === homework.homeworkID) removeHomeworkId();
     }
   };
@@ -76,7 +76,6 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
       params: { homeworkID: homework.homeworkID, status: !homework.isCompleted }
     });
 
-
     if (!response.error) {
       setIndependentHomeworks((prev) => [
         ...prev.map((item) => {
@@ -100,11 +99,21 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
           <Typhography tag="p" variant="primary" children={`Задания на день`} className={styles['title']} />
           <div className={styles['content']}>
             <HomeworkList>
-              {Homeworks.map((homework, index) => (
+              {independentHomeworks.map((homework, index) => (
                 <HomeworkList.Row key={homework.homeworkID}>
                   <HomeworkList.Column>
-                    <Typhography tag="p" variant="thirdy" className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])} children={`${index + 1}. `} />
-                    <Typhography tag="p" variant="thirdy" className={clsx(styles['text'], homework.isCompleted && styles['complete'])} children={homework.homeworkText} />
+                    <Typhography
+                      tag="p"
+                      variant="thirdy"
+                      className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
+                      children={`${index + 1}. `}
+                    />
+                    <Typhography
+                      tag="p"
+                      variant="thirdy"
+                      className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
+                      children={homework.homeworkText}
+                    />
                   </HomeworkList.Column>
                   {userRole > ModeratorRole && (
                     <>
@@ -124,7 +133,7 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                         <Button
                           variant="slide"
                           onClick={() => removeHomework(homework)}
-                          children={<DeleteLogo className={styles['icon']} />}
+                          children={<DeleteLogo className={styles['delete-icon']} />}
                         />
                       </HomeworkList.Column>
                     </>

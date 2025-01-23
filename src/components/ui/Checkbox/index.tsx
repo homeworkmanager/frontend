@@ -1,6 +1,5 @@
-
-import clsx from 'clsx';
 import styles from './Checkbox.module.css';
+import clsx from 'clsx';
 
 type CheckboxProps = React.ComponentProps<'input'>;
 

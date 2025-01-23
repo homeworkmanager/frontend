@@ -1,6 +1,6 @@
-import { useGetSubjectsQuery } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import styles from './LessonCarousel.module.css';
 import { Typhography } from '@/components/ui/Typhography';
+import { useGetSubjectsQuery } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import clsx from 'clsx';
 import { Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';

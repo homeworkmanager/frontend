@@ -24,9 +24,11 @@ export const Header = () => {
             <AdminLogo className={styles['icon']} />
           </Link>
         )}
-        {role >= ModeratorRole && <Link to={ModeratorChooseMedia}>
-          <AddLogo className={styles['add-icon']} />
-        </Link>}
+        {role >= ModeratorRole && (
+          <Link to={ModeratorChooseMedia}>
+            <AddLogo className={styles['add-icon']} />
+          </Link>
+        )}
         <Link to="/profile">
           <SettingsLogo className={styles['icon']} />
         </Link>

@@ -14,7 +14,7 @@
 }
 
 .checkbox:checked::after {
-  content: "";
+  content: '';
   display: block;
   width: 7px;
   height: 13px;

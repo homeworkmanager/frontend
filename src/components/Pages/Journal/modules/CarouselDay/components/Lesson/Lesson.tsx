@@ -65,7 +65,7 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
   };
 
   const deleteLessonHomework = (homework: RestructHomeworkElement) => {
-    setHomeworks((prev) => (prev.filter((item) => item.homeworkID !== homework.homeworkID)));
+    setHomeworks((prev) => prev.filter((item) => item.homeworkID !== homework.homeworkID));
     updateHeight();
   };
 
@@ -91,7 +91,7 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
         if (item.homeworkID === homework.homeworkID) {
           return {
             ...item,
-            isCompleted: !homework.isCompleted,
+            isCompleted: !homework.isCompleted
           };
         }
         return item;
@@ -99,7 +99,6 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
     ]);
     updateHeight();
   };
-
 
   return (
     <React.Fragment>
@@ -117,7 +116,9 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
               <li key={homework.homeworkID} className={styles['task']}>
                 <div className={styles['task-text']}>
                   <p>{`${index + 1}. `}</p>
-                  <p className={clsx(styles['homework'], homework.isCompleted && styles['complete'])}>{homework.homeworkText}</p>
+                  <p className={clsx(styles['homework'], homework.isCompleted && styles['complete'])}>
+                    {homework.homeworkText}
+                  </p>
                 </div>
               </li>
             ))}

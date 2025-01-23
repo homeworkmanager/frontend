@@ -7,6 +7,7 @@ import { convertSummary } from '../helpers/convertSummary';
 import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
 import styles from './LessonCard.module.css';
 import { Button } from '@/components/ui/Button';
+import { Checkbox } from '@/components/ui/Checkbox';
 import { HomeworkList } from '@/components/ui/HomeworkList/HomeworkList';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
@@ -20,7 +21,7 @@ import {
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import { Checkbox } from '@/components/ui/Checkbox';
+import { Loader } from '@/components/ui/Loader';
 
 interface LessonInfoProps {
   apiData: OutputClass;
@@ -50,7 +51,7 @@ export const LessonCard = ({
   const description = RestructDescription(apiData.class.description);
 
   const [deleteModeratorHomeworkMutation] = useDeleteModeratorHomeworkMutation();
-  const [postHomeworkStatusMutation] = usePostHomeworkStatusMutation();
+  const [postHomeworkStatusMutation, { isLoading: isStatusLoading }] = usePostHomeworkStatusMutation();
 
   const [homeworkId, setHomeworkId] = React.useState(-1);
 
@@ -118,14 +119,24 @@ export const LessonCard = ({
             {homeworks.map((homework, index) => (
               <HomeworkList.Row key={homework.homeworkID}>
                 <HomeworkList.Column>
-                  <Typhography tag="p" variant="thirdy" className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])} children={`${index + 1}. `} />
-                  <Typhography tag="p" variant="thirdy" className={clsx(styles['text'], homework.isCompleted && styles['complete'])} children={homework.homeworkText} />
+                  <Typhography
+                    tag="p"
+                    variant="thirdy"
+                    className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
+                    children={`${index + 1}. `}
+                  />
+                  <Typhography
+                    tag="p"
+                    variant="thirdy"
+                    className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
+                    children={homework.homeworkText}
+                  />
                 </HomeworkList.Column>
                 {userRole > ModeratorRole && (
                   <>
                     <HomeworkList.Column>
-                      <Checkbox checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />
-                      {(homeworkId === -1 || homeworkId === homework.homeworkID) ? (
+                      {isStatusLoading ? <Loader className={styles['icon']} /> : <Checkbox checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />}
+                      {homeworkId === -1 || homeworkId === homework.homeworkID ? (
                         <Button
                           variant="slide"
                           onClick={() => addHomeworkId(homework.homeworkID)}
@@ -135,11 +146,13 @@ export const LessonCard = ({
                             />
                           }
                         />
-                      ) : (<div style={{ width: '24px', height: '24px' }} />)}
+                      ) : (
+                        <div style={{ width: '24px', height: '24px' }} />
+                      )}
                       <Button
                         variant="slide"
                         onClick={() => deleteLessonHomework(homework)}
-                        children={<DeleteLogo className={styles['icon']} />}
+                        children={<DeleteLogo className={styles['delete-icon']} />}
                       />
                     </HomeworkList.Column>
                   </>
@@ -163,6 +176,6 @@ export const LessonCard = ({
         </article>
         {userRole > ModeratorRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
       </section>
-    </motion.aside >
+    </motion.aside>
   );
 };

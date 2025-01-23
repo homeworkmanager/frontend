@@ -16,9 +16,7 @@ interface HomeworkListColumnProps {
 export const HomeworkList = ({ children }: HomeworkListProps) => {
   return (
     <ul className={styles['homework-list']}>
-      <AnimatePresence>
-        {children}
-      </AnimatePresence>
+      <AnimatePresence>{children}</AnimatePresence>
     </ul>
   );
 };
