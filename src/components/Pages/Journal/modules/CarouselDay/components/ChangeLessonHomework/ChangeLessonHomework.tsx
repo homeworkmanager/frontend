@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
+import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface ChangeLessonHomeworkProps {
@@ -25,7 +25,8 @@ export const ChangeLessonHomework = ({ changeHomework, HomeworkId, removeHomewor
     if (!response.error) {
       changeHomework({
         homeworkID: HomeworkId,
-        homeworkText: homeworkText
+        homeworkText: homeworkText,
+        isCompleted: false
       });
       removeHomeworkId();
     }

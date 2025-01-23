@@ -13,11 +13,13 @@ import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Slide } from '@/components/ui/Icons/Slide';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
-import { useDeleteModeratorHomeworkMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
+import {
+  useDeleteModeratorHomeworkMutation,
+  usePostHomeworkStatusMutation
+} from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import { usePostHomeworkStatusMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 
 interface LessonInfoProps {
   apiData: OutputClass;
@@ -40,7 +42,7 @@ export const LessonCard = ({
   addHomework,
   deleteHomework,
   changeHomework,
-  changeHomeworkStatus,
+  changeHomeworkStatus
 }: LessonInfoProps) => {
   const userRole = useSelector(getUserRole);
 
@@ -73,12 +75,14 @@ export const LessonCard = ({
   };
 
   const changeLessonHomeworkStatus = async (homework: RestructHomeworkElement) => {
-    const response = await postHomeworkStatusMutation({ params: { homeworkID: homework.homeworkID, status: homework.isCompleted } });
+    const response = await postHomeworkStatusMutation({
+      params: { homeworkID: homework.homeworkID, status: homework.isCompleted }
+    });
 
     if (!response.error) {
       changeHomeworkStatus(homework);
     }
-  }
+  };
 
   return (
     <motion.aside

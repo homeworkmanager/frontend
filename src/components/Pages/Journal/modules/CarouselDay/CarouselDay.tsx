@@ -5,8 +5,6 @@ import styles from './CarouselDay.module.css';
 import { FreeDay } from './components/FreeDay/FreeDay';
 import { IndependentHomework } from './components/IndependentHomework/IndependentHomework';
 import { Lesson } from './components/Lesson/Lesson';
-import { HContext } from '@/App/modules/HContext';
-import { IHContext } from '@/App/modules/IHContext';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 interface CarouselDayProps extends React.ComponentProps<'div'> {
@@ -29,9 +27,6 @@ export const CarouselDay = ({
     }
   };
 
-  const { independentHomeworks } = React.useContext(IHContext);
-  const { homeworks } = React.useContext(HContext);
-
   return (
     <section {...props}>
       <Swiper
@@ -49,22 +44,16 @@ export const CarouselDay = ({
           <SwiperSlide key={dayIndex} tag="li" className={styles['swiper-layout']}>
             <div className={styles['day-card']}>
               {apiData.outputClasses.length === 0 && <FreeDay />}
-              {homeworks.length > 0 &&
-                apiData.outputClasses.map((value, lessonIndex) => (
+              {apiData.outputClasses.length > 0 &&
+                apiData.outputClasses.map((value) => (
                   <Lesson
                     key={value.class.startTime}
                     apiData={value}
-                    homeworks={homeworks[dayIndex][lessonIndex]}
-                    dayIndex={dayIndex}
-                    lessonIndex={lessonIndex}
+                    Homeworks={value.homework}
                     updateHeight={updateHeight}
                   />
                 ))}
-              <IndependentHomework
-                Index={dayIndex}
-                Homeworks={independentHomeworks[dayIndex]}
-                updateHeight={updateHeight}
-              />
+              <IndependentHomework Homeworks={apiData.independentHomeworks} updateHeight={updateHeight} />
             </div>
           </SwiperSlide>
         ))}

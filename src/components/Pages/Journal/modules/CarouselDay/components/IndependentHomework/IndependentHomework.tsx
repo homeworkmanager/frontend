@@ -4,28 +4,31 @@ import { useSelector } from 'react-redux';
 import { ChangeLessonHomework } from '../ChangeLessonHomework/ChangeLessonHomework';
 
 import styles from './IndependentHomework.module.css';
-import { IHContext } from '@/App/modules/IHContext';
 import { Button } from '@/components/ui/Button';
 import { HomeworkList } from '@/components/ui/HomeworkList/HomeworkList';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
-import { useDeleteModeratorHomeworkMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
+import {
+  useDeleteModeratorHomeworkMutation,
+  usePostHomeworkStatusMutation
+} from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
-import { usePostHomeworkStatusMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 
 interface IndependentHomeworkProps {
-  Index: number;
   Homeworks: RestructHomeworkElement[];
   updateHeight: () => void;
 }
 
-export const IndependentHomework = ({ Index, Homeworks, updateHeight }: IndependentHomeworkProps) => {
+export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHomeworkProps) => {
   const [deleteModeratorHomeworkMutation] = useDeleteModeratorHomeworkMutation();
   const [postHomeworkStatusMutation] = usePostHomeworkStatusMutation();
-  const { removeIndependentHomework, changeIndependentHomework, changeIndependentHomeworkStatus } = React.useContext(IHContext);
+
+  const [independentHomeworks, setIndependentHomeworks] = React.useState<RestructHomeworkElement[]>(() => [
+    ...Homeworks
+  ]);
 
   const userRole = useSelector(getUserRole);
 
@@ -47,27 +50,50 @@ export const IndependentHomework = ({ Index, Homeworks, updateHeight }: Independ
     const response = await deleteModeratorHomeworkMutation({ params: { homeworkID: homework.homeworkID } });
 
     if (!response.error) {
-      removeIndependentHomework(homework, Index);
+      setIndependentHomeworks((prev) => (prev.filter((item) => item.homeworkID !== homework.homeworkID)));
       if (homeworkId === homework.homeworkID) removeHomeworkId();
     }
   };
-  const changeHomework = (value: RestructHomeworkElement) => {
-    changeIndependentHomework(value, Index);
+  const changeHomework = (homework: RestructHomeworkElement) => {
+    setIndependentHomeworks((prev) => [
+      ...prev.map((item) => {
+        if (item.homeworkID === homework.homeworkID) {
+          return {
+            ...item,
+            homeworkText: homework.homeworkText,
+            isCompleted: false
+          };
+        }
+        return item;
+      })
+    ]);
     updateHeight();
   };
 
   const changeHomeworkStatus = async (homework: RestructHomeworkElement) => {
-    const response = await postHomeworkStatusMutation({ params: { homeworkID: homework.homeworkID, status: homework.isCompleted } });
+    const response = await postHomeworkStatusMutation({
+      params: { homeworkID: homework.homeworkID, status: homework.isCompleted }
+    });
 
     if (!response.error) {
-      changeIndependentHomeworkStatus(homework, Index);
+      setIndependentHomeworks((prev) => [
+        ...prev.map((item) => {
+          if (item.homeworkID === homework.homeworkID) {
+            return {
+              ...item,
+              isCompleted: !homework.isCompleted
+            };
+          }
+          return item;
+        })
+      ]);
       updateHeight();
     }
-  }
+  };
 
   return (
     <>
-      {Boolean(Homeworks && !!Homeworks.length) && (
+      {independentHomeworks.length > 0 && (
         <article className={styles['container']}>
           <Typhography tag="p" variant="primary" children={`Задания на день`} className={styles['title']} />
           <div className={styles['content']}>

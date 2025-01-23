@@ -3,16 +3,13 @@ import React from 'react';
 import { convertSummary } from './helpers/convertSummary';
 import styles from './Lesson.module.css';
 import { LessonCard } from './LessonCard/LessonCard';
-import { HContext } from '@/App/modules/HContext';
 import { Modal } from '@/components/ui/Modal';
 import { Typhography } from '@/components/ui/Typhography';
 import clsx from 'clsx';
 
 interface LessonProps {
   apiData: OutputClass;
-  homeworks: RestructHomeworkArray;
-  dayIndex: number;
-  lessonIndex: number;
+  Homeworks: RestructHomeworkArray;
   updateHeight: () => void;
 }
 
@@ -50,10 +47,10 @@ const getTeacher = (rawDescrciption: string) => {
   return `${stageB[0]} ${stageB[1]?.substring(0, 1)}. ${stageB[2]?.substring(0, 1)}.`;
 };
 
-export const Lesson = ({ apiData, homeworks, dayIndex, lessonIndex, updateHeight }: LessonProps) => {
+export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
   const [showInfo, setShowInfo] = React.useState(false);
 
-  const { addHomework, removeHomework, changeHomework, changeHomeworkStatus } = React.useContext(HContext);
+  const [homeworks, setHomeworks] = React.useState<RestructHomeworkElement[]>(() => [...Homeworks]);
 
   const para = apiData.class;
 
@@ -63,22 +60,43 @@ export const Lesson = ({ apiData, homeworks, dayIndex, lessonIndex, updateHeight
   const showDetails = () => setShowInfo((prev) => !prev);
 
   const addLessonHomework = (homework: RestructHomeworkElement) => {
-    addHomework(homework, dayIndex, lessonIndex);
+    setHomeworks((prev) => [...prev, homework]);
     updateHeight();
   };
 
   const deleteLessonHomework = (homework: RestructHomeworkElement) => {
-    removeHomework(homework, dayIndex, lessonIndex);
+    setHomeworks((prev) => (prev.filter((item) => item.homeworkID !== homework.homeworkID)));
     updateHeight();
   };
 
   const changeLessonHomework = (homework: RestructHomeworkElement) => {
-    changeHomework(homework, dayIndex, lessonIndex);
+    setHomeworks((prev) => [
+      ...prev.map((item) => {
+        if (item.homeworkID === homework.homeworkID) {
+          return {
+            ...item,
+            homeworkText: homework.homeworkText,
+            isCompleted: false
+          };
+        }
+        return item;
+      })
+    ]);
     updateHeight();
   };
 
   const changeLessonHomeworkStatus = (homework: RestructHomeworkElement) => {
-    changeHomeworkStatus(homework, dayIndex, lessonIndex);
+    setHomeworks((prev) => [
+      ...prev.map((item) => {
+        if (item.homeworkID === homework.homeworkID) {
+          return {
+            ...item,
+            isCompleted: !homework.isCompleted,
+          };
+        }
+        return item;
+      })
+    ]);
     updateHeight();
   };
 

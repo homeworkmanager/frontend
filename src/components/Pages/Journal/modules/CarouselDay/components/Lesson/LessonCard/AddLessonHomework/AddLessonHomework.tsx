@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
+import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 
 interface ModeratorBlockProps {
   apiData: OutputClass;
@@ -28,7 +28,11 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
     });
 
     if (!postModeratorAddHomeworkClassResponse.error) {
-      addHomework({ homeworkText: homeworkText, homeworkID: postModeratorAddHomeworkClassResponse.data.homework_id });
+      addHomework({
+        homeworkText: homeworkText,
+        homeworkID: postModeratorAddHomeworkClassResponse.data.homework_id,
+        isCompleted: false
+      });
     }
   };
 

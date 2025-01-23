@@ -6,13 +6,12 @@ import { SendHomework } from '../modules/SendHomework/SendHomework';
 
 import 'swiper/swiper-bundle.css';
 import styles from './DayHomeworkMobile.module.css';
-import { IHContext } from '@/App/modules/IHContext';
 import { Header } from '@/components/modules/Header/Header';
 import { CarouselWeek } from '@/components/shared/CarouselWeek/CarouselWeek';
 import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
-import { usePostModeratorAddHomeworkDateMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
+import { usePostModeratorAddHomeworkDateMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { Mousewheel } from 'swiper/modules';
@@ -30,7 +29,6 @@ for (let i = 0; i < 60; i++) {
 
 export const DayHomeworkMobile = () => {
   const [postModeratorAddHomeworkDateMutation, { isLoading, isError }] = usePostModeratorAddHomeworkDateMutation();
-  const { addIndependentHomework } = React.useContext(IHContext);
 
   const { values, currentDateIndex } = generateValues();
 
@@ -69,19 +67,13 @@ export const DayHomeworkMobile = () => {
     );
     const isoDate = date.toISOString();
 
-    const postModeratorAddHomeworkDateResponse = await postModeratorAddHomeworkDateMutation({
+    await postModeratorAddHomeworkDateMutation({
       params: {
         subjectId: homeworkId,
         homeworkText: homeworkText,
         dueDate: isoDate
       }
     });
-    if (!postModeratorAddHomeworkDateResponse.error) {
-      addIndependentHomework(
-        { homeworkText: homeworkText, homeworkID: postModeratorAddHomeworkDateResponse.data.homework_id },
-        activeWeekNode
-      );
-    }
   };
 
   const onScrollSubject = () => {
