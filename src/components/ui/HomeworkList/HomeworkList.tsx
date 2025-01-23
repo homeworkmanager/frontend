@@ -1,5 +1,4 @@
 import styles from './HomeworkList.module.css';
-import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface HomeworkListProps {
@@ -12,43 +11,42 @@ interface HomeworkListRowProps {
 
 interface HomeworkListColumnProps {
   children: React.ReactNode;
-  isMobile?: boolean;
 }
 
 export const HomeworkList = ({ children }: HomeworkListProps) => {
   return (
-    <table className={styles['homework-list']}>
+    <ul className={styles['homework-list']}>
       <AnimatePresence>
-        <tbody>{children}</tbody>
+        {children}
       </AnimatePresence>
-    </table>
+    </ul>
   );
 };
 
 HomeworkList.Row = ({ children }: HomeworkListRowProps) => {
   return (
-    <motion.tr
+    <motion.li
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className={styles['homework-row']}
+      className={styles['row']}
     >
       {children}
-    </motion.tr>
+    </motion.li>
   );
 };
 
-HomeworkList.Column = ({ children, isMobile }: HomeworkListColumnProps) => {
+HomeworkList.Column = ({ children }: HomeworkListColumnProps) => {
   return (
-    <motion.td
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className={clsx(isMobile && styles['mobile'])}
+      className={styles['homework-column']}
     >
       {children}
-    </motion.td>
+    </motion.div>
   );
 };

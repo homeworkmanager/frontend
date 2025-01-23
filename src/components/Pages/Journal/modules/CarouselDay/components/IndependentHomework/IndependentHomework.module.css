@@ -11,6 +11,23 @@
   margin-top: 16px;
 }
 
+.number {
+  white-space: pre;
+}
+
+.text {
+  width: 90%;
+}
+
+.number-complete {
+  color: gray;
+}
+
+.complete {
+  text-decoration: line-through;
+  color: gray;
+}
+
 .icon {
   margin-left: 8px;
   width: 24px;

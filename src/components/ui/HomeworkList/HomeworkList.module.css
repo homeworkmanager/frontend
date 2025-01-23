@@ -1,19 +1,18 @@
 .homework-list {
   width: 100%;
   color: var(--text-invert-color);
-
-  @media (min-width: 1050px) {
-    width: fit-content;
-  }
 }
 
-.homework-row {
-  vertical-align: middle;
+.row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 15px;
+  margin-bottom: 6px;
 }
 
-.mobile {
-  @media (max-width: 1050px) {
-    width: 0;
-  }
+.homework-column {
+  width: fit-content;
+  display: flex;
 }

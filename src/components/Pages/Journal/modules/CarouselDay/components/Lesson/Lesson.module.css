@@ -88,6 +88,17 @@
   display: flex;
 }
 
+.homework {
+  width: 75%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.complete {
+  text-decoration: line-through;
+}
+
 .lect {
   background-color: var(--lect-background-color);
 }

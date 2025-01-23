@@ -41,14 +41,17 @@
   text-transform: uppercase;
 }
 
-.homework-list {
-  width: fit-content;
+.number {
+  white-space: pre;
 }
 
-.homework-list-item {
-  vertical-align: middle;
-  font-size: 15px;
-  color: var(--text-invert-color);
+.number-complete {
+  color: gray;
+}
+
+.complete {
+  text-decoration: line-through;
+  color: gray;
 }
 
 .icon {

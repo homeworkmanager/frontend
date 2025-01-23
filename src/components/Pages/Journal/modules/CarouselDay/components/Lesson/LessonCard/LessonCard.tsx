@@ -20,6 +20,7 @@ import {
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
+import { Checkbox } from '@/components/ui/Checkbox';
 
 interface LessonInfoProps {
   apiData: OutputClass;
@@ -76,7 +77,7 @@ export const LessonCard = ({
 
   const changeLessonHomeworkStatus = async (homework: RestructHomeworkElement) => {
     const response = await postHomeworkStatusMutation({
-      params: { homeworkID: homework.homeworkID, status: homework.isCompleted }
+      params: { homeworkID: homework.homeworkID, status: !homework.isCompleted }
     });
 
     if (!response.error) {
@@ -116,16 +117,15 @@ export const LessonCard = ({
           <HomeworkList>
             {homeworks.map((homework, index) => (
               <HomeworkList.Row key={homework.homeworkID}>
-                <HomeworkList.Column isMobile={true}>
-                  <Typhography tag="p" variant="thirdy" children={`${index + 1}. `} />
-                </HomeworkList.Column>
                 <HomeworkList.Column>
-                  <Typhography tag="p" variant="thirdy" children={homework.homeworkText} />
+                  <Typhography tag="p" variant="thirdy" className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])} children={`${index + 1}. `} />
+                  <Typhography tag="p" variant="thirdy" className={clsx(styles['text'], homework.isCompleted && styles['complete'])} children={homework.homeworkText} />
                 </HomeworkList.Column>
                 {userRole > ModeratorRole && (
                   <>
-                    {homeworkId === -1 || homeworkId === homework.homeworkID ? (
-                      <HomeworkList.Column isMobile={true}>
+                    <HomeworkList.Column>
+                      <Checkbox checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />
+                      {(homeworkId === -1 || homeworkId === homework.homeworkID) ? (
                         <Button
                           variant="slide"
                           onClick={() => addHomeworkId(homework.homeworkID)}
@@ -135,11 +135,7 @@ export const LessonCard = ({
                             />
                           }
                         />
-                      </HomeworkList.Column>
-                    ) : (
-                      <HomeworkList.Column children={''} />
-                    )}
-                    <HomeworkList.Column isMobile={true}>
+                      ) : (<div style={{ width: '24px', height: '24px' }} />)}
                       <Button
                         variant="slide"
                         onClick={() => deleteLessonHomework(homework)}
@@ -167,6 +163,6 @@ export const LessonCard = ({
         </article>
         {userRole > ModeratorRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
       </section>
-    </motion.aside>
+    </motion.aside >
   );
 };

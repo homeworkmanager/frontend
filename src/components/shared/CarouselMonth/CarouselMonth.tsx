@@ -35,10 +35,14 @@ export const CarouselMonth = ({
   moderator = false
 }: carouselWeekProps) => {
   const daysByMonth = React.useMemo(() => getDaysForOtherCarousels(values, 35), []);
+
+  // console.log(activeMonthNode);
+
   const [currentSlide, dayIndexInSlide] = React.useMemo(
     () => findDayIndex(values[activeMonthNode], daysByMonth),
     [activeMonthNode, daysByMonth]
   );
+
   const firstMonthsNodes = React.useMemo(() => createfirstMonthsNodes(values), []);
 
   const { menuRef, isOpen, action } = useDropdown();
@@ -72,7 +76,7 @@ export const CarouselMonth = ({
           />
           <div className={styles['dropdown']} ref={menuRef}>
             <Button
-              children={`${monthData[daysByMonth[currentSlide][dayIndexInSlide].month]}`}
+              children={`${monthData[daysByMonth[currentSlide][dayIndexInSlide]?.month]}`}
               className={clsx(styles['dropdown-btn'], isOpen && styles['dropdown-active'])}
               onClick={onDropDownClick}
             />

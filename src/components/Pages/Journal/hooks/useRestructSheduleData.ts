@@ -13,11 +13,6 @@ export const useRestructSheduleData = () => {
         from_time: '02.09.2024',
         days_count: 154
       }
-    },
-    {
-      selectFromResult: (data) => {
-        return data;
-      }
     }
   );
 

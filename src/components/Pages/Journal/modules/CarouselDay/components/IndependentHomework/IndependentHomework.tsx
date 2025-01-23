@@ -16,6 +16,7 @@ import {
 } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
+import { Checkbox } from '@/components/ui/Checkbox';
 
 interface IndependentHomeworkProps {
   Homeworks: RestructHomeworkElement[];
@@ -72,8 +73,9 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
 
   const changeHomeworkStatus = async (homework: RestructHomeworkElement) => {
     const response = await postHomeworkStatusMutation({
-      params: { homeworkID: homework.homeworkID, status: homework.isCompleted }
+      params: { homeworkID: homework.homeworkID, status: !homework.isCompleted }
     });
+
 
     if (!response.error) {
       setIndependentHomeworks((prev) => [
@@ -100,16 +102,15 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
             <HomeworkList>
               {Homeworks.map((homework, index) => (
                 <HomeworkList.Row key={homework.homeworkID}>
-                  <HomeworkList.Column isMobile={true}>
-                    <Typhography tag="p" variant="thirdy" children={`${index + 1}. `} />
-                  </HomeworkList.Column>
                   <HomeworkList.Column>
-                    <Typhography tag="p" variant="thirdy" children={homework.homeworkText} />
+                    <Typhography tag="p" variant="thirdy" className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])} children={`${index + 1}. `} />
+                    <Typhography tag="p" variant="thirdy" className={clsx(styles['text'], homework.isCompleted && styles['complete'])} children={homework.homeworkText} />
                   </HomeworkList.Column>
-                  {userRole >= ModeratorRole && (
+                  {userRole > ModeratorRole && (
                     <>
-                      {homeworkId === -1 || homeworkId === homework.homeworkID ? (
-                        <HomeworkList.Column isMobile={true}>
+                      <HomeworkList.Column>
+                        <Checkbox checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
+                        {(homeworkId === -1 || homeworkId === homework.homeworkID) && (
                           <Button
                             variant="slide"
                             onClick={() => addHomeworkId(homework.homeworkID)}
@@ -119,11 +120,7 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                               />
                             }
                           />
-                        </HomeworkList.Column>
-                      ) : (
-                        <HomeworkList.Column children={''} />
-                      )}
-                      <HomeworkList.Column isMobile={true}>
+                        )}
                         <Button
                           variant="slide"
                           onClick={() => removeHomework(homework)}

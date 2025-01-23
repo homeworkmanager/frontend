@@ -100,6 +100,7 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
     updateHeight();
   };
 
+
   return (
     <React.Fragment>
       <section className={styles.container} onClick={showDetails}>
@@ -116,8 +117,7 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
               <li key={homework.homeworkID} className={styles['task']}>
                 <div className={styles['task-text']}>
                   <p>{`${index + 1}. `}</p>
-                  <p>{homework.homeworkText}</p>
-                  <p>{` (${homework.isCompleted ? 'Выполнено' : 'Не выполнено'})`}</p>
+                  <p className={clsx(styles['homework'], homework.isCompleted && styles['complete'])}>{homework.homeworkText}</p>
                 </div>
               </li>
             ))}
