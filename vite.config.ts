@@ -4,15 +4,15 @@ import { defineConfig } from 'vite';
 import { ManifestOptions, VitePWA } from 'vite-plugin-pwa';
 
 const manifest: Partial<ManifestOptions> | false = {
-  name: 'HomeworkManager',
-  short_name: 'HM',
-  theme_color: '#17171C',
-  background_color: '#17171C',
+  name: 'UniHelper',
+  short_name: 'UniHelper',
+  background_color: '#17171c',
+  theme_color: '#17171c',
   icons: [
     {
       purpose: 'maskable',
-      sizes: '512x512',
-      src: 'icon512_maskable.png',
+      sizes: '192x192',
+      src: 'icon192_maskable.png',
       type: 'image/png'
     },
     {
@@ -41,13 +41,32 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        globDirectory: 'dist'
+        mode: 'development',
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,webmanifest}'],
+        navigateFallback: '/index.html',
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.(?:gstatic|googleapis)\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts',
+              expiration: { maxEntries: 10 }
+            }
+          },
+          {
+            urlPattern: /\.(?:html|js|css|json)$/,
+            handler: 'NetworkFirst', // Для документов сначала сеть
+            options: {
+              cacheName: 'core-assets',
+              networkTimeoutSeconds: 3 // Если нет сети → кэш
+            }
+          }
+        ]
       },
-      manifest: manifest,
       devOptions: {
         enabled: true
-      }
+      },
+      manifest: manifest
     })
   ],
   server: {

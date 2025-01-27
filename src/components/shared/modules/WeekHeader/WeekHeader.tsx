@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { calculateWeek } from '../../../../utils/helpers/calculateWeek';
 import { monthData } from '../../../Pages/Journal/constants';
-import { calculateWeek } from '../../../Pages/Journal/helpers/calculateWeek';
 
 import { Typhography } from '@/components/ui/Typhography';
 

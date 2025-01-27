@@ -1,12 +1,14 @@
 import { postAdminAddGroup, PostAdminAddGroupConfig } from '@/utils/api/requests/admin/addGroup';
 import { patchAdminRefreshAllData, PatchAdminRefreshAllDataConfig } from '@/utils/api/requests/admin/refreshAllData';
+import { patchAdminRole, PatchAdminRoleConfig } from '@/utils/api/requests/admin/role/id';
 import { PatchAdminUpdateClasses, patchAdminUpdateClasses } from '@/utils/api/requests/admin/updateClasses';
+import { getAdminUsers, getAdminUsersConfig } from '@/utils/api/requests/admin/users';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const adminApi = createApi({
   reducerPath: 'adminApi',
   baseQuery: fetchBaseQuery(),
-  tagTypes: ['PostAdminAddGroup', 'PatchAdminRefreshAllData', 'PatchAdminUpdateClasses'],
+  tagTypes: ['PostAdminAddGroup', 'PatchAdminRefreshAllData', 'PatchAdminUpdateClasses', 'GetAdminUsers'],
   endpoints: (builder) => ({
     postAdminAddGroup: builder.mutation({
       queryFn: ({ params, config }: PostAdminAddGroupConfig) => postAdminAddGroup({ params, config }),
@@ -19,9 +21,22 @@ export const adminApi = createApi({
     patchAdminUpdateClasses: builder.mutation<AdminUpdateClassesResponse, PatchAdminUpdateClasses>({
       queryFn: (requestConfig?: PatchAdminUpdateClasses) => patchAdminUpdateClasses(requestConfig),
       invalidatesTags: ['PatchAdminUpdateClasses']
+    }),
+    getAdminUsers: builder.query<AdminUsersResponse, getAdminUsersConfig>({
+      queryFn: (requestConfig?: getAdminUsersConfig) => getAdminUsers(requestConfig),
+      providesTags: ['GetAdminUsers']
+    }),
+    patchAdminRole: builder.mutation<AdminRoleResponse, PatchAdminRoleConfig>({
+      queryFn: ({ params, config }: PatchAdminRoleConfig) => patchAdminRole({ params, config }),
+      invalidatesTags: ['GetAdminUsers']
     })
   })
 });
 
-export const { usePostAdminAddGroupMutation, usePatchAdminRefreshAllDataMutation, usePatchAdminUpdateClassesMutation } =
-  adminApi;
+export const {
+  usePostAdminAddGroupMutation,
+  usePatchAdminRefreshAllDataMutation,
+  usePatchAdminUpdateClassesMutation,
+  useGetAdminUsersQuery,
+  usePatchAdminRoleMutation
+} = adminApi;

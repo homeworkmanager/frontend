@@ -1,0 +1,27 @@
+.schedule {
+  @media screen and (min-width: 1050px) {
+    margin: 0 auto;
+  }
+}
+
+.title {
+  color: var(--text-invert-color);
+  margin-bottom: 2rem;
+}
+
+.schedule-item {
+  margin-top: 30px;
+}
+
+.modal-admin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 16px;
+  background-color: var(--component-background-color);
+  border-radius: 12px;
+}

@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/Checkbox';
 import { HomeworkList } from '@/components/ui/HomeworkList/HomeworkList';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
+import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
 import {
@@ -24,8 +25,8 @@ interface IndependentHomeworkProps {
 }
 
 export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHomeworkProps) => {
-  const [deleteModeratorHomeworkMutation] = useDeleteModeratorHomeworkMutation();
-  const [postHomeworkStatusMutation] = usePostHomeworkStatusMutation();
+  const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
+  const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
 
   const [independentHomeworks, setIndependentHomeworks] = React.useState<RestructHomeworkElement[]>(() => [
     ...Homeworks
@@ -118,7 +119,11 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                   {userRole > ModeratorRole && (
                     <>
                       <HomeworkList.Column>
-                        <Checkbox checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
+                        {postHomeworkStatusState.isLoading ? (
+                          <Loader spinnerSize={24} className={styles['loader']} />
+                        ) : (
+                          <Checkbox checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
+                        )}
                         {(homeworkId === -1 || homeworkId === homework.homeworkID) && (
                           <Button
                             variant="slide"
@@ -133,7 +138,13 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                         <Button
                           variant="slide"
                           onClick={() => removeHomework(homework)}
-                          children={<DeleteLogo className={styles['delete-icon']} />}
+                          children={
+                            deleteHomeworkState.isLoading && homeworkId === homework.homeworkID ? (
+                              <Loader spinnerSize={28} className={styles['loader']} />
+                            ) : (
+                              <DeleteLogo className={styles['delete-icon']} />
+                            )
+                          }
                         />
                       </HomeworkList.Column>
                     </>

@@ -28,6 +28,10 @@
   color: gray;
 }
 
+.loader {
+  margin: auto 10px;
+}
+
 .icon {
   margin-left: 6px;
   width: 24px;

@@ -12,6 +12,7 @@ import { HomeworkList } from '@/components/ui/HomeworkList/HomeworkList';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Slide } from '@/components/ui/Icons/Slide';
+import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
 import {
@@ -21,7 +22,6 @@ import {
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import { Loader } from '@/components/ui/Loader';
 
 interface LessonInfoProps {
   apiData: OutputClass;
@@ -50,8 +50,8 @@ export const LessonCard = ({
 
   const description = RestructDescription(apiData.class.description);
 
-  const [deleteModeratorHomeworkMutation] = useDeleteModeratorHomeworkMutation();
-  const [postHomeworkStatusMutation, { isLoading: isStatusLoading }] = usePostHomeworkStatusMutation();
+  const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
+  const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
 
   const [homeworkId, setHomeworkId] = React.useState(-1);
 
@@ -135,7 +135,14 @@ export const LessonCard = ({
                 {userRole > ModeratorRole && (
                   <>
                     <HomeworkList.Column>
-                      {isStatusLoading ? <Loader className={styles['icon']} /> : <Checkbox checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />}
+                      {postHomeworkStatusState.isLoading ? (
+                        <Loader spinnerSize={24} className={styles['loader']} />
+                      ) : (
+                        <Checkbox
+                          checked={homework.isCompleted}
+                          onChange={() => changeLessonHomeworkStatus(homework)}
+                        />
+                      )}
                       {homeworkId === -1 || homeworkId === homework.homeworkID ? (
                         <Button
                           variant="slide"
@@ -152,7 +159,13 @@ export const LessonCard = ({
                       <Button
                         variant="slide"
                         onClick={() => deleteLessonHomework(homework)}
-                        children={<DeleteLogo className={styles['delete-icon']} />}
+                        children={
+                          deleteHomeworkState.isLoading ? (
+                            <Loader spinnerSize={28} className={styles['loader']} />
+                          ) : (
+                            <DeleteLogo className={styles['delete-icon']} />
+                          )
+                        }
                       />
                     </HomeworkList.Column>
                   </>

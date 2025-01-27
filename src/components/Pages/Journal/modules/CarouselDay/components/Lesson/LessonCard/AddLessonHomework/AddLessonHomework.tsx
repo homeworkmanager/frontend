@@ -13,7 +13,8 @@ interface ModeratorBlockProps {
 }
 
 export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps) => {
-  const [postModeratorAddHomeworkClassMutation, { isLoading, isError }] = usePostModeratorAddHomeworkClassMutation();
+  const [postModeratorAddHomeworkClassMutation, postAddHomeworkStatusState] =
+    usePostModeratorAddHomeworkClassMutation();
   const [homeworkText, setHomeworkText] = React.useState('');
 
   const sendLessonHomework = async () => {
@@ -44,10 +45,14 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         variant="homework"
         name={`${apiData.class.startTime}`}
       />
-      <Button variant="accept" disabled={isLoading || !homeworkText} onClick={sendLessonHomework}>
-        {isLoading ? <Loader /> : 'Добавить'}
+      <Button
+        variant="accept"
+        disabled={postAddHomeworkStatusState.isLoading || !homeworkText}
+        onClick={sendLessonHomework}
+      >
+        {postAddHomeworkStatusState.isLoading ? <Loader /> : 'Добавить'}
       </Button>
-      {isError && (
+      {postAddHomeworkStatusState.isError && (
         <Typhography tag="p" variant="thirdy" className={styles['error']}>
           Ошибка
         </Typhography>

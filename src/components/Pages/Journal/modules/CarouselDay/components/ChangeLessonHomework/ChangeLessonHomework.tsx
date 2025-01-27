@@ -15,7 +15,7 @@ interface ChangeLessonHomeworkProps {
 }
 
 export const ChangeLessonHomework = ({ changeHomework, HomeworkId, removeHomeworkId }: ChangeLessonHomeworkProps) => {
-  const [patchModeratorHomeworkMutation, { isLoading, isError }] = usePatchModeratorHomeworkMutation();
+  const [patchModeratorHomeworkMutation, patchHomeworkState] = usePatchModeratorHomeworkMutation();
   const [homeworkText, setHomeworkText] = React.useState('');
   const changeLessonHomework = async () => {
     const response = await patchModeratorHomeworkMutation({
@@ -48,10 +48,14 @@ export const ChangeLessonHomework = ({ changeHomework, HomeworkId, removeHomewor
             variant="homework"
             name={`${6}`}
           />
-          <Button variant="accept" disabled={isLoading || !homeworkText} onClick={changeLessonHomework}>
-            {isLoading ? <Loader /> : 'Изменить'}
+          <Button
+            variant="accept"
+            disabled={patchHomeworkState.isLoading || !homeworkText}
+            onClick={changeLessonHomework}
+          >
+            {patchHomeworkState.isLoading ? <Loader /> : 'Изменить'}
           </Button>
-          {isError && (
+          {patchHomeworkState.isError && (
             <Typhography tag="p" variant="thirdy" className={styles['error']}>
               Ошибка
             </Typhography>
