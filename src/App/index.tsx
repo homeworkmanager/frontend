@@ -24,7 +24,7 @@ function App() {
       const { data } = await getUserData();
       dispatch(
         logIn({
-          role: 3, //data.role
+          role: data.role,
           name: data.name,
           surname: data.surname,
           email: data.email,

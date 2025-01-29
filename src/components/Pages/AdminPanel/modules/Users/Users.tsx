@@ -5,8 +5,9 @@ import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
 import { AdminRole, BaseRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { useDropdown } from '@/utils/hooks/useDropdown';
-import { useGetAdminUsersQuery } from '@/utils/redux/apiSlices/adminApiSlice/adminApi';
+import { useGetAdminUsersQuery, usePatchAdminRoleMutation } from '@/utils/redux/apiSlices/adminApiSlice/adminApi';
 import clsx from 'clsx';
+import { Button } from '@/components/ui/Button';
 
 const roles = [
   {
@@ -26,8 +27,11 @@ const roles = [
 export const Users = () => {
   const getAdminUserResponse = useGetAdminUsersQuery(undefined);
 
-  const allUsers = getAdminUserResponse?.data;
+  const [patchAdminRole] = usePatchAdminRoleMutation();
 
+  const allUsers = getAdminUserResponse?.data || [];
+
+  const [initialUsers, setInitialUsers] = React.useState<UserOrigin[]>(allUsers);
   const [users, setUsers] = React.useState<UserOrigin[]>([]);
   const [inputValue, setInputValue] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState<UserOrigin>();
@@ -37,20 +41,13 @@ export const Users = () => {
   const pushUserFIO = (e: React.ChangeEvent<HTMLInputElement>) => {
     const userInput = e.target.value;
     setInputValue(userInput);
-    const filtered = userInput
-      ? getAdminUserResponse.data?.filter((item) =>
-          `${item.surname} ${item.name}`.toLowerCase().slice(0, userInput.length).includes(userInput.toLowerCase())
-        )
-      : allUsers;
+    const filtered = initialUsers.filter((item) =>
+      `${item.surname} ${item.name}`.toLowerCase().slice(0, userInput.length).includes(userInput.toLowerCase())
+    );
 
-    setUsers(filtered ?? []);
-    console.log(filtered);
+    setUsers(filtered);
 
-    if (filtered?.length !== 1) {
-      return;
-    }
-
-    if (filtered?.length > 0 && userInput === `${filtered[0].surname} ${filtered[0]?.name}`) {
+    if (filtered.length === 1 && userInput === `${filtered[0].surname} ${filtered[0].name}`) {
       setCurrentUser(filtered[0]);
       return;
     }
@@ -65,11 +62,35 @@ export const Users = () => {
     usersList.action.close();
   };
 
+  const toggleUserRoles = () => {
+    userRoles.action.toggle();
+  }
+
+  const onRoleClick = async (role: number) => {
+    console.log(role);
+    const response = await patchAdminRole({
+      params: {
+        user_id: currentUser?.user_id || 0,
+        role: role
+      }
+    })
+
+    if (!response.error) {
+      setInitialUsers((prev) => prev.map((user) => {
+        if (user.user_id === currentUser?.user_id)
+          return { ...user, role };
+        return user;
+      }));
+      setCurrentUser((prev) => ({ ...prev, role: role } as UserOrigin));
+    };
+  };
+
   React.useEffect(() => {
-    if (allUsers) {
+    if (allUsers.length > 0 && !inputValue) {
       setUsers(allUsers);
+      setInitialUsers(allUsers);
     }
-  }, [allUsers]);
+  }, [allUsers, inputValue]);
 
   return (
     <div>
@@ -97,20 +118,20 @@ export const Users = () => {
       </div>
       {currentUser && (
         <div className={styles['role']} ref={userRoles.menuRef}>
-          <header className={styles['role-header']}>
-            <Typhography tag="h4" variant="thirdy" children="Роль пользователя:" />
-            <p className={clsx(styles['role-name'], styles['active'])}>{roles[currentUser.role - 1].name}</p>
-          </header>
-          <ul className={styles['role-content']}>
-            {roles.map((item) => (
-              <p
-                key={item.role}
-                className={clsx(styles['role-name'], item.role === currentUser.role && styles['active'])}
-              >
-                {item.name}
-              </p>
-            ))}
-          </ul>
+          <Button type="button" variant="accept" onClick={toggleUserRoles} children="Выбрать роль" />
+          {userRoles.isOpen && (
+            <ul className={styles['role-content']} >
+              {roles.map((item) => (
+                <p
+                  key={item.role}
+                  className={clsx(styles['role-name'], item.role === currentUser.role && styles['active'])}
+                  onClick={() => onRoleClick(item.role)}
+                >
+                  {item.name}
+                </p>
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </div>

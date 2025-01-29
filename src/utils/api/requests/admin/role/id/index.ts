@@ -8,4 +8,4 @@ type PatchAdminRoleParams = {
 export type PatchAdminRoleConfig = AxiosRequestConfig<PatchAdminRoleParams>;
 
 export const patchAdminRole = async ({ params, config }: PatchAdminRoleConfig) =>
-  api.patch<AdminRoleResponse>(`/admin/role${params.user_id}`, { role: params.user_id }, config);
+  api.patch<AdminRoleResponse>(`/admin/role/${params.user_id}`, { role: params.role }, config);

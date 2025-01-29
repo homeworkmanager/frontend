@@ -53,22 +53,22 @@ export const useAuth = () => {
   const currentState =
     stage === 'register'
       ? {
-          isLoading: isRegisterLoading,
-          isError: isRegisterError,
-          isSuccess: isRegisterSuccess
-        }
+        isLoading: isRegisterLoading,
+        isError: isRegisterError,
+        isSuccess: isRegisterSuccess
+      }
       : {
-          isLoading: isAuthLoading,
-          isError: isAuthError,
-          isSuccess: isAuthSuccess
-        };
+        isLoading: isAuthLoading,
+        isError: isAuthError,
+        isSuccess: isAuthSuccess
+      };
 
   const getUserAfterAuth = async () => {
     try {
       const { data } = await getUserData();
       dispatch(
         logIn({
-          role: 3, //data.role
+          role: data.role,
           name: data.name,
           surname: data.surname,
           email: data.email,

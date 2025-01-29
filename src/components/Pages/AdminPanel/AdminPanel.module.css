@@ -7,7 +7,7 @@
 .content {
   display: grid;
   row-gap: 2rem;
-  padding-bottom: 2rem;
+  padding-bottom: 1.5rem;
 
   @media (min-width: 1050px) {
     grid-template-columns: 1fr 1fr;
