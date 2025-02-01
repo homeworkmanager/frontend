@@ -1,16 +1,17 @@
 import React from 'react';
 
-import { findIndexByDate } from '../../../../utils/helpers/findIndexByDate';
 import { today } from '../constants';
 
+import { scheduleBeginDate, startDate } from '@/utils/constants/time';
 import { createDate } from '@/utils/helpers/createDate';
+import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import { useGetAllScheduleQuery } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 
 export const useRestructSheduleData = () => {
   const getSchedule = useGetAllScheduleQuery({
     params: {
-      from_time: '02.09.2024',
-      days_count: 154
+      from_time: scheduleBeginDate.date,
+      days_count: scheduleBeginDate.days
     }
   });
 
@@ -26,10 +27,10 @@ export const useRestructSheduleData = () => {
   const values = React.useMemo(
     () =>
       createDate({
-        currentYear: 2024,
-        currentMonthIndex: 9,
-        currentDayIndex: 2,
-        daysCount: 154,
+        currentYear: startDate.year,
+        currentMonthIndex: startDate.month,
+        currentDayIndex: startDate.day,
+        daysCount: scheduleBeginDate.days,
         AllLessons: scheduleLessons
       }),
     [data]

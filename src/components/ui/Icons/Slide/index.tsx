@@ -1,4 +1,4 @@
-export const Slide = () => (
+export const Slide = ({ ...props }: React.ComponentProps<'svg'>) => (
   <svg
     version="1.0"
     xmlns="http://www.w3.org/2000/svg"
@@ -6,6 +6,7 @@ export const Slide = () => (
     height="20px"
     viewBox="0 0 900 900"
     preserveAspectRatio="xMidYMid meet"
+    {...props}
   >
     <g transform="translate(0, 900) scale(0.1, -0.1)" fill="#ffffff" stroke="none">
       <path

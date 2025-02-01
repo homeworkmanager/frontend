@@ -32,6 +32,8 @@ type DaysIndexes =
   | 30
   | 31;
 
+type StartDateType = { year: number; month: MonthsIndexes; day: DaysIndexes };
+
 type Month =
   | 'Январь'
   | 'Февраль'

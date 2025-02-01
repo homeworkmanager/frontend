@@ -1,4 +1,4 @@
-export const DeleteLogo = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
+export const DeleteLogo = ({ ...props }: React.ComponentProps<'svg'>) => {
   return (
     <svg
       stroke="currentColor"

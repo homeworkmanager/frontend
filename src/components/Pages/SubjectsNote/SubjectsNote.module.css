@@ -1,0 +1,16 @@
+.container {
+  width: 100%;
+  margin: 0 auto;
+  max-width: var(--max-width-desktop);
+}
+
+.content {
+  @media (max-width: 1050px) {
+    padding: 0 1rem 1rem;
+  }
+}
+
+.subject {
+  max-width: 400px;
+  margin-bottom: 1rem;
+}

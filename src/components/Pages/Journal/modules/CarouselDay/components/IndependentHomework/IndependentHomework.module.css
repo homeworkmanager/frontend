@@ -16,7 +16,8 @@
 }
 
 .text {
-  width: 90%;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 .number-complete {

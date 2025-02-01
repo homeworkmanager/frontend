@@ -1,13 +1,13 @@
 import React from 'react';
 
+import { LessonCarousel } from '../../../shared/LessonCarousel/LessonCarousel';
 import { generateValues } from '../helpers/generateValues';
-import { LessonCarousel } from '../modules/LessonCarousel/LessonCarousel';
 import { SendHomework } from '../modules/SendHomework/SendHomework';
 
 import 'swiper/swiper-bundle.css';
 import styles from './DayHomeworkMobile.module.css';
-import { Header } from '@/components/modules/Header/Header';
 import { CarouselWeek } from '@/components/shared/CarouselWeek/CarouselWeek';
+import { Header } from '@/components/shared/Header/Header';
 import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';

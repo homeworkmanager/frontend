@@ -4,8 +4,8 @@ import { useRestructSheduleData } from '../hooks/useRestructSheduleData';
 import { CarouselDay } from '../modules/CarouselDay/CarouselDay';
 
 import styles from './JournalDesktop.module.css';
-import { Header } from '@/components/modules/Header/Header';
 import { CarouselMonth } from '@/components/shared/CarouselMonth/CarouselMonth';
+import { Header } from '@/components/shared/Header/Header';
 import { Loader } from '@/components/ui/Loader';
 import { SwiperRef } from 'swiper/react';
 

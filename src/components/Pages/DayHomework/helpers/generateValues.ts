@@ -1,3 +1,4 @@
+import { scheduleBeginDate, startDate } from '@/utils/constants/time';
 import { createDate } from '@/utils/helpers/createDate';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 
@@ -5,10 +6,10 @@ const today = new Date();
 
 export const generateValues = () => {
   const values = createDate({
-    currentYear: 2024,
-    currentMonthIndex: 9,
-    currentDayIndex: 2,
-    daysCount: 154
+    currentYear: startDate.year,
+    currentMonthIndex: startDate.month,
+    currentDayIndex: startDate.day,
+    daysCount: scheduleBeginDate.days
   });
 
   const currentDateIndex = findIndexByDate(values, {

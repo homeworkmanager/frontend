@@ -53,15 +53,15 @@ export const useAuth = () => {
   const currentState =
     stage === 'register'
       ? {
-        isLoading: isRegisterLoading,
-        isError: isRegisterError,
-        isSuccess: isRegisterSuccess
-      }
+          isLoading: isRegisterLoading,
+          isError: isRegisterError,
+          isSuccess: isRegisterSuccess
+        }
       : {
-        isLoading: isAuthLoading,
-        isError: isAuthError,
-        isSuccess: isAuthSuccess
-      };
+          isLoading: isAuthLoading,
+          isError: isAuthError,
+          isSuccess: isAuthSuccess
+        };
 
   const getUserAfterAuth = async () => {
     try {

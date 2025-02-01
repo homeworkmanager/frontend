@@ -116,14 +116,14 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                       children={homework.homeworkText}
                     />
                   </HomeworkList.Column>
-                  {userRole > ModeratorRole && (
-                    <>
-                      <HomeworkList.Column>
-                        {postHomeworkStatusState.isLoading ? (
-                          <Loader spinnerSize={24} className={styles['loader']} />
-                        ) : (
-                          <Checkbox checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
-                        )}
+                  <HomeworkList.Column>
+                    {postHomeworkStatusState.isLoading ? (
+                      <Loader spinnerSize={24} className={styles['loader']} />
+                    ) : (
+                      <Checkbox checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
+                    )}
+                    {userRole >= ModeratorRole && (
+                      <>
                         {(homeworkId === -1 || homeworkId === homework.homeworkID) && (
                           <Button
                             variant="slide"
@@ -146,9 +146,9 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                             )
                           }
                         />
-                      </HomeworkList.Column>
-                    </>
-                  )}
+                      </>
+                    )}
+                  </HomeworkList.Column>
                 </HomeworkList.Row>
               ))}
             </HomeworkList>

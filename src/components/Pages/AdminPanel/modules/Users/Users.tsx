@@ -1,13 +1,13 @@
 import React from 'react';
 
 import styles from './Users.module.css';
+import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
 import { AdminRole, BaseRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { useDropdown } from '@/utils/hooks/useDropdown';
 import { useGetAdminUsersQuery, usePatchAdminRoleMutation } from '@/utils/redux/apiSlices/adminApiSlice/adminApi';
 import clsx from 'clsx';
-import { Button } from '@/components/ui/Button';
 
 const roles = [
   {
@@ -29,7 +29,7 @@ export const Users = () => {
 
   const [patchAdminRole] = usePatchAdminRoleMutation();
 
-  const allUsers = getAdminUserResponse?.data || [];
+  const allUsers = React.useMemo(() => getAdminUserResponse.data ?? [], [getAdminUserResponse.data]);
 
   const [initialUsers, setInitialUsers] = React.useState<UserOrigin[]>(allUsers);
   const [users, setUsers] = React.useState<UserOrigin[]>([]);
@@ -64,7 +64,7 @@ export const Users = () => {
 
   const toggleUserRoles = () => {
     userRoles.action.toggle();
-  }
+  };
 
   const onRoleClick = async (role: number) => {
     console.log(role);
@@ -73,16 +73,17 @@ export const Users = () => {
         user_id: currentUser?.user_id || 0,
         role: role
       }
-    })
+    });
 
     if (!response.error) {
-      setInitialUsers((prev) => prev.map((user) => {
-        if (user.user_id === currentUser?.user_id)
-          return { ...user, role };
-        return user;
-      }));
-      setCurrentUser((prev) => ({ ...prev, role: role } as UserOrigin));
-    };
+      setInitialUsers((prev) =>
+        prev.map((user) => {
+          if (user.user_id === currentUser?.user_id) return { ...user, role };
+          return user;
+        })
+      );
+      setCurrentUser((prev) => ({ ...prev, role: role }) as UserOrigin);
+    }
   };
 
   React.useEffect(() => {
@@ -120,7 +121,7 @@ export const Users = () => {
         <div className={styles['role']} ref={userRoles.menuRef}>
           <Button type="button" variant="accept" onClick={toggleUserRoles} children="Выбрать роль" />
           {userRoles.isOpen && (
-            <ul className={styles['role-content']} >
+            <ul className={styles['role-content']}>
               {roles.map((item) => (
                 <p
                   key={item.role}

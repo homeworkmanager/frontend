@@ -1,4 +1,4 @@
-import { Header } from '../../modules/Header/Header';
+import { Header } from '../../shared/Header/Header';
 
 import styles from './AdminPanel.module.css';
 import { AddGroupForm } from './modules/AddGroup/AddGroupForm';

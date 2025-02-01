@@ -49,6 +49,11 @@
   color: gray;
 }
 
+.text {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
 .complete {
   text-decoration: line-through;
   color: gray;
