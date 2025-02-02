@@ -6,10 +6,9 @@
 
 .journal-body {
   display: flex;
-  flex-direction: row;
   gap: 0.8rem;
 }
 
 .desktop {
-  width: 45%;
+  max-width: 45%;
 }

@@ -1,5 +1,3 @@
-import { Header } from '../../shared/Header/Header';
-
 import styles from './AdminPanel.module.css';
 import { AddGroupForm } from './modules/AddGroup/AddGroupForm';
 import { ScheduleAction } from './modules/ScheduleAction/ScheduleAction';
@@ -10,7 +8,6 @@ import clsx from 'clsx';
 export const AdminPanel = () => {
   return (
     <article className={styles.container}>
-      <Header />
       <Typhography
         tag="h2"
         variant="header"

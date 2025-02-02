@@ -7,7 +7,6 @@ import { SendHomework } from '../modules/SendHomework/SendHomework';
 import 'swiper/swiper-bundle.css';
 import styles from './DayHomeworkMobile.module.css';
 import { CarouselWeek } from '@/components/shared/CarouselWeek/CarouselWeek';
-import { Header } from '@/components/shared/Header/Header';
 import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
@@ -117,7 +116,7 @@ export const DayHomeworkMobile = () => {
   };
 
   return (
-    <motion.aside
+    <motion.article
       initial={{ x: '100%' }}
       animate={{ x: 0 }}
       exit={{ x: '100%' }}
@@ -127,15 +126,14 @@ export const DayHomeworkMobile = () => {
       }}
       className={styles['layout']}
     >
-      <Header />
-      <article className={styles['container']}>
+      <div className={styles['container']}>
         <Input
           onChange={(e) => setHomeworkText(e.target.value)}
           label="Добавить задание"
           variant="homework"
           name="homeworkText"
         />
-      </article>
+      </div>
 
       <CarouselWeek
         currentDate={currentDate}
@@ -152,7 +150,7 @@ export const DayHomeworkMobile = () => {
         subjectRef={subjectRef}
         homeworkId={homeworkId}
       />
-      <article className={styles['container']}>
+      <div className={styles['container']}>
         <Typhography tag="h3" variant="thirdy" className={styles['section-title']} children={`Дедлайн`} />
         <div className={styles['deadline']}>
           <Swiper
@@ -217,13 +215,13 @@ export const DayHomeworkMobile = () => {
             ))}
           </Swiper>
         </div>
-      </article>
+      </div>
       <SendHomework
         isLoading={postAddHomeworkStatusState.isLoading}
         isError={postAddHomeworkStatusState.isError}
         homeworkText={homeworkText}
         addHomework={sendLessonHomework}
       />
-    </motion.aside>
+    </motion.article>
   );
 };

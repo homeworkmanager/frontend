@@ -7,7 +7,6 @@ import { SendHomework } from '../modules/SendHomework/SendHomework';
 import 'swiper/swiper-bundle.css';
 import styles from './DayHomeworkDesktop.module.css';
 import { CarouselMonth } from '@/components/shared/CarouselMonth/CarouselMonth';
-import { Header } from '@/components/shared/Header/Header';
 import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
@@ -97,8 +96,7 @@ export const DayHomeworkDesktop = () => {
   };
 
   return (
-    <div className={styles['layout']}>
-      <Header />
+    <article className={styles['layout']}>
       <div className={styles['content']}>
         <CarouselMonth
           moderator={true}
@@ -109,14 +107,14 @@ export const DayHomeworkDesktop = () => {
           activeMonthNode={activeMonthNode}
         />
         <div>
-          <article className={styles['container']}>
+          <div className={styles['container']}>
             <Input
               onChange={(e) => setHomeworkText(e.target.value)}
               label="Добавить задание"
               variant="homework"
               name="homeworkText"
             />
-          </article>
+          </div>
 
           <LessonCarousel
             onElemClick={onElemClick}
@@ -124,7 +122,7 @@ export const DayHomeworkDesktop = () => {
             subjectRef={subjectRef}
             homeworkId={homeworkId}
           />
-          <article className={styles['container']}>
+          <div className={styles['container']}>
             <Typhography tag="h3" variant="thirdy" className={styles['section-title']} children={`Дедлайн`} />
             <div className={styles['deadline']}>
               <Swiper
@@ -189,7 +187,7 @@ export const DayHomeworkDesktop = () => {
                 ))}
               </Swiper>
             </div>
-          </article>
+          </div>
           <SendHomework
             isLoading={postAddHomeworkStatusState.isLoading}
             isError={postAddHomeworkStatusState.isError}
@@ -198,6 +196,6 @@ export const DayHomeworkDesktop = () => {
           />
         </div>
       </div>
-    </div>
+    </article>
   );
 };

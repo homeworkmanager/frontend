@@ -3,13 +3,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1rem 0;
-  margin-bottom: 60px;
+  margin: 0 auto 60px;
+  width: 100%;
   max-width: var(--max-width-mobile);
 
   @media (min-width: 1050px) {
     max-width: var(--max-width-desktop);
-    padding-left: 0;
-    padding-right: 0;
+    padding: 1rem 0 0;
     margin-bottom: 40px;
   }
 }

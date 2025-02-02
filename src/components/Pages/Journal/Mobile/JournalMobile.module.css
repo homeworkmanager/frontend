@@ -3,8 +3,3 @@
   margin: 0 auto;
   max-width: var(--max-width-mobile);
 }
-
-.journal-body {
-  display: flex;
-  flex-direction: column;
-}

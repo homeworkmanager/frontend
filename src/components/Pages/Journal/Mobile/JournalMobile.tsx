@@ -5,7 +5,6 @@ import { CarouselDay } from '../modules/CarouselDay/CarouselDay';
 
 import styles from './JournalMobile.module.css';
 import { CarouselWeek } from '@/components/shared/CarouselWeek/CarouselWeek';
-import { Header } from '@/components/shared/Header/Header';
 import { Loader } from '@/components/ui/Loader';
 import { SwiperRef } from 'swiper/react';
 
@@ -69,25 +68,22 @@ export const JournalMobile = () => {
     <article className={styles.container}>
       {getScheduleStatus.loading && <Loader />}
       {getScheduleStatus.success && (
-        <React.Fragment>
-          <Header />
-          <div className={styles['journal-body']}>
-            <CarouselWeek
-              currentDate={currentDate}
-              activeWeekNode={activeWeekNode}
-              values={values}
-              onWeekNodeScroll={onWeekNodeScroll}
-              weekCarouselRef={weekCarouselRef}
-              setClickedDate={onDateNodeClick}
-            />
-            <CarouselDay
-              currentDateIndex={activeWeekNode}
-              apiDates={data}
-              onDayNodeScroll={onDayNodeScroll}
-              dayCarouselRef={dayCarouselRef}
-            />
-          </div>
-        </React.Fragment>
+        <>
+          <CarouselWeek
+            currentDate={currentDate}
+            activeWeekNode={activeWeekNode}
+            values={values}
+            onWeekNodeScroll={onWeekNodeScroll}
+            weekCarouselRef={weekCarouselRef}
+            setClickedDate={onDateNodeClick}
+          />
+          <CarouselDay
+            currentDateIndex={activeWeekNode}
+            apiDates={data}
+            onDayNodeScroll={onDayNodeScroll}
+            dayCarouselRef={dayCarouselRef}
+          />
+        </>
       )}
     </article>
   );
