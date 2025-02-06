@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { LogInSchema, RegisterSchema, RegisterSchemaType } from '../schemas';
 
-import { EntryContext } from '@/App/modules/AuthContext';
+import { EntryContext } from '@/App/context/AuthContext';
 import { getUserData } from '@/utils/api/requests/user/get';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';

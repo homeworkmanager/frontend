@@ -6,10 +6,10 @@ import { ChangeLessonHomework } from '../ChangeLessonHomework/ChangeLessonHomewo
 import styles from './IndependentHomework.module.css';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
-import { HomeworkList } from '@/components/ui/HomeworkList/HomeworkList';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Loader } from '@/components/ui/Loader';
+import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
 import {
@@ -99,10 +99,10 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
         <article className={styles['container']}>
           <Typhography tag="p" variant="primary" children={`Задания на день`} className={styles['title']} />
           <div className={styles['content']}>
-            <HomeworkList>
+            <MultiList>
               {independentHomeworks.map((homework, index) => (
-                <HomeworkList.Row key={homework.homeworkID}>
-                  <HomeworkList.Column>
+                <MultiList.Row key={homework.homeworkID}>
+                  <MultiList.Column icons={userRole >= ModeratorRole ? 3 : 1}>
                     <Typhography
                       tag="p"
                       variant="thirdy"
@@ -115,8 +115,8 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                       className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
                       children={homework.homeworkText}
                     />
-                  </HomeworkList.Column>
-                  <HomeworkList.Column>
+                  </MultiList.Column>
+                  <MultiList.Column>
                     {postHomeworkStatusState.isLoading ? (
                       <Loader spinnerSize={24} className={styles['loader']} />
                     ) : (
@@ -148,10 +148,10 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                         />
                       </>
                     )}
-                  </HomeworkList.Column>
-                </HomeworkList.Row>
+                  </MultiList.Column>
+                </MultiList.Row>
               ))}
-            </HomeworkList>
+            </MultiList>
             <ChangeLessonHomework
               HomeworkId={homeworkId}
               removeHomeworkId={removeHomeworkId}

@@ -1,7 +1,7 @@
 import { Outlet, useMatch } from 'react-router-dom';
 
 import styles from './Layout.module.css';
-import { Header } from '@/components/shared/Header/Header';
+import { Header } from '@/components/modules/Header/Header';
 
 export const Layout = () => {
   const showHeader = !useMatch('/auth');

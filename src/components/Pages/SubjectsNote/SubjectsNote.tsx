@@ -1,32 +1,29 @@
+import { NotesList } from './NoteList/NotesList';
 import styles from './SubjectsNote.module.css';
-import { HomeworkList } from '@/components/ui/HomeworkList/HomeworkList';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { useGetSubjectsQuery } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
+import { useGetNoteQuery } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 
 export const SubjectsNote = () => {
-  const getSubjects = useGetSubjectsQuery(undefined);
+  const getNotes = useGetNoteQuery(undefined);
 
   return (
     <article className={styles.container}>
-      {getSubjects.isLoading && <Loader />}
-      {getSubjects.isSuccess && (
-        <div className={styles['content']}>
-          <HomeworkList>
-            {getSubjects.data.map((subject) => (
-              <HomeworkList.Row key={subject.subject_id}>
-                <HomeworkList.Column>
-                  <Typhography
-                    tag="p"
-                    variant="secondary"
-                    className={styles['subject']}
-                    children={`${subject.subject_id}. ${subject.subject_name}`}
-                  />
-                </HomeworkList.Column>
-              </HomeworkList.Row>
-            ))}
-          </HomeworkList>
-        </div>
+      {getNotes.isLoading && <Loader />}
+      {getNotes.isSuccess && (
+        <ul className={styles['content']}>
+          {getNotes.data.map((note) => (
+            <li key={note.subject.subject_id} className={styles['item']}>
+              <Typhography
+                tag="h3"
+                variant="thirdy"
+                className={styles['subject']}
+                children={`${note.subject.subject_name}`}
+              />
+              <NotesList subjectId={note.subject.subject_id} subjectNotes={note.notes} />
+            </li>
+          ))}
+        </ul>
       )}
     </article>
   );

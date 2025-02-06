@@ -1,5 +1,5 @@
 import styles from './ProfileSettings.module.css';
-import { Header } from '@/components/shared/Header/Header';
+import { Header } from '@/components/modules/Header/Header';
 
 export const ProfileSettings = () => {
   return (

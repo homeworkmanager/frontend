@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { EntryContext } from './modules/AuthContext';
+import { EntryContext } from './context/AuthContext';
 import { Router } from '@/components/modules/Router/Router';
 import { getUserData } from '@/utils/api/requests/user/get';
 import { getUserRefresh } from '@/utils/api/requests/user/refresh';

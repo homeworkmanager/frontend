@@ -1,0 +1,1 @@
+type ModeratorNoteUpdateResponse = BaseResponse;

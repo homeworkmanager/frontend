@@ -4,12 +4,16 @@
 
 .row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   overflow-wrap: break-word;
 }
 
-.homework-column {
+.column {
   display: flex;
-  max-width: calc(100% - 130px);
+  max-width: calc(100% - 16px);
+}
+
+.column:last-child {
+  align-items: center;
 }

@@ -1,0 +1,15 @@
+.section {
+  margin-top: 24px;
+}
+
+.info {
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.error {
+  color: orange;
+  margin-top: 12px;
+}

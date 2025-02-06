@@ -1,4 +1,5 @@
 import styles from './LessonCarousel.module.css';
+import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
 import { useGetSubjectsQuery } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import clsx from 'clsx';
@@ -13,10 +14,11 @@ interface LessonCarouselProps {
 }
 
 export const LessonCarousel = ({ onElemClick, onScrollSubject, subjectRef, homeworkId }: LessonCarouselProps) => {
-  const { data, isSuccess } = useGetSubjectsQuery(undefined);
+  const { data, isLoading, isSuccess } = useGetSubjectsQuery(undefined);
 
   return (
     <>
+      {isLoading && <Loader />}
       {isSuccess && !!data.length && (
         <article className={styles['subjects']}>
           <Typhography tag="h3" variant="thirdy" className={styles['title']} children={`Предмет`} />

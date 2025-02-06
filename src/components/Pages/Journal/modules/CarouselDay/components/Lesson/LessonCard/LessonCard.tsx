@@ -8,11 +8,11 @@ import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
 import styles from './LessonCard.module.css';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
-import { HomeworkList } from '@/components/ui/HomeworkList/HomeworkList';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Slide } from '@/components/ui/Icons/Slide';
 import { Loader } from '@/components/ui/Loader';
+import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
 import {
@@ -34,7 +34,10 @@ interface LessonInfoProps {
 }
 
 const RestructDescription = (description: string) => {
-  return description.split(' ').splice(1).join(' ').split('\n')[0];
+  const stageA = description.split('\n');
+  if (stageA[0].split(' ').length === 1) return stageA.splice(1, stageA.findIndex((el) => el === 'Группы:') - 1);
+
+  return [stageA[0].split(' ').splice(1).join(' ')];
 };
 
 export const LessonCard = ({
@@ -115,15 +118,15 @@ export const LessonCard = ({
         <article className={styles['section']}>
           <Typhography tag="h3" variant="additional" className={styles['info']} children={'Задание'} />
           {homeworks.length === 0 && <Typhography tag="h3" variant="thirdy" children={'Отсутствует'} />}
-          <HomeworkList>
+          <MultiList>
             {homeworks.map((homework, index) => (
-              <HomeworkList.Row key={homework.homeworkID}>
-                <HomeworkList.Column>
+              <MultiList.Row key={homework.homeworkID}>
+                <MultiList.Column icons={userRole >= ModeratorRole ? 3 : 1}>
                   <Typhography
                     tag="p"
                     variant="thirdy"
                     className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
-                    children={`${index + 1}. `}
+                    children={`${index + 1}.`}
                   />
                   <Typhography
                     tag="p"
@@ -131,8 +134,8 @@ export const LessonCard = ({
                     className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
                     children={homework.homeworkText}
                   />
-                </HomeworkList.Column>
-                <HomeworkList.Column>
+                </MultiList.Column>
+                <MultiList.Column>
                   {postHomeworkStatusState.isLoading ? (
                     <Loader spinnerSize={24} className={styles['loader']} />
                   ) : (
@@ -166,10 +169,10 @@ export const LessonCard = ({
                       />
                     </>
                   )}
-                </HomeworkList.Column>
-              </HomeworkList.Row>
+                </MultiList.Column>
+              </MultiList.Row>
             ))}
-          </HomeworkList>
+          </MultiList>
           <ChangeLessonHomework
             HomeworkId={homeworkId}
             removeHomeworkId={removeHomeworkId}
@@ -181,8 +184,16 @@ export const LessonCard = ({
           <Typhography tag="p" variant="thirdy" children={apiData.class.location} />
         </article>
         <article className={styles['section']}>
-          <Typhography tag="h3" variant="additional" className={styles['info']} children={'Преподаватель'} />
-          <Typhography tag="p" variant="thirdy" children={description} />
+          <Typhography
+            tag="h3"
+            variant="additional"
+            className={styles['info']}
+            children={`Преподавател${description.length <= 1 ? 'ь' : 'и'}`}
+          />
+          {description.map((teacher, index) => (
+            <Typhography key={index} tag="p" variant="thirdy" children={teacher} />
+          ))}
+          {description.length === 0 && <Typhography tag="p" variant="thirdy" children={'Не указан'} />}
         </article>
         {userRole > ModeratorRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
       </section>

@@ -2,8 +2,8 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import styles from './Header.module.css';
-import { AddLogo } from '@/components/ui/Icons/Add';
 import { AdminLogo } from '@/components/ui/Icons/Admin';
+import { ModeratorLogo } from '@/components/ui/Icons/Moderator';
 import { NoteLogo } from '@/components/ui/Icons/Note';
 // import { SettingsLogo } from '@/components/ui/Icons/Settings';
 import { Typhography } from '@/components/ui/Typhography';
@@ -28,7 +28,7 @@ export const Header = () => {
         )}
         {role >= ModeratorRole && (
           <Link to={ModeratorChooseMedia}>
-            <AddLogo className={styles['add-icon']} />
+            <ModeratorLogo className={styles['add-icon']} />
           </Link>
         )}
 
