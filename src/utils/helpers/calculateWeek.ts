@@ -1,4 +1,4 @@
-import { semStart } from "../constants/time";
+import { semStart } from '../constants/time';
 
 const startDate = new Date(semStart.year, semStart.month - 1, semStart.day);
 
@@ -12,4 +12,4 @@ export const calculateWeek = (date: { year: number; month: number; day: number }
   const weekNumber = Math.floor(dayDifference / 7) + 1;
 
   return weekNumber;
-}
+};

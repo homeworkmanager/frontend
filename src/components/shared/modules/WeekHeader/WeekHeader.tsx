@@ -19,7 +19,7 @@ export const WeekHeader = ({ currentDate, variant, firstSessionDay }: WeekHeader
   const semStartDate = new Date(semStart.year, semStart.month, semStart.day);
   const weekView =
     new Date(currentDate.year, currentDate.month, currentDate.day) < sessionStartDate &&
-    new Date(currentDate.year, currentDate.month, currentDate.day) > semStartDate;
+    new Date(currentDate.year, currentDate.month, currentDate.day) >= semStartDate;
 
   const weekData = weekView ? `${calculateWeek(currentDate)} неделя` : 'сессия';
 
