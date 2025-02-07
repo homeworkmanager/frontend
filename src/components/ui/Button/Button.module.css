@@ -34,7 +34,7 @@
   text-decoration: underline;
   text-underline-offset: 4px;
   width: fit-content;
-  margin: auto auto 2rem;
+  margin: auto auto;
 }
 
 .menu-item {
