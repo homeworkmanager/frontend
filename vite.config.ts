@@ -55,10 +55,10 @@ export default defineConfig({
           },
           {
             urlPattern: /\.(?:html|js|css|json)$/,
-            handler: 'NetworkFirst', // Для документов сначала сеть
+            handler: 'NetworkFirst',
             options: {
               cacheName: 'core-assets',
-              networkTimeoutSeconds: 3 // Если нет сети → кэш
+              networkTimeoutSeconds: 3
             }
           }
         ]
