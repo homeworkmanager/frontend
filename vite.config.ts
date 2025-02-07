@@ -32,8 +32,7 @@ const manifest: Partial<ManifestOptions> | false = {
 export default defineConfig({
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components')
+      '@': path.resolve(__dirname, './src')
     }
   },
   plugins: [
@@ -77,8 +76,8 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8888',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   }
 });
