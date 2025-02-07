@@ -9,6 +9,7 @@ import { prefix as userPrefix, userReducer } from './storeSlices/userSlice/slice
 import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({
+  devTools: false,
   reducer: {
     [userPrefix]: userReducer,
     [userApi.reducerPath]: userApi.reducer,
