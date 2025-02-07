@@ -23,15 +23,34 @@
   gap: 12%;
 }
 
+.journal {
+  border: 2px solid transparent;
+  padding: 0.125rem 0.5rem;
+  transition: 0.3s ease-in-out;
+}
+
 .icon {
+  box-sizing: content-box;
+  padding: 0.25rem;
   width: 24px;
   height: 24px;
   cursor: pointer;
   color: #fff;
+  border: 2px solid transparent;
+  transition: 0.3s ease-in-out;
 }
 
 .add-icon {
+  padding: 0.25rem;
+  box-sizing: content-box;
+  border: 2px solid transparent;
   margin: 0 auto;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
+  transition: 0.3s ease-in-out;
+}
+
+.current {
+  border: 2px solid var(--border-focus-color);
+  border-radius: 0.5rem;
 }
