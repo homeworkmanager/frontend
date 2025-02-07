@@ -18,11 +18,7 @@ export const useAuth = () => {
   const { isEntry, setIsEntry } = React.useContext(EntryContext);
   const navigate = useNavigate();
 
-  const getAllGroups = useGetAllGroupsQuery(undefined, {
-    selectFromResult: (data) => {
-      return data;
-    }
-  });
+  const getAllGroups = useGetAllGroupsQuery(undefined);
 
   const getAllGroupsResponse = getAllGroups?.data;
 
@@ -53,15 +49,15 @@ export const useAuth = () => {
   const currentState =
     stage === 'register'
       ? {
-          isLoading: isRegisterLoading,
-          isError: isRegisterError,
-          isSuccess: isRegisterSuccess
-        }
+        isLoading: isRegisterLoading,
+        isError: isRegisterError,
+        isSuccess: isRegisterSuccess
+      }
       : {
-          isLoading: isAuthLoading,
-          isError: isAuthError,
-          isSuccess: isAuthSuccess
-        };
+        isLoading: isAuthLoading,
+        isError: isAuthError,
+        isSuccess: isAuthSuccess
+      };
 
   const getUserAfterAuth = async () => {
     try {

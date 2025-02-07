@@ -1,3 +1,3 @@
 export const UniHelperLogo = ({ ...props }: React.ComponentProps<'img'>) => {
-  return <img {...props} width={256} src={'/public/icon_original.png'} alt="UniHelper" />;
+  return <img {...props} loading="lazy" width={256} src={'/icon_original.png'} alt="UniHelper" />;
 };
