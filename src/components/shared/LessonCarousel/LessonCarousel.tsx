@@ -16,6 +16,8 @@ interface LessonCarouselProps {
 export const LessonCarousel = ({ onElemClick, onScrollSubject, subjectRef, homeworkId }: LessonCarouselProps) => {
   const { data, isLoading, isSuccess } = useGetSubjectsQuery(undefined);
 
+  console.log(homeworkId);
+
   return (
     <>
       {isLoading && <Loader />}
@@ -47,7 +49,7 @@ export const LessonCarousel = ({ onElemClick, onScrollSubject, subjectRef, homew
                 className={clsx(
                   styles['swiper-elem'],
                   styles['subjects-padd'],
-                  homeworkId === subject.subject_id && styles['active']
+                  homeworkId === index + 1 && styles['active']
                 )}
                 onClick={() => onElemClick(subjectRef, index)}
               >

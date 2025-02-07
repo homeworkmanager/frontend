@@ -1,10 +1,16 @@
 export const startDate: StartDateType = {
-  year: 2024,
-  month: 9,
-  day: 2
+  year: 2025,
+  month: 2,
+  day: 3
 };
 
 export const scheduleBeginDate = {
-  date: '02.09.2024',
+  date: '03.02.2025',
   days: 161
+};
+
+export const semStart = {
+  year: 2025,
+  month: 2,
+  day: 10
 };
