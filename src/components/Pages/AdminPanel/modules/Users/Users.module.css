@@ -1,0 +1,60 @@
+.title {
+  color: var(--text-invert-color);
+  margin-bottom: 1.5rem;
+}
+
+.users {
+  z-index: 900;
+  position: relative;
+  max-width: 250px;
+}
+
+.users-content {
+  position: absolute;
+  left: 0;
+  top: 30%;
+  transform: translateY(-100%);
+  z-index: 1000;
+  width: fit-content;
+  padding: 0.25rem;
+  margin-top: 0.25rem;
+  color: var(--text-invert-color);
+  background-color: var(--main-background-color);
+  border: 1px solid var(--border-base-color);
+  border-radius: 8px;
+}
+
+.users-item {
+  color: var(--text-invert-color);
+  font-size: 18px;
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.role {
+  margin-top: 6px;
+  width: fit-content;
+}
+
+.role-content {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  margin-top: 8px;
+  gap: 0.5rem;
+  width: fit-content;
+}
+
+.role-name {
+  color: var(--text-invert-color);
+  font-size: 18px;
+  padding: 0.25rem 0.375rem;
+  border: 2px solid var(--border-base-color);
+  border-radius: 16px;
+  width: fit-content;
+}
+
+.active {
+  border-color: var(--time-color);
+}

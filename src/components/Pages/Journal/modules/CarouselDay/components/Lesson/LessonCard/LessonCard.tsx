@@ -1,42 +1,91 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 
+import { ChangeLessonHomework } from '../../ChangeLessonHomework/ChangeLessonHomework';
 import { convertSummary } from '../helpers/convertSummary';
 
 import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
 import styles from './LessonCard.module.css';
 import { Button } from '@/components/ui/Button';
+import { Checkbox } from '@/components/ui/Checkbox';
+import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Slide } from '@/components/ui/Icons/Slide';
+import { Loader } from '@/components/ui/Loader';
+import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { BaseRole } from '@/utils/constants/userRoles';
-import { useDeleteModeratorHomeworkMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
+import { ModeratorRole } from '@/utils/constants/userRoles';
+import {
+  useDeleteModeratorHomeworkMutation,
+  usePostHomeworkStatusMutation
+} from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 
 interface LessonInfoProps {
   apiData: OutputClass;
   homeworks: RestructHomeworkArray;
-  addHomework: (homework: RestructHomeworkElement) => void;
-  deleteHomework: (id: number) => void;
   showDetails: () => void;
+  addHomework: (homework: RestructHomeworkElement) => void;
+  deleteHomework: (homework: RestructHomeworkElement) => void;
+  changeHomework: (homework: RestructHomeworkElement) => void;
+  changeHomeworkStatus: (homework: RestructHomeworkElement) => void;
 }
 
 const RestructDescription = (description: string) => {
-  return description.split(' ').splice(1).join(' ').split('\n')[0];
+  const stageA = description.split('\n');
+  if (stageA[0].split(' ').length === 1) return stageA.splice(1, stageA.findIndex((el) => el === 'Группы:') - 1);
+
+  return [stageA[0].split(' ').splice(1).join(' ')];
 };
 
-export const LessonCard = ({ apiData, homeworks, showDetails, addHomework, deleteHomework }: LessonInfoProps) => {
+export const LessonCard = ({
+  apiData,
+  homeworks,
+  showDetails,
+  addHomework,
+  deleteHomework,
+  changeHomework,
+  changeHomeworkStatus
+}: LessonInfoProps) => {
   const userRole = useSelector(getUserRole);
 
   const description = RestructDescription(apiData.class.description);
 
-  const [deleteModeratorHomeworkMutation] = useDeleteModeratorHomeworkMutation(); //потом попробую изолировать как-то
+  const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
+  const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
 
-  const deleteLessonHomework = async (id: number) => {
-    const response = await deleteModeratorHomeworkMutation({ params: { homeworkID: id } });
+  const [homeworkId, setHomeworkId] = React.useState(-1);
+
+  const removeHomeworkId = () => {
+    setHomeworkId(-1);
+  };
+
+  const addHomeworkId = (id: number) => {
+    if (homeworkId !== -1) {
+      removeHomeworkId();
+      return;
+    }
+    setHomeworkId(id);
+  };
+
+  const deleteLessonHomework = async (homework: RestructHomeworkElement) => {
+    const response = await deleteModeratorHomeworkMutation({ params: { homeworkID: homework.homeworkID } });
 
     if (!response.error) {
-      deleteHomework(id);
+      deleteHomework(homework);
+      if (homeworkId === homework.homeworkID) removeHomeworkId();
+    }
+  };
+
+  const changeLessonHomeworkStatus = async (homework: RestructHomeworkElement) => {
+    const response = await postHomeworkStatusMutation({
+      params: { homeworkID: homework.homeworkID, status: !homework.isCompleted }
+    });
+
+    if (!response.error) {
+      changeHomeworkStatus(homework);
     }
   };
 
@@ -69,46 +118,84 @@ export const LessonCard = ({ apiData, homeworks, showDetails, addHomework, delet
         <article className={styles['section']}>
           <Typhography tag="h3" variant="additional" className={styles['info']} children={'Задание'} />
           {homeworks.length === 0 && <Typhography tag="h3" variant="thirdy" children={'Отсутствует'} />}
-          <table className={styles['homework-list']}>
-            <tbody>
-              {homeworks.map((homework, index) => (
-                <motion.tr
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.35, ease: 'easeInOut' }}
-                  key={homework.homeworkID}
-                  className={styles['homework-list-item']}
-                >
-                  <td>
-                    <p>{`${index + 1}. `}</p>
-                  </td>
-                  <td>
-                    <p>{homework.homeworkText}</p>
-                  </td>
-                  {userRole > BaseRole && (
-                    <td>
+          <MultiList>
+            {homeworks.map((homework, index) => (
+              <MultiList.Row key={homework.homeworkID}>
+                <MultiList.Column icons={userRole >= ModeratorRole ? 3 : 1}>
+                  <Typhography
+                    tag="p"
+                    variant="thirdy"
+                    className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
+                    children={`${index + 1}.`}
+                  />
+                  <Typhography
+                    tag="p"
+                    variant="thirdy"
+                    className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
+                    children={homework.homeworkText}
+                  />
+                </MultiList.Column>
+                <MultiList.Column>
+                  {postHomeworkStatusState.isLoading ? (
+                    <Loader spinnerSize={24} className={styles['loader']} />
+                  ) : (
+                    <Checkbox checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />
+                  )}
+                  {userRole >= ModeratorRole && (
+                    <>
+                      {homeworkId === -1 || homeworkId === homework.homeworkID ? (
+                        <Button
+                          variant="slide"
+                          onClick={() => addHomeworkId(homework.homeworkID)}
+                          children={
+                            <ChangeLogo
+                              className={clsx(styles['icon'], homeworkId === homework.homeworkID && styles['active'])}
+                            />
+                          }
+                        />
+                      ) : (
+                        <div style={{ width: '24px', height: '24px' }} />
+                      )}
                       <Button
                         variant="slide"
-                        onClick={() => deleteLessonHomework(homework.homeworkID)}
-                        children={<DeleteLogo className={styles['delete-icon']} />}
+                        onClick={() => deleteLessonHomework(homework)}
+                        children={
+                          deleteHomeworkState.isLoading ? (
+                            <Loader spinnerSize={28} className={styles['loader']} />
+                          ) : (
+                            <DeleteLogo className={styles['delete-icon']} />
+                          )
+                        }
                       />
-                    </td>
+                    </>
                   )}
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
+                </MultiList.Column>
+              </MultiList.Row>
+            ))}
+          </MultiList>
+          <ChangeLessonHomework
+            HomeworkId={homeworkId}
+            removeHomeworkId={removeHomeworkId}
+            changeHomework={changeHomework}
+          />
         </article>
         <article className={styles['section']}>
           <Typhography tag="h3" variant="additional" className={styles['info']} children={'Место'} />
           <Typhography tag="p" variant="thirdy" children={apiData.class.location} />
         </article>
         <article className={styles['section']}>
-          <Typhography tag="h3" variant="additional" className={styles['info']} children={'Преподаватель'} />
-          <Typhography tag="p" variant="thirdy" children={description} />
+          <Typhography
+            tag="h3"
+            variant="additional"
+            className={styles['info']}
+            children={`Преподавател${description.length <= 1 ? 'ь' : 'и'}`}
+          />
+          {description.map((teacher, index) => (
+            <Typhography key={index} tag="p" variant="thirdy" children={teacher} />
+          ))}
+          {description.length === 0 && <Typhography tag="p" variant="thirdy" children={'Не указан'} />}
         </article>
-        {userRole > BaseRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
+        {userRole > ModeratorRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
       </section>
     </motion.aside>
   );

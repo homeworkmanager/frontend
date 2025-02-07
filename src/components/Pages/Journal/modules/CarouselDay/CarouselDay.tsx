@@ -5,11 +5,9 @@ import styles from './CarouselDay.module.css';
 import { FreeDay } from './components/FreeDay/FreeDay';
 import { IndependentHomework } from './components/IndependentHomework/IndependentHomework';
 import { Lesson } from './components/Lesson/Lesson';
-import { IHContext } from '@/App/modules/IHContext';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 interface CarouselDayProps extends React.ComponentProps<'div'> {
-  values: ValuesDates;
   currentDateIndex: number;
   apiDates: DaySchedule[];
   onDayNodeScroll: () => void;
@@ -19,7 +17,6 @@ interface CarouselDayProps extends React.ComponentProps<'div'> {
 export const CarouselDay = ({
   currentDateIndex,
   apiDates,
-  values,
   onDayNodeScroll,
   dayCarouselRef,
   ...props
@@ -30,8 +27,6 @@ export const CarouselDay = ({
     }
   };
 
-  const { independentHomeworks } = React.useContext(IHContext);
-
   return (
     <section {...props}>
       <Swiper
@@ -39,18 +34,26 @@ export const CarouselDay = ({
         ref={dayCarouselRef}
         lazyPreloadPrevNext={14}
         freeMode={true}
+        onSwiper={updateHeight}
         initialSlide={currentDateIndex}
         onSlideChange={onDayNodeScroll}
         autoHeight={true}
+        className={styles['swiper-env']}
       >
-        {apiDates.map((apiData, index) => (
-          <SwiperSlide key={index} tag="li" className={styles['swiper-layout']}>
+        {apiDates.map((apiData, dayIndex) => (
+          <SwiperSlide key={dayIndex} tag="li" className={styles['swiper-layout']}>
             <div className={styles['day-card']}>
               {apiData.outputClasses.length === 0 && <FreeDay />}
-              {apiData.outputClasses.map((value) => (
-                <Lesson key={value.class.startTime} apiData={value} updateHeight={updateHeight} />
-              ))}
-              <IndependentHomework Homeworks={independentHomeworks[index]} currentValue={values[index]} />
+              {apiData.outputClasses.length > 0 &&
+                apiData.outputClasses.map((value) => (
+                  <Lesson
+                    key={value.class.startTime}
+                    apiData={value}
+                    Homeworks={value.homework}
+                    updateHeight={updateHeight}
+                  />
+                ))}
+              <IndependentHomework Homeworks={apiData.independentHomeworks} updateHeight={updateHeight} />
             </div>
           </SwiperSlide>
         ))}

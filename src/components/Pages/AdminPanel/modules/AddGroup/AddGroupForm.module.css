@@ -1,0 +1,17 @@
+.title {
+  color: var(--text-invert-color);
+  margin-bottom: 1.5rem;
+}
+
+.group {
+  max-width: 250px;
+}
+
+.ical {
+  max-width: 500px;
+}
+
+.error {
+  margin-top: 12px;
+  color: red;
+}

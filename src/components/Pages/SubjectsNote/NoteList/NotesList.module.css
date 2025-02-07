@@ -1,0 +1,40 @@
+.number {
+  white-space: pre;
+}
+
+.text {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  margin-bottom: 8px;
+}
+
+.loader {
+  margin-left: 6px;
+  width: 28px;
+  height: 28px;
+}
+
+.not-found {
+  margin-bottom: 0.55rem;
+}
+
+.add-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.icon {
+  margin-left: 10px;
+  width: 24px;
+  height: 24px;
+}
+
+.delete-icon {
+  margin-left: 6px;
+  width: 28px;
+  height: 28px;
+}
+
+.active {
+  color: var(--button-accept-color);
+}

@@ -23,6 +23,7 @@
 
   &:disabled {
     opacity: 0.4;
+    scale: none;
     cursor: auto;
   }
 }
@@ -33,7 +34,7 @@
   text-decoration: underline;
   text-underline-offset: 4px;
   width: fit-content;
-  margin: auto auto 2rem;
+  margin: auto auto;
 }
 
 .menu-item {
@@ -46,11 +47,6 @@
   align-items: center;
   justify-content: center;
   transition: scale 0.15s ease-in-out;
-
-  svg {
-    width: 30px;
-    height: 30px;
-  }
 
   &:active {
     scale: 0.8;

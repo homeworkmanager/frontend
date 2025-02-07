@@ -2,64 +2,23 @@
   width: 100%;
   margin: 0 auto;
   max-width: var(--max-width-desktop);
+
+  @media (max-width: 1050px) {
+    max-width: var(--max-width-mobile);
+  }
 }
 
 .content {
+  display: grid;
+  row-gap: 2rem;
+  padding-bottom: 1.5rem;
+
   @media (min-width: 1050px) {
-    display: flex;
+    grid-template-columns: 1fr 1fr;
   }
 
   @media (max-width: 1050px) {
-    padding: 0 1rem;
-    width: 100%;
+    grid-template-columns: 1fr;
+    padding: 0 1rem 1rem;
   }
-}
-
-.form {
-  width: 50%;
-
-  @media (max-width: 1050px) {
-    width: 100%;
-    margin-bottom: 2rem;
-  }
-}
-
-.title {
-  color: var(--text-invert-color);
-  margin-bottom: 2rem;
-}
-
-.group {
-  max-width: 250px;
-}
-
-.ical {
-  max-width: 500px;
-}
-
-.error {
-  margin-top: 12px;
-  color: red;
-}
-
-.schedule {
-  margin: 0 auto;
-  padding-bottom: 30px;
-}
-
-.schedule-item {
-  margin-top: 30px;
-}
-
-.modal-admin {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 16px;
-  background-color: var(--component-background-color);
-  border-radius: 12px;
 }

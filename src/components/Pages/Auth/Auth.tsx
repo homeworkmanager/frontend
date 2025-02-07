@@ -1,6 +1,7 @@
 import styles from './Auth.module.css';
 import { useAuth } from './hooks/useAuth';
 import { Button } from '@/components/ui/Button';
+import { UniHelperLogo } from '@/components/ui/Icons/UniHelper';
 import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
@@ -27,7 +28,7 @@ export const Auth = () => {
 
   return (
     <article className={styles.container}>
-      <h1 className={styles.title}>Здесь будет какой-то заголовок и логотип</h1>
+      <UniHelperLogo />
       <form onSubmit={form.handleSubmit} className={styles.form}>
         <div>
           {stage === 'register' && (

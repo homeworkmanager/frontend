@@ -1,4 +1,3 @@
-import { postHomeworkStatus, PostHomeworkStatusConfig } from '@/utils/api/requests/homework/status/homework_id';
 import { postUserAuth, PostUserAuthConfig } from '@/utils/api/requests/user/auth';
 import { GetUserConfig, getUserData } from '@/utils/api/requests/user/get';
 import { postUserRegister, PostUserRegisterConfig } from '@/utils/api/requests/user/register';
@@ -20,12 +19,8 @@ export const userApi = createApi({
     getUser: builder.query<GetUserResponse, GetUserConfig>({
       queryFn: (requestConfig: GetUserConfig) => getUserData(requestConfig),
       providesTags: ['GetUserConfig']
-    }),
-    postHomeworkStatus: builder.mutation({
-      queryFn: ({ params, config }: PostHomeworkStatusConfig) => postHomeworkStatus({ params, config }),
-      invalidatesTags: ['PostHomeworkStatus']
     })
   })
 });
 
-export const { usePostRegisterMutation, usePostAuthMutation, useGetUserQuery, usePostHomeworkStatusMutation } = userApi;
+export const { usePostRegisterMutation, usePostAuthMutation, useGetUserQuery } = userApi;

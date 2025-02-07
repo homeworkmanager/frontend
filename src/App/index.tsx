@@ -1,14 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
-import { EntryContext } from './modules/AuthContext';
+import { EntryContext } from './context/AuthContext';
 import { Router } from '@/components/modules/Router/Router';
 import { getUserData } from '@/utils/api/requests/user/get';
 import { getUserRefresh } from '@/utils/api/requests/user/refresh';
+import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isEntry } = React.useContext(EntryContext);
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const refreshCookies = async () => {
@@ -24,7 +24,7 @@ function App() {
       const { data } = await getUserData();
       dispatch(
         logIn({
-          role: 3, //data.role
+          role: data.role,
           name: data.name,
           surname: data.surname,
           email: data.email,

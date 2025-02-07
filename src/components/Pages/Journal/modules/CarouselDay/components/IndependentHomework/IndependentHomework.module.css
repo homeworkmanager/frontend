@@ -3,34 +3,50 @@
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
   background-color: var(--component-background-color);
   width: 100%;
+  height: auto;
   border-radius: 4px;
   padding: 1rem 0.7rem;
   margin-top: 16px;
-  color: var(--text-invert-color);
-  cursor: pointer;
 }
 
-.mod-content {
-  display: flex;
-  margin: 0 auto;
-  background-color: var(--component-background-color);
-  width: 40%;
-  border-radius: 16px;
-  padding: 1rem 0.7rem;
-  color: var(--text-invert-color);
-  cursor: pointer;
-  margin-bottom: 0.5rem;
-  transition: all 0.2s ease-in-out;
+.number {
+  white-space: pre;
 }
 
-.add-icon {
-  margin: 0 auto;
-  width: 40px;
-  height: 40px;
+.text {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.number-complete {
+  color: gray;
+}
+
+.complete {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.loader {
+  margin: auto 10px;
+}
+
+.icon {
+  margin-left: 6px;
+  width: 24px;
+  height: 24px;
+}
+
+.delete-icon {
+  margin-left: 8px;
+  width: 28px;
+  height: 28px;
+}
+
+.active {
+  color: var(--button-accept-color);
 }
 
 .active {

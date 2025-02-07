@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 
+import { findDayIndex } from '../../../utils/helpers/findDayIndex';
 import { findIndexByDate } from '../../../utils/helpers/findIndexByDate';
+import { getDaysForOtherCarousels } from '../../../utils/helpers/getDaysForOtherCarousels';
 import { firstSessionDay, monthsNumbers, weekDays } from '../../Pages/Journal/constants';
-import { findDayIndex } from '../../Pages/Journal/helpers/findDayIndex';
-import { getDaysForOtherCarousels } from '../../Pages/Journal/helpers/getDaysForOtherCarousels';
 import { LessonsList } from '../modules/LessonsList/LessonsList';
 import { WeekHeader } from '../modules/WeekHeader/WeekHeader';
 

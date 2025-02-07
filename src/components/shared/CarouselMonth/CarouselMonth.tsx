@@ -7,11 +7,11 @@ import { WeekHeader } from '../modules/WeekHeader/WeekHeader';
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselMonth.module.css';
 import { firstSessionDay, monthData, monthsNumbers, weekDays } from '@/components/Pages/Journal/constants';
-import { createfirstMonthsNodes } from '@/components/Pages/Journal/helpers/createfirstMonthsNodes';
-import { findDayIndex } from '@/components/Pages/Journal/helpers/findDayIndex';
-import { getDaysForOtherCarousels } from '@/components/Pages/Journal/helpers/getDaysForOtherCarousels';
 import { Button } from '@/components/ui/Button';
+import { createfirstMonthsNodes } from '@/utils/helpers/createfirstMonthsNodes';
+import { findDayIndex } from '@/utils/helpers/findDayIndex';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
+import { getDaysForOtherCarousels } from '@/utils/helpers/getDaysForOtherCarousels';
 import { useDropdown } from '@/utils/hooks/useDropdown';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -35,10 +35,12 @@ export const CarouselMonth = ({
   moderator = false
 }: carouselWeekProps) => {
   const daysByMonth = React.useMemo(() => getDaysForOtherCarousels(values, 35), []);
+
   const [currentSlide, dayIndexInSlide] = React.useMemo(
     () => findDayIndex(values[activeMonthNode], daysByMonth),
     [activeMonthNode, daysByMonth]
   );
+
   const firstMonthsNodes = React.useMemo(() => createfirstMonthsNodes(values), []);
 
   const { menuRef, isOpen, action } = useDropdown();
@@ -72,7 +74,7 @@ export const CarouselMonth = ({
           />
           <div className={styles['dropdown']} ref={menuRef}>
             <Button
-              children={`${monthData[daysByMonth[currentSlide][dayIndexInSlide].month]}`}
+              children={`${monthData[daysByMonth[currentSlide][dayIndexInSlide]?.month]}`}
               className={clsx(styles['dropdown-btn'], isOpen && styles['dropdown-active'])}
               onClick={onDropDownClick}
             />

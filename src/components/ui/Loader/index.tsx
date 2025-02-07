@@ -1,9 +1,18 @@
-import styles from './Loader.module.css';
+import React from 'react';
 
-export const Loader = () => {
-  return (
-    <div className={styles['circular-skeleton']}>
-      <div className={styles['spinner']}></div>
-    </div>
-  );
-};
+import styles from './Loader.module.css';
+import clsx from 'clsx';
+
+interface LoaderProps extends React.ComponentProps<'div'> {
+  spinnerSize?: number;
+}
+
+export const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
+  ({ spinnerSize = 40, className, ...props }, ref) => {
+    return (
+      <div ref={ref} className={clsx(styles['circular-skeleton'], className)} {...props}>
+        <div style={{ width: spinnerSize, height: spinnerSize }} className={styles['spinner']}></div>
+      </div>
+    );
+  }
+);

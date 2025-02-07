@@ -41,21 +41,42 @@
   text-transform: uppercase;
 }
 
-.homework-list {
-  margin: 0;
-  width: fit-content;
+.number {
+  white-space: pre;
 }
 
-.homework-list-item {
-  vertical-align: top;
-  font-size: 15px;
-  color: var(--text-invert-color);
+.number-complete {
+  color: gray;
+}
+
+.text {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.complete {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.loader {
+  margin: auto 10px;
+}
+
+.icon {
+  margin-left: 6px;
+  width: 24px;
+  height: 24px;
 }
 
 .delete-icon {
   margin-left: 8px;
-  width: 24px !important;
-  height: 24px !important;
+  width: 28px;
+  height: 28px;
+}
+
+.active {
+  color: var(--button-accept-color);
 }
 
 .moderator {

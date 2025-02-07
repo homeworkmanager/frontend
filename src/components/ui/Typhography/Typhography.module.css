@@ -1,4 +1,5 @@
 .Typhography {
+  white-space: normal;
   color: var(--text-invert-color);
   font-size: 20px;
 }

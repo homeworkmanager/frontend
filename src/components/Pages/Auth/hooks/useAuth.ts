@@ -1,28 +1,24 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { LogInSchema, RegisterSchema, RegisterSchemaType } from '../schemas';
 
-import { EntryContext } from '@/App/modules/AuthContext';
+import { EntryContext } from '@/App/context/AuthContext';
 import { getUserData } from '@/utils/api/requests/user/get';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
 import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
+import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
 import { useFormik } from 'formik';
 
 export const useAuth = () => {
   const [stage, setStage] = React.useState<'login' | 'register'>('login');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isEntry, setIsEntry } = React.useContext(EntryContext);
   const navigate = useNavigate();
 
-  const getAllGroups = useGetAllGroupsQuery(undefined, {
-    selectFromResult: (data) => {
-      return data;
-    }
-  });
+  const getAllGroups = useGetAllGroupsQuery(undefined);
 
   const getAllGroupsResponse = getAllGroups?.data;
 
@@ -53,22 +49,22 @@ export const useAuth = () => {
   const currentState =
     stage === 'register'
       ? {
-          isLoading: isRegisterLoading,
-          isError: isRegisterError,
-          isSuccess: isRegisterSuccess
-        }
+        isLoading: isRegisterLoading,
+        isError: isRegisterError,
+        isSuccess: isRegisterSuccess
+      }
       : {
-          isLoading: isAuthLoading,
-          isError: isAuthError,
-          isSuccess: isAuthSuccess
-        };
+        isLoading: isAuthLoading,
+        isError: isAuthError,
+        isSuccess: isAuthSuccess
+      };
 
   const getUserAfterAuth = async () => {
     try {
       const { data } = await getUserData();
       dispatch(
         logIn({
-          role: 3, //data.role
+          role: data.role,
           name: data.name,
           surname: data.surname,
           email: data.email,

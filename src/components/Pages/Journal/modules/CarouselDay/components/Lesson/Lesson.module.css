@@ -79,6 +79,24 @@
   color: gray;
   padding: 0 1rem;
   font-size: small;
+  display: flex;
+  flex-direction: column;
+  white-space: pre;
+}
+
+.task-text {
+  display: flex;
+}
+
+.homework {
+  width: 75%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.complete {
+  text-decoration: line-through;
 }
 
 .lect {

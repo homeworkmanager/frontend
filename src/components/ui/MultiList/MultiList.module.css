@@ -1,0 +1,19 @@
+.homework-list {
+  color: var(--text-invert-color);
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  overflow-wrap: break-word;
+}
+
+.column {
+  display: flex;
+  max-width: calc(100% - 16px);
+}
+
+.column:last-child {
+  align-items: center;
+}

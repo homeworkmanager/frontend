@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlices/moderatorApiSlice/moderatorApi';
+import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 
 interface ModeratorBlockProps {
   apiData: OutputClass;
@@ -13,7 +13,8 @@ interface ModeratorBlockProps {
 }
 
 export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps) => {
-  const [postModeratorAddHomeworkClassMutation, { isLoading, isError }] = usePostModeratorAddHomeworkClassMutation();
+  const [postModeratorAddHomeworkClassMutation, postAddHomeworkStatusState] =
+    usePostModeratorAddHomeworkClassMutation();
   const [homeworkText, setHomeworkText] = React.useState('');
 
   const sendLessonHomework = async () => {
@@ -28,7 +29,11 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
     });
 
     if (!postModeratorAddHomeworkClassResponse.error) {
-      addHomework({ homeworkText: homeworkText, homeworkID: postModeratorAddHomeworkClassResponse.data.homework_id });
+      addHomework({
+        homeworkText: homeworkText,
+        homeworkID: postModeratorAddHomeworkClassResponse.data.homework_id,
+        isCompleted: false
+      });
     }
   };
 
@@ -40,11 +45,15 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         variant="homework"
         name={`${apiData.class.startTime}`}
       />
-      <Button variant="accept" disabled={isLoading || !homeworkText} onClick={sendLessonHomework}>
-        {isLoading ? <Loader /> : 'Добавить'}
+      <Button
+        variant="accept"
+        disabled={postAddHomeworkStatusState.isLoading || !homeworkText}
+        onClick={sendLessonHomework}
+      >
+        {postAddHomeworkStatusState.isLoading ? <Loader /> : 'Добавить'}
       </Button>
-      {isError && (
-        <Typhography tag="p" variant="thirdy">
+      {postAddHomeworkStatusState.isError && (
+        <Typhography tag="p" variant="thirdy" className={styles['error']}>
           Ошибка
         </Typhography>
       )}
