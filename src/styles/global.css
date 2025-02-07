@@ -32,11 +32,12 @@
 }
 
 ::-webkit-scrollbar {
-  @media (pointer: coarse) {
-    display: none;
-  }
+  display: none;
 
-  width: 8px;
+  @media (min-width: 1050px) {
+    display: block;
+    width: 8px;
+  }
 }
 
 ::-webkit-scrollbar-thumb {
