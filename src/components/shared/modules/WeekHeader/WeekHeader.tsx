@@ -10,7 +10,6 @@ interface WeekHeaderProps {
   currentDate: { year: number; month: number; day: number };
   firstSessionDay: { year: number; month: number; day: number };
   monthsNumbers: number[];
-  index: number;
   variant: WeekHeaderVariant;
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { LessonCarousel } from '../../../shared/LessonCarousel/LessonCarousel';
 import { generateValues } from '../helpers/generateValues';
+import { LessonCarousel } from '../modules/LessonCarousel/LessonCarousel';
 import { SendHomework } from '../modules/SendHomework/SendHomework';
 
 import 'swiper/swiper-bundle.css';
@@ -10,7 +10,10 @@ import { CarouselWeek } from '@/components/shared/CarouselWeek/CarouselWeek';
 import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
-import { usePostModeratorAddHomeworkDateMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
+import {
+  useGetSubjectsQuery,
+  usePostModeratorAddHomeworkDateMutation
+} from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { Mousewheel } from 'swiper/modules';
@@ -75,8 +78,11 @@ export const DayHomeworkMobile = () => {
     });
   };
 
+  const getSubjectsQuery = useGetSubjectsQuery(undefined);
+
   const onScrollSubject = () => {
-    setHomeworkId(subjectRef.current!.swiper.realIndex + 1);
+    if (!getSubjectsQuery.data?.length) return;
+    setHomeworkId(getSubjectsQuery.data[subjectRef.current!.swiper.realIndex].subject_id);
   };
 
   const onClickChooseDate = (index: number) => {
@@ -143,8 +149,13 @@ export const DayHomeworkMobile = () => {
         weekCarouselRef={weekCarouselRef}
         activeWeekNode={activeWeekNode}
       />
-
       <LessonCarousel
+        subjects={getSubjectsQuery.data}
+        getSubjectsState={{
+          isLoading: getSubjectsQuery.isLoading,
+          isSuccess: getSubjectsQuery.isSuccess,
+          isError: getSubjectsQuery.isError
+        }}
         onElemClick={onElemClick}
         onScrollSubject={onScrollSubject}
         subjectRef={subjectRef}

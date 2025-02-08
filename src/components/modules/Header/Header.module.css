@@ -10,7 +10,7 @@
   @media (min-width: 1050px) {
     max-width: var(--max-width-desktop);
     padding: 1rem 0 0;
-    margin-bottom: 40px;
+    margin-bottom: 36px;
   }
 }
 
@@ -24,9 +24,9 @@
 }
 
 .journal {
-  border: 2px solid transparent;
   padding: 0.125rem 0.5rem;
-  transition: 0.3s ease-in-out;
+  transition: 0.4s ease-in-out;
+  border-radius: 1rem;
 }
 
 .icon {
@@ -36,21 +36,20 @@
   height: 24px;
   cursor: pointer;
   color: #fff;
-  border: 2px solid transparent;
-  transition: 0.3s ease-in-out;
+  transition: 0.4s ease-in-out;
+  border-radius: 0.5rem;
 }
 
 .add-icon {
   padding: 0.25rem;
   box-sizing: content-box;
-  border: 2px solid transparent;
   margin: 0 auto;
   width: 24px;
   height: 24px;
-  transition: 0.3s ease-in-out;
+  transition: 0.4s ease-in-out;
+  border-radius: 0.5rem;
 }
 
 .current {
-  border: 2px solid var(--border-focus-color);
-  border-radius: 0.5rem;
+  background-color: var(--border-focus-color);
 }

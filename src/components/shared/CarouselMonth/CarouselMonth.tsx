@@ -69,7 +69,6 @@ export const CarouselMonth = ({
             currentDate={values[currentDate.day]}
             firstSessionDay={firstSessionDay}
             monthsNumbers={monthsNumbers}
-            index={currentDate.day}
             variant="desktop"
           />
           <div className={styles['dropdown']} ref={menuRef}>

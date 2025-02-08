@@ -11,6 +11,7 @@
 
 .swiper-container {
   height: 210px;
+  margin: 1rem 0;
 
   @media (min-width: 1050px) {
     height: 150px;

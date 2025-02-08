@@ -1,6 +1,15 @@
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
+import {
+  admin,
+  journalDesktop,
+  journalMobile,
+  moderatorDesktop,
+  moderatorMobile,
+  note
+} from '../Router/constants/routes';
+
 import styles from './Header.module.css';
 import { AdminLogo } from '@/components/ui/Icons/Admin';
 import { ModeratorLogo } from '@/components/ui/Icons/Moderator';
@@ -11,13 +20,10 @@ import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { JournalChooseMedia, ModeratorChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
-import { admin, journalDesktop, journalMobile, moderatorDesktop, moderatorMobile, note } from '../Router/constants/routes';
 
 export const Header = () => {
   const { role, group_name } = useSelector(getUser);
   const page = useLocation().pathname;
-
-  console.log(page);
 
   return (
     <header className={styles.header}>
