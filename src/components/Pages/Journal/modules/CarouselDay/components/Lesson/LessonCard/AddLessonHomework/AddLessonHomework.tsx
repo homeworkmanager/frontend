@@ -34,12 +34,14 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         homeworkID: postModeratorAddHomeworkClassResponse.data.homework_id,
         isCompleted: false
       });
+      setHomeworkText('');
     }
   };
 
   return (
     <article className={styles['section']}>
       <Input
+        value={homeworkText}
         onChange={(e) => setHomeworkText(e.target.value)}
         label="Добавить задание"
         variant="homework"

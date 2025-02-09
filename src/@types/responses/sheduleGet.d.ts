@@ -3,15 +3,19 @@ type HomeworkElement = {
   isCompleted: boolean;
   subjectId: number;
   homeworkText: string;
-  dueDate: string; // ISO 8601 format
+  dueDate: string;
+};
+
+type IndependentHomeworkElement = Omit<HomeworkElement, 'subjectId'> & {
+  subjectName: string;
 };
 
 type ClassDetails = {
   subjectId: number;
   category: string;
   description: string;
-  startTime: string; // ISO 8601 format
-  endTime: string; // ISO 8601 format
+  startTime: string;
+  endTime: string;
   summary: string;
   semClassNumber: number;
   location: string;
@@ -24,7 +28,7 @@ type OutputClass = {
 
 type DaySchedule = {
   outputClasses: OutputClass[];
-  independentHomeworks: HomeworkElement[];
+  independentHomeworks: IndependentHomeworkElement[];
 };
 
 type AllScheduleResponse = {

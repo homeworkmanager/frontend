@@ -1,5 +1,14 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
+import {
+  admin,
+  journalDesktop,
+  journalMobile,
+  moderatorDesktop,
+  moderatorMobile,
+  note
+} from '../Router/constants/routes';
 
 import styles from './Header.module.css';
 import { AdminLogo } from '@/components/ui/Icons/Admin';
@@ -10,30 +19,42 @@ import { Typhography } from '@/components/ui/Typhography';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { JournalChooseMedia, ModeratorChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
+import clsx from 'clsx';
 
 export const Header = () => {
   const { role, group_name } = useSelector(getUser);
+  const page = useLocation().pathname;
 
   return (
     <header className={styles.header}>
       <Link to={JournalChooseMedia} replace>
-        <Typhography tag="h1" variant="header" children={group_name} />
+        <Typhography
+          tag="h1"
+          variant="header"
+          className={clsx(styles['journal'], (page === journalMobile || page === journalDesktop) && styles['current'])}
+          children={group_name}
+        />
       </Link>
 
       <div className={styles.container}>
         {role === AdminRole && (
           <Link to="/admin">
-            <AdminLogo className={styles['icon']} />
+            <AdminLogo className={clsx(styles['icon'], page === admin && styles['current'])} />
           </Link>
         )}
         {role >= ModeratorRole && (
           <Link to={ModeratorChooseMedia}>
-            <ModeratorLogo className={styles['add-icon']} />
+            <ModeratorLogo
+              className={clsx(
+                styles['add-icon'],
+                (page === moderatorMobile || page === moderatorDesktop) && styles['current']
+              )}
+            />
           </Link>
         )}
 
         <Link to="/note">
-          <NoteLogo className={styles['icon']} />
+          <NoteLogo className={clsx(styles['icon'], page === note && styles['current'])} />
         </Link>
 
         {/* <Link to="/profile">

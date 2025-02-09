@@ -37,6 +37,7 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
 
   const addNote = (note: Note) => {
     setNotes((prev) => [...prev, note]);
+    setAddNoteOpen(false);
   };
 
   const removeNoteId = () => {

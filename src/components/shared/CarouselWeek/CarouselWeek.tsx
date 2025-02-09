@@ -50,7 +50,6 @@ export const CarouselWeek = ({
           currentDate={values[currentDate.day]}
           firstSessionDay={firstSessionDay}
           monthsNumbers={monthsNumbers}
-          index={currentDate.day}
           variant="mobile"
         />
         <Button className="custom-next" variant="slide">

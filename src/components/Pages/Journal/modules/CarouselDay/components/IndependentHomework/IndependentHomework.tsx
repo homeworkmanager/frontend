@@ -20,7 +20,7 @@ import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 
 interface IndependentHomeworkProps {
-  Homeworks: RestructHomeworkElement[];
+  Homeworks: RestructIndependentHomeworkArray;
   updateHeight: () => void;
 }
 
@@ -28,9 +28,7 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
   const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
   const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
 
-  const [independentHomeworks, setIndependentHomeworks] = React.useState<RestructHomeworkElement[]>(() => [
-    ...Homeworks
-  ]);
+  const [independentHomeworks, setIndependentHomeworks] = React.useState<RestructIndependentHomeworkArray>(Homeworks);
 
   const userRole = useSelector(getUserRole);
 
@@ -38,6 +36,7 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
 
   const removeHomeworkId = () => {
     setHomeworkId(-1);
+    updateHeight();
   };
 
   const addHomeworkId = (id: number) => {
@@ -46,6 +45,7 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
       return;
     }
     setHomeworkId(id);
+    updateHeight();
   };
 
   const removeHomework = async (homework: RestructHomeworkElement) => {
@@ -101,55 +101,72 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
           <div className={styles['content']}>
             <MultiList>
               {independentHomeworks.map((homework, index) => (
-                <MultiList.Row key={homework.homeworkID}>
-                  <MultiList.Column icons={userRole >= ModeratorRole ? 3 : 1}>
-                    <Typhography
-                      tag="p"
-                      variant="thirdy"
-                      className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
-                      children={`${index + 1}. `}
-                    />
-                    <Typhography
-                      tag="p"
-                      variant="thirdy"
-                      className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
-                      children={homework.homeworkText}
-                    />
-                  </MultiList.Column>
-                  <MultiList.Column>
-                    {postHomeworkStatusState.isLoading ? (
-                      <Loader spinnerSize={24} className={styles['loader']} />
-                    ) : (
-                      <Checkbox checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
-                    )}
-                    {userRole >= ModeratorRole && (
-                      <>
-                        {(homeworkId === -1 || homeworkId === homework.homeworkID) && (
+                <React.Fragment key={homework.homeworkID}>
+                  <MultiList.Row>
+                    <MultiList.Column>
+                      <Typhography
+                        tag="p"
+                        variant="thirdy"
+                        style={{ marginBottom: '.35rem' }}
+                        children={`${homework.subjectName}`}
+                      />
+                    </MultiList.Column>
+                  </MultiList.Row>
+                  <MultiList.Row>
+                    <MultiList.Column icons={userRole >= ModeratorRole ? 3 : 1}>
+                      <Typhography
+                        tag="p"
+                        variant="thirdy"
+                        className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
+                        children={`${index + 1}. `}
+                      />
+                      <Typhography
+                        tag="p"
+                        variant="thirdy"
+                        className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
+                        children={homework.homeworkText}
+                      />
+                    </MultiList.Column>
+                    <MultiList.Column>
+                      {postHomeworkStatusState.isLoading ? (
+                        <Loader spinnerSize={24} className={styles['loader']} />
+                      ) : (
+                        <Checkbox checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
+                      )}
+                      {userRole >= ModeratorRole && (
+                        <>
+                          {homeworkId === -1 || homeworkId === homework.homeworkID ? (
+                            <Button
+                              variant="slide"
+                              onClick={() => addHomeworkId(homework.homeworkID)}
+                              children={
+                                <ChangeLogo
+                                  className={clsx(
+                                    styles['icon'],
+                                    homeworkId === homework.homeworkID && styles['active']
+                                  )}
+                                />
+                              }
+                            />
+                          ) : (
+                            <div style={{ width: '24px', height: '24px', marginLeft: '6px' }} />
+                          )}
                           <Button
                             variant="slide"
-                            onClick={() => addHomeworkId(homework.homeworkID)}
+                            onClick={() => removeHomework(homework)}
                             children={
-                              <ChangeLogo
-                                className={clsx(styles['icon'], homeworkId === homework.homeworkID && styles['active'])}
-                              />
+                              deleteHomeworkState.isLoading && homeworkId === homework.homeworkID ? (
+                                <Loader spinnerSize={28} className={styles['loader']} />
+                              ) : (
+                                <DeleteLogo className={styles['delete-icon']} />
+                              )
                             }
                           />
-                        )}
-                        <Button
-                          variant="slide"
-                          onClick={() => removeHomework(homework)}
-                          children={
-                            deleteHomeworkState.isLoading && homeworkId === homework.homeworkID ? (
-                              <Loader spinnerSize={28} className={styles['loader']} />
-                            ) : (
-                              <DeleteLogo className={styles['delete-icon']} />
-                            )
-                          }
-                        />
-                      </>
-                    )}
-                  </MultiList.Column>
-                </MultiList.Row>
+                        </>
+                      )}
+                    </MultiList.Column>
+                  </MultiList.Row>
+                </React.Fragment>
               ))}
             </MultiList>
             <ChangeLessonHomework

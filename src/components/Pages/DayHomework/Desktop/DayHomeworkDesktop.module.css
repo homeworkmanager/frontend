@@ -9,6 +9,11 @@
   gap: 0.7rem;
 }
 
+.add-homework {
+  margin: auto;
+  width: 45%;
+}
+
 .container {
   padding: 0 16px;
 }

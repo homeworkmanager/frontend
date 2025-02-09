@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import styles from './Users.module.css';
 import { Button } from '@/components/ui/Button';
@@ -34,9 +34,9 @@ export const Users = () => {
   const [initialUsers, setInitialUsers] = React.useState<UserOrigin[]>(allUsers);
   const [users, setUsers] = React.useState<UserOrigin[]>([]);
   const [inputValue, setInputValue] = React.useState('');
-  const [currentUser, setCurrentUser] = React.useState<UserOrigin>();
+  const [currentUser, setCurrentUser] = React.useState<UserOrigin>({} as UserOrigin);
+  const currentUserRole = useRef(1);
   const usersList = useDropdown();
-  const userRoles = useDropdown();
 
   const pushUserFIO = (e: React.ChangeEvent<HTMLInputElement>) => {
     const userInput = e.target.value;
@@ -49,40 +49,36 @@ export const Users = () => {
 
     if (filtered.length === 1 && userInput === `${filtered[0].surname} ${filtered[0].name}`) {
       setCurrentUser(filtered[0]);
+      currentUserRole.current = filtered[0].role;
       return;
     }
-
-    setCurrentUser(undefined);
+    setCurrentUser({} as UserOrigin);
   };
 
   const onFioCLick = (user: UserOrigin) => {
+    currentUserRole.current = user.role;
     setCurrentUser(user);
     setInputValue(`${user.surname} ${user.name}`);
     setUsers([user]);
     usersList.action.close();
   };
 
-  const toggleUserRoles = () => {
-    userRoles.action.toggle();
-  };
-
-  const onRoleClick = async (role: number) => {
-    console.log(role);
+  const onRoleClick = async () => {
     const response = await patchAdminRole({
       params: {
-        user_id: currentUser?.user_id || 0,
-        role: role
+        user_id: currentUser.user_id,
+        role: currentUser.role
       }
     });
 
     if (!response.error) {
+      currentUserRole.current = currentUser.role;
       setInitialUsers((prev) =>
         prev.map((user) => {
-          if (user.user_id === currentUser?.user_id) return { ...user, role };
+          if (user.user_id === currentUser.user_id) return { ...user, role: currentUser.role };
           return user;
         })
       );
-      setCurrentUser((prev) => ({ ...prev, role: role }) as UserOrigin);
     }
   };
 
@@ -117,22 +113,26 @@ export const Users = () => {
           </ul>
         )}
       </div>
-      {currentUser && (
-        <div className={styles['role']} ref={userRoles.menuRef}>
-          <Button type="button" variant="accept" onClick={toggleUserRoles} children="Выбрать роль" />
-          {userRoles.isOpen && (
-            <ul className={styles['role-content']}>
-              {roles.map((item) => (
-                <p
-                  key={item.role}
-                  className={clsx(styles['role-name'], item.role === currentUser.role && styles['active'])}
-                  onClick={() => onRoleClick(item.role)}
-                >
-                  {item.name}
-                </p>
-              ))}
-            </ul>
-          )}
+      {currentUser.name && (
+        <div className={styles['role']}>
+          <Button
+            type="button"
+            variant="accept"
+            disabled={currentUser.role === currentUserRole.current}
+            onClick={onRoleClick}
+            children="Выбрать роль"
+          />
+          <ul className={styles['role-content']}>
+            {roles.map((item) => (
+              <p
+                key={item.role}
+                className={clsx(styles['role-name'], item.role === currentUser.role && styles['active'])}
+                onClick={() => setCurrentUser((prev) => ({ ...prev, role: item.role }))}
+              >
+                {item.name}
+              </p>
+            ))}
+          </ul>
         </div>
       )}
     </div>

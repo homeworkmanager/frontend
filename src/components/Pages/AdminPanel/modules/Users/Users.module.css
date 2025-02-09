@@ -53,6 +53,7 @@
   border: 2px solid var(--border-base-color);
   border-radius: 16px;
   width: fit-content;
+  cursor: pointer;
 }
 
 .active {
