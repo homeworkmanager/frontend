@@ -67,11 +67,12 @@ export const Users = () => {
     const response = await patchAdminRole({
       params: {
         user_id: currentUser.user_id,
-        role: currentUser.role,
+        role: currentUser.role
       }
     });
 
     if (!response.error) {
+      currentUserRole.current = currentUser.role;
       setInitialUsers((prev) =>
         prev.map((user) => {
           if (user.user_id === currentUser.user_id) return { ...user, role: currentUser.role };
@@ -114,7 +115,13 @@ export const Users = () => {
       </div>
       {currentUser.name && (
         <div className={styles['role']}>
-          <Button type="button" variant="accept" disabled={currentUser.role === currentUserRole.current} onClick={onRoleClick} children="Выбрать роль" />
+          <Button
+            type="button"
+            variant="accept"
+            disabled={currentUser.role === currentUserRole.current}
+            onClick={onRoleClick}
+            children="Выбрать роль"
+          />
           <ul className={styles['role-content']}>
             {roles.map((item) => (
               <p

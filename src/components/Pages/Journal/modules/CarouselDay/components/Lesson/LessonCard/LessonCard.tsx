@@ -154,7 +154,7 @@ export const LessonCard = ({
                           }
                         />
                       ) : (
-                        <div style={{ width: '24px', height: '24px' }} />
+                        <div style={{ width: '24px', height: '24px', marginLeft: '6px' }} />
                       )}
                       <Button
                         variant="slide"
