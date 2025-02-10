@@ -32,12 +32,10 @@ export const CarouselDay = ({
       <Swiper
         tag="ul"
         ref={dayCarouselRef}
-        lazyPreloadPrevNext={7}
-        freeMode={true}
+        freeMode={false}
         onSwiper={updateHeight}
         initialSlide={currentDateIndex}
         onSlideChange={onDayNodeScroll}
-        autoHeight={true}
         className={styles['swiper-env']}
       >
         {apiDates.map((apiData, dayIndex) => (
