@@ -23,23 +23,25 @@ export const JournalMobile = () => {
   const weekCarouselRef = React.useRef<SwiperRef>(null);
 
   const onWeekNodeScroll = () => {
-    const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
-    if (dayCarouselRef.current !== null) {
-      const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
-      if (weekNodeIndex * 7 <= activeWeekNode && weekNodeIndex * 7 + 6 > activeWeekNode) {
-        setCurrentDate({
-          year: values[dayNodeIndex].year,
-          month: values[dayNodeIndex].month,
-          day: dayNodeIndex
-        });
-        return;
+    requestAnimationFrame(() => {
+      const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
+      if (dayCarouselRef.current !== null) {
+        const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
+        if (weekNodeIndex * 7 <= activeWeekNode && weekNodeIndex * 7 + 6 > activeWeekNode) {
+          setCurrentDate({
+            year: values[dayNodeIndex].year,
+            month: values[dayNodeIndex].month,
+            day: dayNodeIndex
+          });
+          return;
+        }
       }
-    }
 
-    setCurrentDate({
-      year: values[weekNodeIndex * 7].year,
-      month: values[weekNodeIndex * 7].month,
-      day: weekNodeIndex * 7
+      setCurrentDate({
+        year: values[weekNodeIndex * 7].year,
+        month: values[weekNodeIndex * 7].month,
+        day: weekNodeIndex * 7
+      });
     });
   };
 
@@ -57,10 +59,12 @@ export const JournalMobile = () => {
         month: values[dayNodeIndex].month,
         day: dayNodeIndex
       });
-
       const newWeekIndex = Math.ceil((dayNodeIndex + 1) / 7) - 1;
 
-      weekNode.slideTo(newWeekIndex, 400);
+      if (weekNode.realIndex !== newWeekIndex) {
+        console.log('a');
+        weekNode.slideTo(newWeekIndex, 400);
+      }
     });
   };
 
