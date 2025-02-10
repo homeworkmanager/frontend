@@ -41,7 +41,6 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         mode: 'production',
-        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,webmanifest}'],
         navigateFallback: '/index.html',
         runtimeCaching: [

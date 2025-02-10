@@ -43,8 +43,6 @@ export const JournalMobile = () => {
     });
   };
 
-  const prevWeekIndexRef = React.useRef<number | null>(null);
-
   const onDayNodeScroll = () => {
     requestAnimationFrame(() => {
       const dayNodeIndex = (dayCarouselRef.current as SwiperRef)?.swiper?.realIndex;
@@ -62,10 +60,7 @@ export const JournalMobile = () => {
 
       const newWeekIndex = Math.ceil((dayNodeIndex + 1) / 7) - 1;
 
-      if (newWeekIndex !== prevWeekIndexRef.current) {
-        prevWeekIndexRef.current = newWeekIndex;
-        weekNode.slideTo(newWeekIndex, 400);
-      }
+      weekNode.slideTo(newWeekIndex, 400);
     });
   };
 
