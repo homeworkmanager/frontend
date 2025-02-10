@@ -5,6 +5,7 @@ import styles from './CarouselDay.module.css';
 import { FreeDay } from './components/FreeDay/FreeDay';
 import { IndependentHomework } from './components/IndependentHomework/IndependentHomework';
 import { Lesson } from './components/Lesson/Lesson';
+import { Virtual } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 interface CarouselDayProps extends React.ComponentProps<'div'> {
@@ -23,7 +24,7 @@ export const CarouselDay = ({
 }: CarouselDayProps) => {
   const updateHeight = () => {
     if (dayCarouselRef.current) {
-      dayCarouselRef.current.swiper.wrapperEl.style.height = 'auto';
+      dayCarouselRef.current.swiper.updateAutoHeight(400);
     }
   };
 
@@ -32,14 +33,24 @@ export const CarouselDay = ({
       <Swiper
         tag="ul"
         ref={dayCarouselRef}
-        freeMode={false}
-        onSwiper={updateHeight}
+        modules={[Virtual]}
+        virtual={{
+          slides: apiDates ?? [],
+          renderExternal: (swiper) => {
+            const vInstance = (swiper as any).virtual;
+            if (vInstance?.cache) vInstance.cache = {};
+          }
+        }}
+        slidesPerView={1}
         initialSlide={currentDateIndex}
         onSlideChange={onDayNodeScroll}
+        autoHeight={true}
+        speed={400}
+        observer={true}
         className={styles['swiper-env']}
       >
         {apiDates.map((apiData, dayIndex) => (
-          <SwiperSlide key={dayIndex} tag="li" className={styles['swiper-layout']}>
+          <SwiperSlide key={dayIndex} virtualIndex={dayIndex} tag="li" className={styles['swiper-layout']}>
             <div className={styles['day-card']}>
               {apiData.outputClasses.length === 0 && <FreeDay />}
               {apiData.outputClasses.length > 0 &&
@@ -54,7 +65,8 @@ export const CarouselDay = ({
               <IndependentHomework Homeworks={apiData.independentHomeworks} updateHeight={updateHeight} />
             </div>
           </SwiperSlide>
-        ))}
+        )
+        )}
       </Swiper>
     </section>
   );

@@ -23,48 +23,46 @@ export const JournalMobile = () => {
   const weekCarouselRef = React.useRef<SwiperRef>(null);
 
   const onWeekNodeScroll = () => {
-    requestAnimationFrame(() => {
-      const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
-      if (dayCarouselRef.current !== null) {
-        const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
-        if (weekNodeIndex * 7 <= activeWeekNode && weekNodeIndex * 7 + 6 > activeWeekNode) {
-          setCurrentDate({
-            year: values[dayNodeIndex].year,
-            month: values[dayNodeIndex].month,
-            day: dayNodeIndex
-          });
-          return;
-        }
+    const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
+    if (dayCarouselRef.current !== null) {
+      const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
+      if (weekNodeIndex * 7 <= activeWeekNode && weekNodeIndex * 7 + 6 > activeWeekNode) {
+        setCurrentDate({
+          year: values[dayNodeIndex].year,
+          month: values[dayNodeIndex].month,
+          day: dayNodeIndex
+        });
+        return;
       }
+    }
 
-      setCurrentDate({
-        year: values[weekNodeIndex * 7].year,
-        month: values[weekNodeIndex * 7].month,
-        day: weekNodeIndex * 7
-      });
+    setCurrentDate({
+      year: values[weekNodeIndex * 7].year,
+      month: values[weekNodeIndex * 7].month,
+      day: weekNodeIndex * 7
     });
   };
 
   const onDayNodeScroll = () => {
-    requestAnimationFrame(() => {
-      const dayNodeIndex = (dayCarouselRef.current as SwiperRef)?.swiper?.realIndex;
-      const weekNode = (weekCarouselRef.current as SwiperRef)?.swiper;
+    const dayNode = (dayCarouselRef.current as SwiperRef)?.swiper;
+    const weekNode = (weekCarouselRef.current as SwiperRef)?.swiper;
 
-      if (dayNodeIndex === undefined || weekNode === undefined) return;
+    if (dayNode === undefined || weekNode === undefined) return;
 
-      setActiveWeekNode(dayNodeIndex);
+    if (dayNode.animating) return;
 
-      setCurrentDate({
-        year: values[dayNodeIndex].year,
-        month: values[dayNodeIndex].month,
-        day: dayNodeIndex
-      });
-      const newWeekIndex = Math.ceil((dayNodeIndex + 1) / 7) - 1;
+    setActiveWeekNode(dayNode.activeIndex);
 
-      if (weekNode.realIndex !== newWeekIndex) {
-        weekNode.slideTo(newWeekIndex, 400);
-      }
+    setCurrentDate({
+      year: values[dayNode.activeIndex].year,
+      month: values[dayNode.activeIndex].month,
+      day: dayNode.activeIndex
     });
+    const newWeekIndex = Math.ceil((dayNode.activeIndex + 1) / 7) - 1;
+
+    if (weekNode.realIndex !== newWeekIndex) {
+      weekNode.slideTo(newWeekIndex, 400);
+    }
   };
 
   const onDateNodeClick = (index: number) => {
