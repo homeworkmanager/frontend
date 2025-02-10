@@ -24,7 +24,7 @@ export const JournalMobile = () => {
 
   const onWeekNodeScroll = () => {
     const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
-    if (dayCarouselRef.current) {
+    if (dayCarouselRef.current !== null) {
       const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
       if (weekNodeIndex * 7 <= activeWeekNode && weekNodeIndex * 7 + 6 > activeWeekNode) {
         setCurrentDate({
@@ -37,25 +37,36 @@ export const JournalMobile = () => {
     }
 
     setCurrentDate({
-      year: values[weekNodeIndex * 7 + 6].year,
-      month: values[weekNodeIndex * 7 + 6].month,
-      day: weekNodeIndex * 7 + 6
+      year: values[weekNodeIndex * 7].year,
+      month: values[weekNodeIndex * 7].month,
+      day: weekNodeIndex * 7
     });
   };
 
+  const prevWeekIndexRef = React.useRef<number | null>(null);
+
   const onDayNodeScroll = () => {
-    const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
-    const weekNode = (weekCarouselRef.current as SwiperRef).swiper;
+    requestAnimationFrame(() => {
+      const dayNodeIndex = (dayCarouselRef.current as SwiperRef)?.swiper?.realIndex;
+      const weekNode = (weekCarouselRef.current as SwiperRef)?.swiper;
 
-    setActiveWeekNode(dayNodeIndex);
+      if (dayNodeIndex === undefined || weekNode === undefined) return;
 
-    setCurrentDate({
-      year: values[dayNodeIndex].year,
-      month: values[dayNodeIndex].month,
-      day: dayNodeIndex
+      setActiveWeekNode(dayNodeIndex);
+
+      setCurrentDate({
+        year: values[dayNodeIndex].year,
+        month: values[dayNodeIndex].month,
+        day: dayNodeIndex
+      });
+
+      const newWeekIndex = Math.ceil((dayNodeIndex + 1) / 7) - 1;
+
+      if (newWeekIndex !== prevWeekIndexRef.current) {
+        prevWeekIndexRef.current = newWeekIndex;
+        weekNode.slideTo(newWeekIndex, 400);
+      }
     });
-
-    weekNode.slideTo(Math.ceil((dayNodeIndex + 1) / 7) - 1, 400);
   };
 
   const onDateNodeClick = (index: number) => {
