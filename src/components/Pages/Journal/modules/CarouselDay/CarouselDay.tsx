@@ -32,7 +32,7 @@ export const CarouselDay = ({
       <Swiper
         tag="ul"
         ref={dayCarouselRef}
-        lazyPreloadPrevNext={14}
+        lazyPreloadPrevNext={7}
         freeMode={true}
         onSwiper={updateHeight}
         initialSlide={currentDateIndex}
