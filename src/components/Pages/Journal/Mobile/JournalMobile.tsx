@@ -62,7 +62,6 @@ export const JournalMobile = () => {
       const newWeekIndex = Math.ceil((dayNodeIndex + 1) / 7) - 1;
 
       if (weekNode.realIndex !== newWeekIndex) {
-        console.log('a');
         weekNode.slideTo(newWeekIndex, 400);
       }
     });
