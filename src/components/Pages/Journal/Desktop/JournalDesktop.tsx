@@ -11,7 +11,7 @@ import { SwiperRef } from 'swiper/react';
 export const JournalDesktop = () => {
   const { getScheduleStatus, data, values, currentDateIndex } = useRestructSheduleData();
 
-  const [activeWeekNode, setActiveWeekNode] = React.useState(currentDateIndex);
+  const [activeMonthNode, setActiveMonthNode] = React.useState(currentDateIndex);
 
   const [currentDate, setCurrentDate] = React.useState(() => ({
     year: values[currentDateIndex].year,
@@ -27,10 +27,10 @@ export const JournalDesktop = () => {
   };
 
   const onDayNodeScroll = () => {
-    const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
+    const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.activeIndex;
     const monthNode = (monthCarouselRef.current as SwiperRef).swiper;
 
-    setActiveWeekNode(dayNodeIndex);
+    setActiveMonthNode(dayNodeIndex);
 
     setCurrentDate({
       year: values[dayNodeIndex].year,
@@ -49,13 +49,13 @@ export const JournalDesktop = () => {
           <CarouselMonth
             values={values}
             currentDate={currentDate}
-            activeMonthNode={activeWeekNode}
+            activeMonthNode={activeMonthNode}
             monthCarouselRef={monthCarouselRef}
             setClickedDate={onMonthNodeClick}
           />
           <CarouselDay
             className={styles['desktop']}
-            currentDateIndex={activeWeekNode}
+            currentDateIndex={activeMonthNode}
             apiDates={data}
             onDayNodeScroll={onDayNodeScroll}
             dayCarouselRef={dayCarouselRef}

@@ -45,6 +45,8 @@ export const CarouselMonth = ({
 
   const { menuRef, isOpen, action } = useDropdown();
 
+  const [todaySlide, todayIndexInSlide] = React.useRef([currentSlide, dayIndexInSlide]).current;
+
   const onDropDownClick = () => {
     action.toggle();
   };
@@ -117,7 +119,8 @@ export const CarouselMonth = ({
                   <div
                     className={clsx(
                       styles['day-card'],
-                      currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles.active
+                      todaySlide === slideIndex && todayIndexInSlide === dayIndex && styles['today'],
+                      currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
                     )}
                   >
                     <p>{value.day}</p>

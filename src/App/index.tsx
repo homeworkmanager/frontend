@@ -39,7 +39,7 @@ function App() {
   const getTimeUpdateSession = (cookie: string) => {
     const expiresDate = new Date(document.cookie.match(cookie)?.input?.split('=')[2].split('+')[0] as string);
     const currentDate = new Date();
-    expiresDate.setHours(expiresDate.getHours() + 3);
+    expiresDate.setHours(expiresDate.getHours() + 3); //поменять с гринвича на мск
     return expiresDate.getTime() - currentDate.getTime();
   };
 
