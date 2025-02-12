@@ -36,9 +36,8 @@ export const CarouselDay = ({
         modules={[Virtual]}
         virtual={{
           slides: apiDates ?? [],
-          renderExternal: (swiper) => {
-            const vInstance = (swiper as any).virtual;
-            if (vInstance?.cache) vInstance.cache = {};
+          renderExternal: (swiper: any) => {
+            if (swiper.virtual?.cache) swiper.virtual.cache = {};
           }
         }}
         slidesPerView={1}
@@ -65,8 +64,7 @@ export const CarouselDay = ({
               <IndependentHomework Homeworks={apiData.independentHomeworks} updateHeight={updateHeight} />
             </div>
           </SwiperSlide>
-        )
-        )}
+        ))}
       </Swiper>
     </section>
   );

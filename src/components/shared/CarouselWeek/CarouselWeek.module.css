@@ -22,7 +22,7 @@
   flex-direction: column;
   align-items: center;
   width: 40%;
-  height: calc(100% / 7) !important;
+  height: calc(100% / 7);
 }
 
 .day {
@@ -52,7 +52,11 @@
   }
 }
 
-.clicked {
+.today {
+  background-color: var(--today-color);
+}
+
+.active {
   background-color: var(--time-color);
 
   p {

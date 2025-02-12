@@ -29,7 +29,8 @@ for (let i = 0; i < 60; i++) {
 }
 
 export const DayHomeworkDesktop = () => {
-  const [postModeratorAddHomeworkDateMutation, postAddHomeworkStatusState] = usePostModeratorAddHomeworkDateMutation();
+  const [postModeratorAddHomeworkDateMutation, postModeratorAddHomeworkDateState] =
+    usePostModeratorAddHomeworkDateMutation();
 
   const { values, currentDateIndex } = generateValues();
 
@@ -200,8 +201,7 @@ export const DayHomeworkDesktop = () => {
             </div>
           </div>
           <SendHomework
-            isLoading={postAddHomeworkStatusState.isLoading}
-            isError={postAddHomeworkStatusState.isError}
+            responseState={postModeratorAddHomeworkDateState}
             homeworkText={homeworkText}
             addHomework={sendLessonHomework}
           />

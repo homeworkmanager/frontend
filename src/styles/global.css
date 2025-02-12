@@ -3,6 +3,7 @@
 
   --text-invert-color: #f8f9fa;
   --time-color: #ae8bff;
+  --today-color: #bd9edc;
   --border-base-color: gray;
   --border-focus-color: #8a6bcc;
 
@@ -49,4 +50,15 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
+}
+
+body {
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: contain;
+}
+
+@supports (-webkit-touch-callout: none) {
+  body {
+    overscroll-behavior: none;
+  }
 }

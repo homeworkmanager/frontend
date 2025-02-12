@@ -40,6 +40,8 @@ export const CarouselWeek = ({
     [activeWeekNode, daysByWeeks]
   );
 
+  const [todaySlide, todayIndexInSlide] = React.useRef([currentSlide, dayIndexInSlide]).current;
+
   return (
     <section className={styles['carousel-week']}>
       <header className={styles['navigation']}>
@@ -83,7 +85,8 @@ export const CarouselWeek = ({
                   <div
                     className={clsx(
                       styles['date-card'],
-                      currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles.clicked
+                      todaySlide === slideIndex && todayIndexInSlide === dayIndex && styles['today'],
+                      currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
                     )}
                   >
                     <p className={styles['date']}>{value.day}</p>

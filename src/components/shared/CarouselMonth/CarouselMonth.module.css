@@ -110,6 +110,10 @@
   }
 }
 
+.today {
+  background-color: var(--today-color);
+}
+
 .active {
   background-color: var(--time-color);
   font-size: 1rem;

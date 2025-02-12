@@ -4,23 +4,18 @@ import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
 
 interface SendHomeworkProps {
-  isLoading: boolean;
-  isError: boolean;
+  responseState: { isLoading: boolean; isSuccess: boolean; isError: boolean };
   homeworkText: string;
-  addHomework: () => void;
+  addHomework: () => Promise<void>;
 }
-
-export const SendHomework = ({ isLoading, isError, homeworkText, addHomework }: SendHomeworkProps) => {
+export const SendHomework = ({ responseState, homeworkText, addHomework }: SendHomeworkProps) => {
   return (
     <div className={styles['container']}>
-      <Button variant="accept" disabled={isLoading || !homeworkText} onClick={addHomework}>
-        {isLoading ? <Loader /> : 'Добавить'}
+      <Button variant="accept" disabled={responseState.isLoading || !homeworkText} onClick={addHomework}>
+        {responseState.isLoading ? <Loader /> : 'Добавить'}
       </Button>
-      {isError && (
-        <Typhography tag="p" variant="thirdy">
-          Ошибка
-        </Typhography>
-      )}
+      {responseState.isSuccess && <Typhography tag="p" variant="thirdy" children={'Задание добавлено'} />}
+      {responseState.isError && <Typhography tag="p" variant="thirdy" children={'ошибка'} />}
     </div>
   );
 };
