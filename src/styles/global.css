@@ -27,9 +27,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-.html {
+html {
   scrollbar-color: var(--button-question-color) #888;
   scrollbar-width: thin;
+}
+
+body {
+  overscroll-behavior: none;
 }
 
 ::-webkit-scrollbar {
@@ -50,15 +54,4 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
-}
-
-body {
-  overscroll-behavior-x: none;
-  overscroll-behavior-y: contain;
-}
-
-@supports (-webkit-touch-callout: none) {
-  body {
-    overscroll-behavior: none;
-  }
 }
