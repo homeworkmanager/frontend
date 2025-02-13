@@ -27,11 +27,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-html {
-  scrollbar-color: var(--button-question-color) #888;
-  scrollbar-width: thin;
-}
-
 body {
   overscroll-behavior: none;
 }
