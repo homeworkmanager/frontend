@@ -7,7 +7,9 @@ import { SendHomework } from '../modules/SendHomework/SendHomework';
 import 'swiper/swiper-bundle.css';
 import styles from './DayHomeworkDesktop.module.css';
 import { CarouselMonth } from '@/components/shared/CarouselMonth/CarouselMonth';
-import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Loader } from '@/components/ui/Loader';
+import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import {
@@ -69,13 +71,17 @@ export const DayHomeworkDesktop = () => {
     );
     const isoDate = date.toISOString();
 
-    await postModeratorAddHomeworkDateMutation({
+    const response = await postModeratorAddHomeworkDateMutation({
       params: {
         subjectId: homeworkId,
-        homeworkText: homeworkText,
+        homeworkText: homeworkText.replace(/( {2})|(\n{2})/g, ''),
         dueDate: isoDate
       }
     });
+
+    if (!response.error) {
+      setHomeworkText('');
+    }
   };
 
   const getSubjectsQuery = useGetSubjectsQuery(undefined);
@@ -115,10 +121,10 @@ export const DayHomeworkDesktop = () => {
         />
         <div className={styles['add-homework']}>
           <div className={styles['container']}>
-            <Input
+            <Textarea
+              value={homeworkText}
               onChange={(e) => setHomeworkText(e.target.value)}
               label="Добавить задание"
-              variant="homework"
               name="homeworkText"
             />
           </div>
@@ -200,11 +206,17 @@ export const DayHomeworkDesktop = () => {
               </Swiper>
             </div>
           </div>
-          <SendHomework
-            responseState={postModeratorAddHomeworkDateState}
-            homeworkText={homeworkText}
-            addHomework={sendLessonHomework}
-          />
+          <Button
+            variant="accept"
+            className={styles['submit']}
+            disabled={postModeratorAddHomeworkDateState.isLoading || !homeworkText}
+            onClick={sendLessonHomework}
+          >
+            {postModeratorAddHomeworkDateState.isLoading ? <Loader /> : 'Добавить'}
+          </Button>
+          {(postModeratorAddHomeworkDateState.isSuccess || postModeratorAddHomeworkDateState.isError) && (
+            <SendHomework type='desktop' responseState={postModeratorAddHomeworkDateState} />
+          )}
         </div>
       </div>
     </article>

@@ -10,7 +10,8 @@
 }
 
 .add-homework {
-  margin: auto;
+  display: flex;
+  flex-direction: column;
   width: 45%;
 }
 
@@ -36,7 +37,7 @@
 
 .section-title {
   width: fit-content;
-  margin: auto;
+  margin: 0 auto;
 }
 
 .deadline {
@@ -66,4 +67,8 @@
     margin-bottom: 3px;
     margin-right: 0.5px;
   }
+}
+
+.submit {
+  margin: 0 auto;
 }

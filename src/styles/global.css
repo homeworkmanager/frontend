@@ -27,13 +27,12 @@
   font-variant-numeric: tabular-nums;
 }
 
-.html {
-  scrollbar-color: var(--button-question-color) #888;
-  scrollbar-width: thin;
+body {
+  overscroll-behavior: none;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
 
 @media (max-width: 1050px) {
@@ -50,15 +49,4 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
-}
-
-body {
-  overscroll-behavior-x: none;
-  overscroll-behavior-y: contain;
-}
-
-@supports (-webkit-touch-callout: none) {
-  body {
-    overscroll-behavior: none;
-  }
 }

@@ -2,8 +2,8 @@ import React from 'react';
 
 import styles from './AddLessonHomework.module.css';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
+import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 
@@ -23,7 +23,7 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         classSemNumber: apiData.class.semClassNumber,
         subjectId: apiData.class.subjectId,
         Category: apiData.class.category,
-        homeworkText: homeworkText,
+        homeworkText: homeworkText.replace(/( {2})|(\n{2})/g, ''),
         dueDate: apiData.class.startTime
       }
     });
@@ -40,11 +40,10 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
 
   return (
     <article className={styles['section']}>
-      <Input
+      <Textarea
         value={homeworkText}
         onChange={(e) => setHomeworkText(e.target.value)}
         label="Добавить задание"
-        variant="homework"
         name={`${apiData.class.startTime}`}
       />
       <Button

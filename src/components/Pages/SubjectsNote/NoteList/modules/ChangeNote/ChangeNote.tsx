@@ -2,8 +2,8 @@ import React from 'react';
 
 import styles from './ChangeNote.module.css';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
+import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { usePatchNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -43,10 +43,9 @@ export const ChangeNote = ({ changeNote, noteId, subjectId, removeNoteId }: Chan
           transition={{ duration: 0.3, ease: 'easeInOut' }}
           className={styles['section']}
         >
-          <Input
+          <Textarea
             onChange={(e) => setNoteText(e.target.value)}
             label="Изменить заметку"
-            variant="homework"
             name={`${subjectId} ${noteId}`}
           />
           <Button variant="accept" disabled={patchUpdateNoteState.isLoading || !noteText} onClick={updateNote}>

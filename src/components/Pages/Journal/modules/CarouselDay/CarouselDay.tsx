@@ -24,7 +24,7 @@ export const CarouselDay = ({
 }: CarouselDayProps) => {
   const updateHeight = () => {
     if (dayCarouselRef.current) {
-      dayCarouselRef.current.swiper.updateAutoHeight(400);
+      dayCarouselRef.current.swiper.wrapperEl.style.height = 'auto';
     }
   };
 
@@ -36,6 +36,7 @@ export const CarouselDay = ({
         modules={[Virtual]}
         virtual={{
           slides: apiDates ?? [],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           renderExternal: (swiper: any) => {
             if (swiper.virtual?.cache) swiper.virtual.cache = {};
           }

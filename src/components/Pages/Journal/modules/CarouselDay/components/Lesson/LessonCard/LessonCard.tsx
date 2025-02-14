@@ -21,7 +21,7 @@ import {
 } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface LessonInfoProps {
   apiData: OutputClass;
@@ -56,18 +56,22 @@ export const LessonCard = ({
   const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
   const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
 
-  const [homeworkId, setHomeworkId] = React.useState(-1);
+  const [currentHomework, setCurrentHomework] = React.useState<RestructHomeworkElement>({
+    homeworkText: '',
+    homeworkID: -1,
+    isCompleted: false
+  });
 
-  const removeHomeworkId = () => {
-    setHomeworkId(-1);
+  const removeCurrentHomework = () => {
+    setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false });
   };
 
-  const addHomeworkId = (id: number) => {
-    if (homeworkId !== -1) {
-      removeHomeworkId();
+  const addCurrentHomework = (elem: RestructHomeworkElement) => {
+    if (currentHomework.homeworkID !== -1) {
+      removeCurrentHomework();
       return;
     }
-    setHomeworkId(id);
+    setCurrentHomework(elem);
   };
 
   const deleteLessonHomework = async (homework: RestructHomeworkElement) => {
@@ -75,7 +79,7 @@ export const LessonCard = ({
 
     if (!response.error) {
       deleteHomework(homework);
-      if (homeworkId === homework.homeworkID) removeHomeworkId();
+      if (currentHomework?.homeworkID === homework.homeworkID) removeCurrentHomework();
     }
   };
 
@@ -143,13 +147,16 @@ export const LessonCard = ({
                   )}
                   {userRole >= ModeratorRole && (
                     <>
-                      {homeworkId === -1 || homeworkId === homework.homeworkID ? (
+                      {currentHomework?.homeworkID === -1 || currentHomework?.homeworkID === homework.homeworkID ? (
                         <Button
                           variant="slide"
-                          onClick={() => addHomeworkId(homework.homeworkID)}
+                          onClick={() => addCurrentHomework(homework)}
                           children={
                             <ChangeLogo
-                              className={clsx(styles['icon'], homeworkId === homework.homeworkID && styles['active'])}
+                              className={clsx(
+                                styles['icon'],
+                                currentHomework.homeworkID === homework.homeworkID && styles['active']
+                              )}
                             />
                           }
                         />
@@ -173,11 +180,15 @@ export const LessonCard = ({
               </MultiList.Row>
             ))}
           </MultiList>
-          <ChangeLessonHomework
-            HomeworkId={homeworkId}
-            removeHomeworkId={removeHomeworkId}
-            changeHomework={changeHomework}
-          />
+          <AnimatePresence>
+            {currentHomework.homeworkID !== -1 && (
+              <ChangeLessonHomework
+                currentHomework={currentHomework}
+                removeCurrentHomework={removeCurrentHomework}
+                changeHomework={changeHomework}
+              />
+            )}
+          </AnimatePresence>
         </article>
         <article className={styles['section']}>
           <Typhography tag="h3" variant="additional" className={styles['info']} children={'Место'} />

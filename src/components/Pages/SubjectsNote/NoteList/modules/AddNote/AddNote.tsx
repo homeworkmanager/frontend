@@ -2,8 +2,8 @@ import React from 'react';
 
 import styles from './AddNote.module.css';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
+import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { usePostAddNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 import { motion } from 'framer-motion';
@@ -20,7 +20,7 @@ export const AddNote = ({ subjectId, addNote }: AddNoteProps) => {
   const sendNote = async () => {
     const postAddNoteResponse = await postAddNoteMutation({
       params: {
-        noteText: noteText,
+        noteText: noteText.replace(/( {2})|(\n{2})/g, ''),
         subjectId: subjectId
       }
     });
@@ -41,12 +41,7 @@ export const AddNote = ({ subjectId, addNote }: AddNoteProps) => {
       transition={{ duration: 0.3, ease: 'easeInOut' }}
       className={styles['section']}
     >
-      <Input
-        onChange={(e) => setNoteText(e.target.value)}
-        label="Добавить заметку"
-        variant="homework"
-        name={`${subjectId}`}
-      />
+      <Textarea onChange={(e) => setNoteText(e.target.value)} label="Добавить заметку" name={`${subjectId}`} />
       <Button variant="accept" disabled={postAddNoteState.isLoading || !noteText} onClick={sendNote}>
         {postAddNoteState.isLoading ? <Loader /> : 'Добавить'}
       </Button>
