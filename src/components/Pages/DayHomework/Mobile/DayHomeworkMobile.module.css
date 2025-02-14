@@ -1,4 +1,6 @@
 .layout {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   margin: 0 auto;
   max-width: var(--max-width-mobile);
@@ -56,4 +58,8 @@
     margin-bottom: 3px;
     margin-right: 0.5px;
   }
+}
+
+.submit {
+  margin: 0 auto 24px;
 }

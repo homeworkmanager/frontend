@@ -18,6 +18,7 @@ import {
 } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
+import { AnimatePresence } from 'framer-motion';
 
 interface IndependentHomeworkProps {
   Homeworks: RestructIndependentHomeworkArray;
@@ -32,19 +33,23 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
 
   const userRole = useSelector(getUserRole);
 
-  const [homeworkId, setHomeworkId] = React.useState(-1);
+  const [currentHomework, setCurrentHomework] = React.useState<RestructHomeworkElement>({
+    homeworkText: '',
+    homeworkID: -1,
+    isCompleted: false
+  });
 
-  const removeHomeworkId = () => {
-    setHomeworkId(-1);
+  const removeCurrentHomework = () => {
+    setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false });
     updateHeight();
   };
 
-  const addHomeworkId = (id: number) => {
-    if (homeworkId !== -1) {
-      removeHomeworkId();
+  const addCurrentHomework = (elem: RestructHomeworkElement) => {
+    if (currentHomework.homeworkID !== -1) {
+      removeCurrentHomework();
       return;
     }
-    setHomeworkId(id);
+    setCurrentHomework(elem);
     updateHeight();
   };
 
@@ -53,7 +58,7 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
 
     if (!response.error) {
       setIndependentHomeworks((prev) => prev.filter((item) => item.homeworkID !== homework.homeworkID));
-      if (homeworkId === homework.homeworkID) removeHomeworkId();
+      if (currentHomework.homeworkID === homework.homeworkID) removeCurrentHomework();
     }
   };
   const changeHomework = (homework: RestructHomeworkElement) => {
@@ -135,15 +140,15 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                       )}
                       {userRole >= ModeratorRole && (
                         <>
-                          {homeworkId === -1 || homeworkId === homework.homeworkID ? (
+                          {currentHomework.homeworkID === -1 || currentHomework.homeworkID === homework.homeworkID ? (
                             <Button
                               variant="slide"
-                              onClick={() => addHomeworkId(homework.homeworkID)}
+                              onClick={() => addCurrentHomework(homework)}
                               children={
                                 <ChangeLogo
                                   className={clsx(
                                     styles['icon'],
-                                    homeworkId === homework.homeworkID && styles['active']
+                                    currentHomework.homeworkID === homework.homeworkID && styles['active']
                                   )}
                                 />
                               }
@@ -155,7 +160,7 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                             variant="slide"
                             onClick={() => removeHomework(homework)}
                             children={
-                              deleteHomeworkState.isLoading && homeworkId === homework.homeworkID ? (
+                              deleteHomeworkState.isLoading && currentHomework.homeworkID === homework.homeworkID ? (
                                 <Loader spinnerSize={28} className={styles['loader']} />
                               ) : (
                                 <DeleteLogo className={styles['delete-icon']} />
@@ -169,11 +174,15 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
                 </React.Fragment>
               ))}
             </MultiList>
-            <ChangeLessonHomework
-              HomeworkId={homeworkId}
-              removeHomeworkId={removeHomeworkId}
-              changeHomework={changeHomework}
-            />
+            <AnimatePresence>
+              {currentHomework.homeworkID !== -1 && (
+                <ChangeLessonHomework
+                  currentHomework={currentHomework}
+                  removeCurrentHomework={removeCurrentHomework}
+                  changeHomework={changeHomework}
+                />
+              )}
+            </AnimatePresence>
           </div>
         </article>
       )}

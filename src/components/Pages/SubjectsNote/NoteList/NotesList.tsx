@@ -33,10 +33,11 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
 
   const onAddNoteClick = () => {
     setAddNoteOpen((prev) => !prev);
+    setNoteId(-1);
   };
 
   const addNote = (note: Note) => {
-    setNotes((prev) => [...prev, note]);
+    setNotes((prev) => [...prev, { ...note, note_text: note.note_text.replace(/( {2})|(\n{2})/g, '') }]);
     setAddNoteOpen(false);
   };
 
@@ -50,6 +51,7 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
       return;
     }
     setNoteId(id);
+    setAddNoteOpen(false);
   };
 
   const changeNote = (note: Note) => {
@@ -64,6 +66,8 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
       if (noteId === note.note_id) removeNoteId();
     }
   };
+
+  console.log(notes);
 
   return (
     <MultiList>
