@@ -15,6 +15,7 @@ import { ModeratorRole } from '@/utils/constants/userRoles';
 import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
+import { formatText } from '@/utils/helpers/formatText';
 
 interface NotesListProps {
   subjectNotes: Note[];
@@ -27,35 +28,35 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
 
   const [addNoteOpen, setAddNoteOpen] = React.useState(false);
 
-  const [noteId, setNoteId] = React.useState(-1);
+  const [currentNote, setCurrentNote] = React.useState<Note>({ note_id: -1, subject_id: -1, note_text: '' });
 
   const [deleteNoteMutation, deleteNoteState] = useDeleteNoteMutation();
 
   const onAddNoteClick = () => {
     setAddNoteOpen((prev) => !prev);
-    setNoteId(-1);
+    setCurrentNote({ note_id: -1, subject_id: -1, note_text: '' });
   };
 
   const addNote = (note: Note) => {
-    setNotes((prev) => [...prev, { ...note, note_text: note.note_text.replace(/( {2})|(\n{2})/g, '') }]);
+    setNotes((prev) => [...prev, { ...note, note_text: formatText(note.note_text) }]);
     setAddNoteOpen(false);
   };
 
-  const removeNoteId = () => {
-    setNoteId(-1);
+  const removeCurrentNote = () => {
+    setCurrentNote({ note_id: -1, subject_id: -1, note_text: '' });
   };
 
-  const addNoteId = (id: number) => {
-    if (noteId !== -1) {
-      removeNoteId();
+  const addCurrentNote = (note: Note) => {
+    if (currentNote.note_id !== -1) {
+      removeCurrentNote();
       return;
     }
-    setNoteId(id);
+    setCurrentNote(note);
     setAddNoteOpen(false);
   };
 
   const changeNote = (note: Note) => {
-    setNotes((prev) => prev.map((item) => (item.note_id === note.note_id ? note : item)));
+    setNotes((prev) => prev.map((item) => (item.note_id === note.note_id ? { ...note, note_text: formatText(note.note_text) } : item)));
   };
 
   const deleteLessonHomework = async (note: Note) => {
@@ -63,7 +64,7 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
 
     if (!response.error) {
       setNotes((prev) => prev.filter((item) => item.note_id !== note.note_id));
-      if (noteId === note.note_id) removeNoteId();
+      if (currentNote.note_id === note.note_id) removeCurrentNote();
     }
   };
 
@@ -78,12 +79,12 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
           <MultiList.Column>
             {userRole >= ModeratorRole && (
               <>
-                {noteId === -1 || noteId === note.note_id ? (
+                {currentNote.note_id === -1 || currentNote.note_id === note.note_id ? (
                   <Button
                     variant="slide"
-                    onClick={() => addNoteId(note.note_id)}
+                    onClick={() => addCurrentNote(note)}
                     children={
-                      <ChangeLogo className={clsx(styles['icon'], noteId === note.note_id && styles['active'])} />
+                      <ChangeLogo className={clsx(styles['icon'], currentNote.note_id === note.note_id && styles['active'])} />
                     }
                   />
                 ) : (
@@ -123,8 +124,8 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
         />
       )}
       {addNoteOpen && <AddNote subjectId={subjectId} addNote={addNote} />}
-      {noteId !== -1 && (
-        <ChangeNote noteId={noteId} subjectId={subjectId} removeNoteId={removeNoteId} changeNote={changeNote} />
+      {currentNote.note_id !== -1 && (
+        <ChangeNote note={currentNote} subjectId={subjectId} removeNoteId={removeCurrentNote} changeNote={changeNote} />
       )}
     </MultiList>
   );

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
+import { formatText } from '@/utils/helpers/formatText';
 import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 
 interface ModeratorBlockProps {
@@ -23,7 +24,7 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         classSemNumber: apiData.class.semClassNumber,
         subjectId: apiData.class.subjectId,
         Category: apiData.class.category,
-        homeworkText: homeworkText.replace(/( {2})|(\n{2})/g, ''),
+        homeworkText: formatText(homeworkText),
         dueDate: apiData.class.startTime
       }
     });

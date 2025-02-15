@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
+import { formatText } from '@/utils/helpers/formatText';
 import { usePostAddNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 import { motion } from 'framer-motion';
 
@@ -20,7 +21,7 @@ export const AddNote = ({ subjectId, addNote }: AddNoteProps) => {
   const sendNote = async () => {
     const postAddNoteResponse = await postAddNoteMutation({
       params: {
-        noteText: noteText.replace(/( {2})|(\n{2})/g, ''),
+        noteText: formatText(noteText),
         subjectId: subjectId
       }
     });

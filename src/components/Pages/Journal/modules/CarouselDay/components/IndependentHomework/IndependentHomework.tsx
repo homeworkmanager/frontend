@@ -19,6 +19,7 @@ import {
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
+import { formatText } from '@/utils/helpers/formatText';
 
 interface IndependentHomeworkProps {
   Homeworks: RestructIndependentHomeworkArray;
@@ -67,7 +68,7 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
         if (item.homeworkID === homework.homeworkID) {
           return {
             ...item,
-            homeworkText: homework.homeworkText,
+            homeworkText: formatText(homework.homeworkText),
             isCompleted: false
           };
         }

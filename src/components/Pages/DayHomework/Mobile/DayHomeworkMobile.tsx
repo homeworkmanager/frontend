@@ -12,6 +12,7 @@ import { Loader } from '@/components/ui/Loader';
 import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
+import { formatText } from '@/utils/helpers/formatText';
 import {
   useGetSubjectsQuery,
   usePostModeratorAddHomeworkDateMutation
@@ -75,7 +76,7 @@ export const DayHomeworkMobile = () => {
     const response = await postModeratorAddHomeworkDateMutation({
       params: {
         subjectId: homeworkId,
-        homeworkText: homeworkText.replace(/( {2})|(\n{2})/g, ''),
+        homeworkText: formatText(homeworkText),
         dueDate: isoDate
       }
     });
@@ -242,7 +243,7 @@ export const DayHomeworkMobile = () => {
         {postModeratorAddHomeworkDateState.isLoading ? <Loader /> : 'Добавить'}
       </Button>
       {(postModeratorAddHomeworkDateState.isSuccess || postModeratorAddHomeworkDateState.isError) && (
-        <SendHomework type='mobile' responseState={postModeratorAddHomeworkDateState} />
+        <SendHomework type="mobile" responseState={postModeratorAddHomeworkDateState} />
       )}
     </motion.article>
   );

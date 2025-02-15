@@ -6,6 +6,7 @@ import { LessonCard } from './LessonCard/LessonCard';
 import { Modal } from '@/components/ui/Modal';
 import { Typhography } from '@/components/ui/Typhography';
 import clsx from 'clsx';
+import { formatText } from '@/utils/helpers/formatText';
 
 interface LessonProps {
   apiData: OutputClass;
@@ -60,7 +61,7 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
   const showDetails = () => setShowInfo((prev) => !prev);
 
   const addLessonHomework = (homework: RestructHomeworkElement) => {
-    setHomeworks((prev) => [...prev, homework]);
+    setHomeworks((prev) => [...prev, { ...homework, homeworkText: formatText(homework.homeworkText) }]);
     updateHeight();
   };
 
@@ -75,7 +76,7 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
         if (item.homeworkID === homework.homeworkID) {
           return {
             ...item,
-            homeworkText: homework.homeworkText,
+            homeworkText: formatText(homework.homeworkText),
             isCompleted: false
           };
         }
