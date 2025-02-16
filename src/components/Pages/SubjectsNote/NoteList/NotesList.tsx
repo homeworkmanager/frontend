@@ -68,6 +68,8 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
     }
   };
 
+  console.log(notes);
+
   return (
     <MultiList>
       {notes.map((note, noteIndex) => (

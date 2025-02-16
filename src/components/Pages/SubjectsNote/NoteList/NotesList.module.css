@@ -5,6 +5,7 @@
 .text {
   max-width: 100%;
   overflow-wrap: break-word;
+  white-space: pre-line;
   margin-bottom: 8px;
 }
 

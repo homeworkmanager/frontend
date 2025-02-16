@@ -90,9 +90,10 @@
 
 .homework {
   width: 75%;
-  white-space: nowrap;
+  white-space: pre-line;
   overflow: hidden;
   text-overflow: ellipsis;
+
 }
 
 .complete {

@@ -206,7 +206,7 @@ export const LessonCard = ({
           ))}
           {description.length === 0 && <Typhography tag="p" variant="thirdy" children={'Не указан'} />}
         </article>
-        {userRole > ModeratorRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
+        {userRole >= ModeratorRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
       </section>
     </motion.aside>
   );
