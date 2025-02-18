@@ -1,9 +1,10 @@
 .container {
   width: 100%;
-  margin: 0 auto;
+  margin: 10px auto;
   max-width: var(--max-width-desktop);
 
   @media (max-width: 1050px) {
+    margin-top: 0;
     max-width: var(--max-width-mobile);
   }
 }

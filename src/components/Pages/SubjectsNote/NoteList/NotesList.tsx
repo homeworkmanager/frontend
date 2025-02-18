@@ -12,10 +12,10 @@ import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
+import { formatText } from '@/utils/helpers/formatText';
 import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
-import { formatText } from '@/utils/helpers/formatText';
 
 interface NotesListProps {
   subjectNotes: Note[];
@@ -56,7 +56,9 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
   };
 
   const changeNote = (note: Note) => {
-    setNotes((prev) => prev.map((item) => (item.note_id === note.note_id ? { ...note, note_text: formatText(note.note_text) } : item)));
+    setNotes((prev) =>
+      prev.map((item) => (item.note_id === note.note_id ? { ...note, note_text: formatText(note.note_text) } : item))
+    );
   };
 
   const deleteLessonHomework = async (note: Note) => {
@@ -84,7 +86,9 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
                     variant="slide"
                     onClick={() => addCurrentNote(note)}
                     children={
-                      <ChangeLogo className={clsx(styles['icon'], currentNote.note_id === note.note_id && styles['active'])} />
+                      <ChangeLogo
+                        className={clsx(styles['icon'], currentNote.note_id === note.note_id && styles['active'])}
+                      />
                     }
                   />
                 ) : (

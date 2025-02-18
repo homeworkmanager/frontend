@@ -10,4 +10,18 @@ const moderatorDesktop = main + 'moderator-desktop';
 const profile = main + 'profile';
 const note = main + 'note';
 
-export { error, main, auth, journalMobile, journalDesktop, admin, moderatorMobile, moderatorDesktop, profile, note };
+const lessonModal = 'lesson';
+
+export {
+  error,
+  main,
+  auth,
+  journalMobile,
+  journalDesktop,
+  lessonModal,
+  admin,
+  moderatorMobile,
+  moderatorDesktop,
+  profile,
+  note
+};

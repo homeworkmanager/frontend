@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import './styles/index.ts';
 
 import App from './App';
-import { EntryProvider } from './App/context/AuthContext.tsx';
+import { EntryProvider } from './App/contexts/AuthContext.tsx';
 import { store } from './utils/redux/store.ts';
 import { registerSW } from 'virtual:pwa-register';
 

@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChangeLessonHomework } from '../../ChangeLessonHomework/ChangeLessonHomework';
-import { convertSummary } from '../helpers/convertSummary';
+import { ChangeLessonHomework } from '../../CarouselDay/components/ChangeLessonHomework/ChangeLessonHomework';
 
 import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
 import styles from './LessonCard.module.css';
@@ -15,6 +14,7 @@ import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
+import { convertSummary } from '@/utils/helpers/convertSummary';
 import {
   useDeleteModeratorHomeworkMutation,
   usePostHomeworkStatusMutation
