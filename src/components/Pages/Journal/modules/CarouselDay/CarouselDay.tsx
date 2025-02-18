@@ -1,4 +1,5 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselDay.module.css';
@@ -22,12 +23,6 @@ export const CarouselDay = ({
   dayCarouselRef,
   ...props
 }: CarouselDayProps) => {
-  const updateHeight = () => {
-    if (dayCarouselRef.current) {
-      dayCarouselRef.current.swiper.wrapperEl.style.height = 'auto';
-    }
-  };
-
   return (
     <section {...props}>
       <Swiper
@@ -55,18 +50,14 @@ export const CarouselDay = ({
               {apiData.outputClasses.length === 0 && <FreeDay />}
               {apiData.outputClasses.length > 0 &&
                 apiData.outputClasses.map((value) => (
-                  <Lesson
-                    key={value.class.startTime}
-                    apiData={value}
-                    Homeworks={value.homework}
-                    updateHeight={updateHeight}
-                  />
+                  <Lesson key={value.class.startTime} apiData={value} Homeworks={value.homework} />
                 ))}
-              <IndependentHomework Homeworks={apiData.independentHomeworks} updateHeight={updateHeight} />
+              <IndependentHomework Homeworks={apiData.independentHomeworks} dayCarouselRef={dayCarouselRef} />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
+      <Outlet />
     </section>
   );
 };

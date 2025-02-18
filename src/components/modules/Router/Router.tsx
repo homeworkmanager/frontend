@@ -11,6 +11,7 @@ import {
   DayHomeworkMobile,
   JournalDesktop,
   JournalMobile,
+  LessonModal,
   ProfileSettings,
   SubjectsNote
 } from './constants/lazyImports';
@@ -20,6 +21,7 @@ import {
   error,
   journalDesktop,
   journalMobile,
+  lessonModal,
   main,
   moderatorDesktop,
   moderatorMobile,
@@ -30,6 +32,7 @@ import { Loader } from '@/components/ui/Loader';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { LocationGuard } from './guards/LocationGuard';
 
 export const Router = () => {
   const isAuth = !!document.cookie.match('session_key=');
@@ -59,7 +62,18 @@ export const Router = () => {
                   {journalType === '/journal-mobile' ? <JournalMobile /> : <Navigate to={journalDesktop} />}
                 </Suspense>
               }
-            />
+            >
+              <Route
+                path={lessonModal}
+                element={
+                  <Suspense fallback={<div />}>
+                    <LocationGuard>
+                      <LessonModal />
+                    </LocationGuard>
+                  </Suspense>
+                }
+              />
+            </Route>
 
             <Route
               path={journalDesktop}
@@ -68,7 +82,18 @@ export const Router = () => {
                   {journalType === '/journal-desktop' ? <JournalDesktop /> : <Navigate to={journalMobile} />}
                 </Suspense>
               }
-            />
+            >
+              <Route
+                path={lessonModal}
+                element={
+                  <Suspense fallback={<div />}>
+                    <LocationGuard>
+                      <LessonModal />
+                    </LocationGuard>
+                  </Suspense>
+                }
+              />
+            </Route>
 
             <Route
               path={admin}

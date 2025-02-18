@@ -1,14 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
-import {
-  admin,
-  journalDesktop,
-  journalMobile,
-  moderatorDesktop,
-  moderatorMobile,
-  note
-} from '../Router/constants/routes';
+import { admin, moderatorDesktop, moderatorMobile, note } from '../Router/constants/routes';
 
 import styles from './Header.module.css';
 import { AdminLogo } from '@/components/ui/Icons/Admin';
@@ -31,7 +24,7 @@ export const Header = () => {
         <Typhography
           tag="h1"
           variant="header"
-          className={clsx(styles['journal'], (page === journalMobile || page === journalDesktop) && styles['current'])}
+          className={clsx(styles['journal'], page.split('-')[0] === '/journal' && styles['current'])} //для всех страниц journal (в том числе вложенных)
           children={group_name}
         />
       </Link>

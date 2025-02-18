@@ -12,6 +12,12 @@ const JournalDesktop = lazy(() =>
   }))
 );
 
+const LessonModal = lazy(() =>
+  import('@/components/Pages/Journal/modules/LessonModal/LessonModal').then((module) => ({
+    default: module.LessonModal
+  }))
+);
+
 const AdminPanel = lazy(() =>
   import('@/components/Pages/AdminPanel/AdminPanel').then((module) => ({ default: module.AdminPanel }))
 );
@@ -40,6 +46,7 @@ export {
   Auth,
   JournalMobile,
   JournalDesktop,
+  LessonModal,
   AdminPanel,
   DayHomeworkMobile,
   DayHomeworkDesktop,

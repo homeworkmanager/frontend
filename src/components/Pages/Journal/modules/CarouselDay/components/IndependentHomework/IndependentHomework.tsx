@@ -12,6 +12,7 @@ import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
+import { formatText } from '@/utils/helpers/formatText';
 import {
   useDeleteModeratorHomeworkMutation,
   usePostHomeworkStatusMutation
@@ -19,14 +20,14 @@ import {
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
-import { formatText } from '@/utils/helpers/formatText';
+import { SwiperRef } from 'swiper/react';
 
 interface IndependentHomeworkProps {
   Homeworks: RestructIndependentHomeworkArray;
-  updateHeight: () => void;
+  dayCarouselRef: React.RefObject<SwiperRef>;
 }
 
-export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHomeworkProps) => {
+export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHomeworkProps) => {
   const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
   const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
 
@@ -39,6 +40,12 @@ export const IndependentHomework = ({ Homeworks, updateHeight }: IndependentHome
     homeworkID: -1,
     isCompleted: false
   });
+
+  const updateHeight = () => {
+    if (dayCarouselRef.current) {
+      dayCarouselRef.current.swiper.wrapperEl.style.height = 'auto';
+    }
+  };
 
   const removeCurrentHomework = () => {
     setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false });

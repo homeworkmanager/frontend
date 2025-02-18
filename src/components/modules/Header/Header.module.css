@@ -10,7 +10,7 @@
   @media (min-width: 1050px) {
     max-width: var(--max-width-desktop);
     padding: 1rem 0 0;
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
 }
 
