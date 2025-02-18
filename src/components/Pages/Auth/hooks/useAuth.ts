@@ -12,8 +12,16 @@ import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
 import { useFormik } from 'formik';
 
+type Stages = 'login' | 'register';
+
+interface State {
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+}
+
 export const useAuth = () => {
-  const [stage, setStage] = React.useState<'login' | 'register'>('login');
+  const [stage, setStage] = React.useState<Stages>('login');
   const dispatch = useAppDispatch();
   const { isEntry, setIsEntry } = React.useContext(EntryContext);
   const navigate = useNavigate();
@@ -41,23 +49,15 @@ export const useAuth = () => {
     form.setTouched({}, false);
   };
 
-  const [postRegister, { isLoading: isRegisterLoading, isError: isRegisterError, isSuccess: isRegisterSuccess }] =
+  const [postRegister, postRegisterState] =
     usePostRegisterMutation();
-  const [postAuth, { isLoading: isAuthLoading, isError: isAuthError, isSuccess: isAuthSuccess }] =
+  const [postAuth, postAuthState] =
     usePostAuthMutation();
 
-  const currentState =
-    stage === 'register'
-      ? {
-          isLoading: isRegisterLoading,
-          isError: isRegisterError,
-          isSuccess: isRegisterSuccess
-        }
-      : {
-          isLoading: isAuthLoading,
-          isError: isAuthError,
-          isSuccess: isAuthSuccess
-        };
+  const stateByStage: Record<Stages, State> = {
+    'register': postRegisterState,
+    'login': postAuthState,
+  }
 
   const getUserAfterAuth = async () => {
     try {
@@ -125,6 +125,6 @@ export const useAuth = () => {
     stage,
     groups: getAllGroupsResponse,
     func: { changeStage },
-    state: currentState
+    state: stateByStage[stage]
   };
 };

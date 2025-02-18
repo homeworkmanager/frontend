@@ -28,7 +28,9 @@
 }
 
 body {
+  overflow: hidden;
   overscroll-behavior: none;
+  width: 100% !important;
 }
 
 ::-webkit-scrollbar {
