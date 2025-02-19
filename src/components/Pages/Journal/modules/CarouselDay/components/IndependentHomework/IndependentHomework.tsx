@@ -38,7 +38,8 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
   const [currentHomework, setCurrentHomework] = React.useState<RestructHomeworkElement>({
     homeworkText: '',
     homeworkID: -1,
-    isCompleted: false
+    isCompleted: false,
+    dueDate: ''
   });
 
   const updateHeight = () => {
@@ -48,7 +49,7 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
   };
 
   const removeCurrentHomework = () => {
-    setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false });
+    setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false, dueDate: '' });
     updateHeight();
   };
 
@@ -111,10 +112,23 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
       {independentHomeworks.length > 0 && (
         <article className={styles['container']}>
           <Typhography tag="p" variant="primary" children={`Задания на день`} className={styles['title']} />
-          <div className={styles['content']}>
-            <MultiList>
-              {independentHomeworks.map((homework, index) => (
-                <React.Fragment key={homework.homeworkID}>
+          <MultiList>
+            {independentHomeworks.map((homework) => (
+              <React.Fragment key={homework.homeworkID}>
+                <div className={styles['content']}>
+                  <MultiList.Row>
+                    <MultiList.Column>
+                      <Typhography
+                        tag="p"
+                        variant="small"
+                        style={{ marginBottom: '.5rem', color: 'var(--time-color)' }}
+                        children={`До ${new Date(homework.dueDate).toLocaleTimeString('ru-RU', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}`}
+                      />
+                    </MultiList.Column>
+                  </MultiList.Row>
                   <MultiList.Row>
                     <MultiList.Column>
                       <Typhography
@@ -127,12 +141,6 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                   </MultiList.Row>
                   <MultiList.Row>
                     <MultiList.Column icons={userRole >= ModeratorRole ? 3 : 1}>
-                      <Typhography
-                        tag="p"
-                        variant="thirdy"
-                        className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
-                        children={`${index + 1}. `}
-                      />
                       <Typhography
                         tag="p"
                         variant="thirdy"
@@ -179,19 +187,19 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                       )}
                     </MultiList.Column>
                   </MultiList.Row>
-                </React.Fragment>
-              ))}
-            </MultiList>
-            <AnimatePresence>
-              {currentHomework.homeworkID !== -1 && (
-                <ChangeLessonHomework
-                  currentHomework={currentHomework}
-                  removeCurrentHomework={removeCurrentHomework}
-                  changeHomework={changeHomework}
-                />
-              )}
-            </AnimatePresence>
-          </div>
+                </div>
+              </React.Fragment>
+            ))}
+          </MultiList>
+          <AnimatePresence>
+            {currentHomework.homeworkID !== -1 && (
+              <ChangeLessonHomework
+                currentHomework={currentHomework}
+                removeCurrentHomework={removeCurrentHomework}
+                changeHomework={changeHomework}
+              />
+            )}
+          </AnimatePresence>
         </article>
       )}
     </>
