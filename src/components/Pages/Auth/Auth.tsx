@@ -12,7 +12,12 @@ export const Auth = () => {
   const { form, stage, groups, func, state } = useAuth();
   const { menuRef, isOpen, action } = useDropdown();
 
-  const acceptButtonText = stage === 'login' ? 'Войти' : 'Зарегистрироваться';
+  const acceptButtonText = {
+    profile: 'Далее',
+    register: 'Зарегистрироваться',
+    login: 'Войти'
+  };
+
   const stageButtonText = stage === 'login' ? ' Нет аккаунта? Зарегистрироваться' : 'Есть аккаунт? Войти';
 
   type groupType = CurrentGroup;
@@ -30,104 +35,134 @@ export const Auth = () => {
     <article className={styles.container}>
       <UniHelperLogo />
       <form onSubmit={form.handleSubmit} className={styles.form}>
-        <div>
-          {stage === 'register' && (
-            <>
+        {stage === 'profile' && (
+          <>
+            <Input
+              name="name"
+              label="Имя"
+              type="text"
+              variant="primary"
+              autoComplete="name"
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
+              value={form.values.name}
+              {...(form.touched.name && {
+                error: form.errors.name
+              })}
+            />
+            <Input
+              name="surname"
+              label="Фамилия"
+              type="text"
+              variant="primary"
+              autoComplete="family-name"
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
+              value={form.values.surname}
+              {...(form.touched.surname && {
+                error: form.errors.surname
+              })}
+            />
+            <div style={{ position: 'relative' }} ref={menuRef}>
               <Input
-                name="name"
-                label="Имя"
+                name="group_Id"
+                label="Группа"
                 type="text"
                 variant="primary"
-                autoComplete="name"
-                onChange={form.handleChange}
+                autoComplete="off"
+                readOnly={true}
+                onClick={getGroups}
                 onBlur={form.handleBlur}
-                value={form.values.name}
-                {...(form.touched.name && {
-                  error: form.errors.name
+                onChange={form.handleChange}
+                value={form.values.groupName}
+                {...(form.touched.groupName && {
+                  error: form.errors.groupName
                 })}
               />
-              <Input
-                name="surname"
-                label="Фамилия"
-                type="text"
-                variant="primary"
-                autoComplete="family-name"
-                onChange={form.handleChange}
-                onBlur={form.handleBlur}
-                value={form.values.surname}
-                {...(form.touched.surname && {
-                  error: form.errors.surname
-                })}
-              />
-              <div style={{ position: 'relative' }} ref={menuRef}>
-                <Input
-                  name="group_Id"
-                  label="Группа"
-                  type="text"
-                  variant="primary"
-                  autoComplete="off"
-                  readOnly={true}
-                  onClick={getGroups}
-                  onBlur={form.handleBlur}
-                  onChange={form.handleChange}
-                  value={form.values.groupName}
-                  {...(form.touched.groupName && {
-                    error: form.errors.groupName
-                  })}
-                />
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.ul
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.25, ease: 'easeInOut' }}
-                      className={styles['group-list']}
-                    >
-                      {groups?.map((group) => (
-                        <li className={styles['group-name']} key={group.group_id} onClick={() => chooseGroup(group)}>
-                          {group.name}
-                        </li>
-                      ))}
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
-              </div>
-            </>
-          )}
-          <Input
-            name="email"
-            label="Почта"
-            type="text"
-            variant="primary"
-            autoComplete="email"
-            onChange={form.handleChange}
-            onBlur={form.handleBlur}
-            value={form.values.email}
-            {...(form.touched.email && { error: form.errors.email })}
-          />
-          <Input
-            name="password"
-            label="Пароль"
-            type="password"
-            variant="primary"
-            autoComplete="current-password"
-            onChange={form.handleChange}
-            onBlur={form.handleBlur}
-            value={form.values.password}
-            {...(form.touched.password && { error: form.errors.password })}
-          />
-        </div>
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.ul
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    className={styles['group-list']}
+                  >
+                    {groups?.map((group) => (
+                      <li className={styles['group-name']} key={group.group_id} onClick={() => chooseGroup(group)}>
+                        {group.name}
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+            <Button type="submit" variant="accept" className={styles['submit']} children={acceptButtonText[stage]} />
+            <Button
+              type="reset"
+              variant="question"
+              onClick={() => func.changeStage('login')}
+              children={stageButtonText}
+            />
+          </>
+        )}
 
-        <Button
-          type="submit"
-          variant="accept"
-          disabled={state.isLoading}
-          children={state.isLoading ? <Loader /> : acceptButtonText}
-        />
+        {stage === 'register' && (
+          <>
+            <Input
+              name="registerKey"
+              label="Ключ группы"
+              type="text"
+              variant="primary"
+              autoComplete="off"
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
+              value={form.values.registerKey}
+              {...(form.touched.registerKey && { error: form.errors.registerKey })}
+            />
+          </>
+        )}
+
+        {(stage === 'login' || stage === 'register') && (
+          <>
+            <Input
+              name="email"
+              label="Почта"
+              type="text"
+              variant="primary"
+              autoComplete="email"
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
+              value={form.values.email}
+              {...(form.touched.email && { error: form.errors.email })}
+            />
+            <Input
+              name="password"
+              label="Пароль"
+              type="password"
+              variant="primary"
+              autoComplete="current-password"
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
+              value={form.values.password}
+              {...(form.touched.password && { error: form.errors.password })}
+            />
+            <Button
+              type="submit"
+              variant="accept"
+              className={styles['submit']}
+              disabled={state.isLoading}
+              children={state.isLoading ? <Loader /> : acceptButtonText[stage]}
+            />
+            <Button
+              type="reset"
+              variant="question"
+              onClick={() => func.changeStage(stage === 'login' ? 'profile' : 'login')}
+              children={stageButtonText}
+            />
+          </>
+        )}
         {state.isError && <Typhography tag="h1" variant="secondary" children={'Ошибка, повторите попытку позже!'} />}
-
-        <Button type="reset" variant="question" onClick={func.changeStage} children={stageButtonText} />
       </form>
     </article>
   );
