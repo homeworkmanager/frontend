@@ -1,3 +1,4 @@
+import { JournalChooseMedia } from "@/utils/helpers/ChooseMedia";
 import { useLocation, Navigate } from "react-router-dom";
 
 
@@ -7,9 +8,10 @@ interface LocationGuardProps {
 
 export const LocationGuard = ({ children }: LocationGuardProps) => {
   const location = useLocation();
+  const journalType = JournalChooseMedia;
 
-  if (!location.state) {
-    return <Navigate to="/" />;
+  if (location.state === null) {
+    return <Navigate to={journalType} />;
   }
 
   return <>{children}</>;
