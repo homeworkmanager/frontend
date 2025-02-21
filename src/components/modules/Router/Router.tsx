@@ -12,10 +12,13 @@ import {
   JournalDesktop,
   JournalMobile,
   LessonModal,
+  ModerPanel,
   ProfileSettings,
   SubjectsNote
 } from './constants/lazyImports';
 import {
+  addHomeworkDesktop,
+  addHomeworkMobile,
   admin,
   auth,
   error,
@@ -23,8 +26,7 @@ import {
   journalMobile,
   lessonModal,
   main,
-  moderatorDesktop,
-  moderatorMobile,
+  moder,
   note,
   profile
 } from './constants/routes';
@@ -105,7 +107,16 @@ export const Router = () => {
             />
 
             <Route
-              path={moderatorMobile}
+              path={moder}
+              element={
+                <Suspense fallback={<Loader />}>
+                  {userRole === ModeratorRole ? <ModerPanel /> : <Navigate to={journalType} />}
+                </Suspense>
+              }
+            />
+
+            <Route
+              path={addHomeworkMobile}
               element={
                 <Suspense fallback={<Loader />}>
                   {userRole >= ModeratorRole ? <DayHomeworkMobile /> : <Navigate to={journalMobile} />}
@@ -114,7 +125,7 @@ export const Router = () => {
             />
 
             <Route
-              path={moderatorDesktop}
+              path={addHomeworkDesktop}
               element={
                 <Suspense fallback={<Loader />}>
                   {userRole >= ModeratorRole ? <DayHomeworkDesktop /> : <Navigate to={journalDesktop} />}
