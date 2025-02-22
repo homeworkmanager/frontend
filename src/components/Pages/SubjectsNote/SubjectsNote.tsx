@@ -14,12 +14,14 @@ export const SubjectsNote = () => {
         <ul className={styles['content']}>
           {getNotes.data.map((note) => (
             <li key={note.subject.subject_id} className={styles['item']}>
-              <Typhography
-                tag="h3"
-                variant="thirdy"
-                className={styles['subject']}
-                children={`${note.subject.subject_name}`}
-              />
+              <div className={styles['subject-wrapper']}>
+                <Typhography
+                  tag="h3"
+                  variant="thirdy"
+                  className={styles['subject']}
+                  children={`${note.subject.subject_name}`}
+                />
+              </div>
               <NotesList subjectId={note.subject.subject_id} subjectNotes={note.notes} />
             </li>
           ))}
