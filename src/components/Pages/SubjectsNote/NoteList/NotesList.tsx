@@ -59,6 +59,7 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
     setNotes((prev) =>
       prev.map((item) => (item.note_id === note.note_id ? { ...note, note_text: formatText(note.note_text) } : item))
     );
+    removeCurrentNote();
   };
 
   const deleteLessonHomework = async (note: Note) => {
@@ -71,17 +72,17 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
   };
 
   const scrollHandler = (event: React.UIEvent<HTMLDivElement>) => {
-    const target = event.target as HTMLDivElement;
+    const target = event.currentTarget;
     if (target.scrollTop > 0) {
       target.style.backgroundColor = 'var(--component-background-color)';
-    } else {
-      target.style.backgroundColor = '';
+      return;
     }
+    target.style.backgroundColor = '';
   };
 
   return (
     <>
-      <div className={styles['notes-wrapper']} onScroll={scrollHandler}>
+      <div className={styles['notes-wrapper']} onScroll={(e) => scrollHandler(e)}>
         <MultiList>
           {notes.map((note, noteIndex) => (
             <MultiList.Row key={`${note.note_id}_${noteIndex}`} className={styles['']}>
@@ -138,16 +139,20 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
         </MultiList>
       </div>
       {userRole >= ModeratorRole && (
-        <Button
-          variant="slide"
-          onClick={onAddNoteClick}
-          className={styles['add-btn']}
-          children={<AddLogo className={clsx(styles['add-icon'], addNoteOpen && styles['active'])} />}
-        />
-      )}
-      {addNoteOpen && <AddNote subjectId={subjectId} addNote={addNote} />}
-      {currentNote.note_id !== -1 && (
-        <ChangeNote note={currentNote} subjectId={subjectId} removeNoteId={removeCurrentNote} changeNote={changeNote} />
+        <>
+          <Button
+            variant="slide"
+            onClick={onAddNoteClick}
+            className={styles['add-btn']}
+            children={<AddLogo className={clsx(styles['add-icon'], addNoteOpen && styles['active'])} />}
+          />
+          <div>
+            {addNoteOpen && <AddNote subjectId={subjectId} addNote={addNote} />}
+            {currentNote.note_id !== -1 && (
+              <ChangeNote note={currentNote} subjectId={subjectId} changeNote={changeNote} />
+            )}
+          </div>
+        </>
       )}
     </>
   );

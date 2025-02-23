@@ -17,7 +17,6 @@ interface AddNoteProps {
 export const AddNote = ({ subjectId, addNote }: AddNoteProps) => {
   const [postAddNoteMutation, postAddNoteState] = usePostAddNoteMutation();
   const [noteText, setNoteText] = React.useState('');
-
   const sendNote = async () => {
     const postAddNoteResponse = await postAddNoteMutation({
       params: {

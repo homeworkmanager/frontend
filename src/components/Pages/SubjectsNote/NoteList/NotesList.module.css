@@ -21,8 +21,8 @@
 
 .add-btn {
   position: absolute;
-  top: 230px;
-  left: 5px;
+  bottom: 7px;
+  left: 7px;
 }
 
 .add-icon {
@@ -50,7 +50,7 @@
   padding: 10px;
   overflow-y: scroll;
   scroll-behavior: smooth;
-  height: 165px;
+  height: 170px;
   border: solid 10px var(--component-light-background-color);
   border-bottom: none;
   transition: background-color 0.5s ease;
