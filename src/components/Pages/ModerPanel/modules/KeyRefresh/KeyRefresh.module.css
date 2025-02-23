@@ -9,8 +9,13 @@
   }
 }
 
+.buttons {
+  display: flex;
+}
+
 .refresh {
   margin-bottom: 0.6rem;
+  margin-left: 0.8rem;
   background-color: gray;
   padding: 0.25rem;
   border-radius: 0.5rem;

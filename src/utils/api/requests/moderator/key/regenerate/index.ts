@@ -1,6 +1,8 @@
 import { api } from '@/utils/api/instance';
 
-export type GetModeratorKeyRegenerateConfig = AxiosRequestConfig | undefined;
+type PatchModeratorKeyRegenerateParams = {};
 
-export const getModeratorKeyRegenerate = async (requestConfig?: GetModeratorKeyRegenerateConfig) =>
-  api.get<ModeratorKeyGetResponse>('/moderator/key/regenerate', requestConfig?.config);
+export type PatchModeratorKeyRegenerateConfig = AxiosRequestConfig<PatchModeratorKeyRegenerateParams>;
+
+export const patchModeratorKeyRegenerate = async ({ params, config }: PatchModeratorKeyRegenerateConfig) =>
+  api.patch<ModeratorKeyGetResponse>('/moderator/key/regenerate', params, config);
