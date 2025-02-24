@@ -19,7 +19,7 @@ import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
 import { useFormik } from 'formik';
 
-type Stages = 'login' | 'register' | 'profile';
+type Stages = 'login' | 'profile' | 'register';
 
 interface State {
   isLoading: boolean;
@@ -27,7 +27,7 @@ interface State {
   isError: boolean;
 }
 
-export const useAuth = () => {
+export const useAuthView = () => {
   const [stage, setStage] = React.useState<Stages>('login');
   const dispatch = useAppDispatch();
   const { isEntry, setIsEntry } = React.useContext(EntryContext);
@@ -130,9 +130,9 @@ export const useAuth = () => {
   };
 
   const schemas = {
-    'login': LogInSchema,
-    'profile': ProfileSchema,
-    'register': RegisterSchema,
+    login: LogInSchema,
+    profile: ProfileSchema,
+    register: RegisterSchema
   } as const;
 
   const form = useFormik<RegisterSchemaType & LogInSchemaType & ProfileSchemaType>({

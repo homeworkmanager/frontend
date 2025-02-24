@@ -1,8 +1,15 @@
-const journalRoutes = ['/journal-desktop', '/journal-mobile'];
-const moderatorRoutes = ['/moderator-desktop', '/moderator-mobile'];
+import {
+  addHomeworkDesktop,
+  addHomeworkMobile,
+  journalDesktop,
+  journalMobile
+} from '@/components/modules/Router/constants/routes';
+
+const journalRoutes = [journalDesktop, journalMobile];
+const addHomeworkRoutes = [addHomeworkDesktop, addHomeworkMobile];
 const isMobile = Number(window.matchMedia('screen and (max-width: 1050px)').matches);
 
 const JournalChooseMedia = journalRoutes[isMobile];
-const ModeratorChooseMedia = moderatorRoutes[isMobile];
+const AddHomeworkChooseMedia = addHomeworkRoutes[isMobile];
 
-export { JournalChooseMedia, ModeratorChooseMedia };
+export { JournalChooseMedia, AddHomeworkChooseMedia };

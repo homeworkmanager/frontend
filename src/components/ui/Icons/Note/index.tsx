@@ -5,11 +5,11 @@ export const NoteLogo = ({ ...props }: React.ComponentProps<'svg'>) => {
       fill="none"
       strokeWidth="2"
       viewBox="0 0 24 24"
-      height="1em"
-      width="1em"
       strokeLinecap="round"
       strokeLinejoin="round"
       xmlns="http://www.w3.org/2000/svg"
+      height="36px"
+      width="36px"
       {...props}
     >
       <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"></path>

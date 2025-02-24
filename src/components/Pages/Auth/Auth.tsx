@@ -1,15 +1,17 @@
 import styles from './Auth.module.css';
-import { useAuth } from './hooks/useAuth';
+import { useAuthView } from './hooks/useAuthView';
 import { Button } from '@/components/ui/Button';
+import { QuitLogo } from '@/components/ui/Icons/Quit';
 import { UniHelperLogo } from '@/components/ui/Icons/UniHelper';
 import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
+import { Modal } from '@/components/ui/Modal';
 import { Typhography } from '@/components/ui/Typhography';
 import { useDropdown } from '@/utils/hooks/useDropdown';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export const Auth = () => {
-  const { form, stage, groups, func, state } = useAuth();
+  const { form, stage, groups, func, state } = useAuthView();
   const { menuRef, isOpen, action } = useDropdown();
 
   const acceptButtonText = {
@@ -35,7 +37,7 @@ export const Auth = () => {
     <article className={styles.container}>
       <UniHelperLogo />
       <form onSubmit={form.handleSubmit} className={styles.form}>
-        {stage === 'profile' && (
+        {(stage === 'profile' || stage === 'register') && (
           <>
             <Input
               name="name"
@@ -97,21 +99,42 @@ export const Auth = () => {
                 )}
               </AnimatePresence>
             </div>
-            <Button type="submit" variant="accept" className={styles['submit']} children={acceptButtonText[stage]} />
-            <Button
-              type="reset"
-              variant="question"
-              onClick={() => func.changeStage('login')}
-              children={stageButtonText}
-            />
           </>
         )}
 
-        {stage === 'register' && (
-          <>
+        <Input
+          name="email"
+          label="Почта"
+          type="text"
+          variant="primary"
+          autoComplete="email"
+          onChange={form.handleChange}
+          onBlur={form.handleBlur}
+          value={form.values.email}
+          {...(form.touched.email && { error: form.errors.email })}
+        />
+        <Input
+          name="password"
+          label="Пароль"
+          type="password"
+          variant="primary"
+          autoComplete="current-password"
+          onChange={form.handleChange}
+          onBlur={form.handleBlur}
+          value={form.values.password}
+          {...(form.touched.password && { error: form.errors.password })}
+        />
+
+        <Modal showInfo={stage === 'register'} showDetails={() => func.changeStage('profile')}>
+          <form onSubmit={form.handleSubmit} className={styles['modal-key']}>
+            <header className={styles['modal-header']}>
+              <Button variant="slide" type="button" onClick={() => func.changeStage('profile')}>
+                <QuitLogo />
+              </Button>
+            </header>
             <Input
               name="registerKey"
-              label="Ключ группы"
+              label="Ключ"
               type="text"
               variant="primary"
               autoComplete="off"
@@ -120,33 +143,6 @@ export const Auth = () => {
               value={form.values.registerKey}
               {...(form.touched.registerKey && { error: form.errors.registerKey })}
             />
-          </>
-        )}
-
-        {(stage === 'login' || stage === 'register') && (
-          <>
-            <Input
-              name="email"
-              label="Почта"
-              type="text"
-              variant="primary"
-              autoComplete="email"
-              onChange={form.handleChange}
-              onBlur={form.handleBlur}
-              value={form.values.email}
-              {...(form.touched.email && { error: form.errors.email })}
-            />
-            <Input
-              name="password"
-              label="Пароль"
-              type="password"
-              variant="primary"
-              autoComplete="current-password"
-              onChange={form.handleChange}
-              onBlur={form.handleBlur}
-              value={form.values.password}
-              {...(form.touched.password && { error: form.errors.password })}
-            />
             <Button
               type="submit"
               variant="accept"
@@ -154,15 +150,25 @@ export const Auth = () => {
               disabled={state.isLoading}
               children={state.isLoading ? <Loader /> : acceptButtonText[stage]}
             />
-            <Button
-              type="reset"
-              variant="question"
-              onClick={() => func.changeStage(stage === 'login' ? 'profile' : 'login')}
-              children={stageButtonText}
-            />
-          </>
-        )}
+          </form>
+        </Modal>
+
         {state.isError && <Typhography tag="h1" variant="secondary" children={'Ошибка, повторите попытку позже!'} />}
+        {stage !== 'register' && (
+          <Button
+            type="submit"
+            variant="accept"
+            className={styles['submit']}
+            disabled={state.isLoading}
+            children={state.isLoading ? <Loader /> : acceptButtonText[stage]}
+          />
+        )}
+        <Button
+          type="reset"
+          variant="question"
+          onClick={() => func.changeStage(stage === 'login' ? 'profile' : 'login')}
+          children={stageButtonText}
+        />
       </form>
     </article>
   );
