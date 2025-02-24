@@ -1,12 +1,7 @@
 .content {
   display: flex;
-  margin-top: 28px;
   align-items: flex-end;
   justify-content: space-between;
-
-  @media (min-width: 1050px) {
-    max-width: 35%;
-  }
 }
 
 .buttons {

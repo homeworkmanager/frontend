@@ -30,7 +30,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           name={name}
           type={type}
           placeholder={label[0].toLowerCase() + label.slice(1)}
-          className={clsx(styles[variant ?? ''], styles['input'], !custom && styles['onfocus'], className)}
+          className={clsx(styles[variant ?? ''], styles['input'], className)}
           {...props}
         />
         {error && <p className={styles.error}>{error}</p>}
