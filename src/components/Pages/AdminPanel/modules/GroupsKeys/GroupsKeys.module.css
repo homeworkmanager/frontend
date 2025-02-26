@@ -1,0 +1,41 @@
+.container {
+  width: fit-content;
+}
+
+.title {
+  width: fit-content;
+  color: var(--text-invert-color);
+  margin-bottom: 1.5rem;
+}
+
+.all {
+  margin-bottom: 12px;
+}
+
+.keys {
+  overflow-y: scroll;
+  max-height: 184px;
+  padding-right: 0.4rem;
+  margin: 0 auto;
+
+  @media screen and (min-width: 1050px) {
+    margin: 0 auto;
+  }
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.group-name {
+  height: fit-content;
+  margin-bottom: 10px;
+  margin-right: 1rem;
+
+  @media (max-width: 1050px) {
+    width: 57%;
+    margin-right: 0;
+  }
+}

@@ -1,8 +1,10 @@
 import { api } from '@/utils/api/instance';
 
-type PatchModeratorKeyRegenerateParams = {};
+type PatchModeratorKeyRegenerateParams = {
+  group_id: number;
+};
 
 export type PatchModeratorKeyRegenerateConfig = AxiosRequestConfig<PatchModeratorKeyRegenerateParams>;
 
 export const patchModeratorKeyRegenerate = async ({ params, config }: PatchModeratorKeyRegenerateConfig) =>
-  api.patch<ModeratorKeyGetResponse>('/moderator/key/regenerate', params, config);
+  api.patch<ModeratorKeyRegenerateResponse>(`/moderator/key/regenerate/${params.group_id}`, config);

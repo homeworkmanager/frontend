@@ -8,3 +8,11 @@
     padding: 0 1rem 1rem;
   }
 }
+
+.env {
+  margin-top: 28px;
+
+  @media (min-width: 1050px) {
+    max-width: 35%;
+  }
+}
