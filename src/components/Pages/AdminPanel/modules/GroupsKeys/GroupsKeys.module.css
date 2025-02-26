@@ -1,6 +1,20 @@
+.container {
+  width: fit-content;
+}
+
+.title {
+  width: fit-content;
+  color: var(--text-invert-color);
+  margin-bottom: 1.5rem;
+}
+
+.all {
+  margin-bottom: 12px;
+}
+
 .keys {
   overflow-y: scroll;
-  max-height: 240px;
+  max-height: 184px;
   padding-right: 0.4rem;
   margin: 0 auto;
 
