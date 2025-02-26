@@ -6,6 +6,7 @@ import { addHomeworkDesktop, addHomeworkMobile, admin, moder, note } from '../Ro
 import styles from './Header.module.css';
 import { AdminLogo } from '@/components/ui/Icons/Admin';
 import { HomeworkLogo } from '@/components/ui/Icons/Homework';
+import { LogoutLogo } from '@/components/ui/Icons/Logout';
 import { ModerLogo } from '@/components/ui/Icons/Moder';
 import { NoteLogo } from '@/components/ui/Icons/Note';
 // import { SettingsLogo } from '@/components/ui/Icons/Settings';
@@ -57,6 +58,10 @@ export const Header = () => {
 
         <Link to="/note">
           <NoteLogo className={clsx(styles['icon'], styles['note'], page === note && styles['current'])} />
+        </Link>
+
+        <Link to="">
+          <LogoutLogo className={clsx(styles['icon'])} />
         </Link>
 
         {/* <Link to="/profile">
