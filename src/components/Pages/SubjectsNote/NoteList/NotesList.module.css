@@ -19,6 +19,12 @@
   margin-bottom: 0.55rem;
 }
 
+.add-btn {
+  position: absolute;
+  bottom: 7px;
+  left: 7px;
+}
+
 .add-icon {
   width: 24px;
   height: 24px;
@@ -38,4 +44,14 @@
 
 .active {
   color: var(--button-accept-color);
+}
+
+.notes-wrapper {
+  padding: 10px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  height: 170px;
+  border: solid 10px var(--component-light-background-color);
+  border-bottom: none;
+  transition: background-color 0.5s ease;
 }

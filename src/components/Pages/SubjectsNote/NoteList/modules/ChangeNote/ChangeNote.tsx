@@ -12,14 +12,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 interface ChangeLessonHomeworkProps {
   note: Note;
   subjectId: number;
-  removeNoteId: () => void;
   changeNote: (note: Note) => void;
 }
 
-export const ChangeNote = ({ changeNote, note, subjectId, removeNoteId }: ChangeLessonHomeworkProps) => {
+export const ChangeNote = ({ changeNote, note, subjectId }: ChangeLessonHomeworkProps) => {
   const [patchUpdateNoteMutation, patchUpdateNoteState] = usePatchNoteMutation();
-
-  console.log(note);
 
   const [noteText, setNoteText] = React.useState(note.note_text);
   const updateNote = async () => {
@@ -33,7 +30,6 @@ export const ChangeNote = ({ changeNote, note, subjectId, removeNoteId }: Change
         note_text: formatText(noteText),
         subject_id: subjectId
       });
-      removeNoteId();
     }
   };
 
