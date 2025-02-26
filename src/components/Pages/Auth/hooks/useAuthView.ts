@@ -1,7 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { LogInSchema, RegisterSchema, RegisterSchemaType } from '../schemas';
+import {
+  LogInSchema,
+  LogInSchemaType,
+  ProfileSchema,
+  ProfileSchemaType,
+  RegisterSchema,
+  RegisterSchemaType
+} from '../schemas';
 
 import { EntryContext } from '@/App/contexts/AuthContext';
 import { getUserData } from '@/utils/api/requests/user/get';
@@ -12,7 +19,7 @@ import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
 import { useFormik } from 'formik';
 
-type Stages = 'login' | 'register';
+type Stages = 'login' | 'profile' | 'register';
 
 interface State {
   isLoading: boolean;
@@ -20,7 +27,7 @@ interface State {
   isError: boolean;
 }
 
-export const useAuth = () => {
+export const useAuthView = () => {
   const [stage, setStage] = React.useState<Stages>('login');
   const dispatch = useAppDispatch();
   const { isEntry, setIsEntry } = React.useContext(EntryContext);
@@ -39,12 +46,13 @@ export const useAuth = () => {
     name: '',
     surname: '',
     groupName: '',
+    registerKey: '',
     email: '',
     password: ''
   };
 
-  const changeStage = () => {
-    setStage((prev) => (prev === 'login' ? 'register' : 'login'));
+  const changeStage = (stage: Stages) => {
+    setStage(stage);
     form.setErrors({});
     form.setTouched({}, false);
   };
@@ -54,6 +62,7 @@ export const useAuth = () => {
 
   const stateByStage: Record<Stages, State> = {
     register: postRegisterState,
+    profile: postRegisterState,
     login: postAuthState
   };
 
@@ -80,38 +89,55 @@ export const useAuth = () => {
   };
 
   const setSubmit = async (values: RegisterSchemaType) => {
-    if (stage !== 'login') {
-      const postRegisterResponse = await postRegister({
-        params: {
-          name: values.name,
-          surname: values.surname,
-          email: values.email,
-          password: values.password,
-          groupId: groupsList?.[values.groupName] as number
-        }
-      });
-
-      if (!postRegisterResponse.error) {
-        setStage('login');
-      } else {
-        console.log(postRegisterResponse.error);
-      }
-    } else {
+    if (stage === 'login') {
       const postAuthResponse = await postAuth({
         params: {
           email: values.email,
           password: values.password
         }
       });
+
       if (!postAuthResponse.error) {
-        getUserAfterAuth();
+        await getUserAfterAuth();
+        return;
       }
+    }
+
+    if (stage === 'profile') {
+      changeStage('register');
+      return;
+    }
+
+    if (stage === 'register') {
+      const postRegisterResponse = await postRegister({
+        params: {
+          name: values.name,
+          surname: values.surname,
+          email: values.email,
+          registerKey: values.registerKey,
+          password: values.password,
+          groupId: groupsList?.[values.groupName] as number
+        }
+      });
+
+      if (!postRegisterResponse.error) {
+        changeStage('login');
+        return;
+      }
+
+      console.log(postRegisterResponse.error);
     }
   };
 
-  const form = useFormik<RegisterSchemaType>({
+  const schemas = {
+    login: LogInSchema,
+    profile: ProfileSchema,
+    register: RegisterSchema
+  } as const;
+
+  const form = useFormik<RegisterSchemaType & LogInSchemaType & ProfileSchemaType>({
     initialValues: authInitValues,
-    validationSchema: stage === 'login' ? LogInSchema : RegisterSchema,
+    validationSchema: schemas[stage],
     validateOnBlur: false,
     onSubmit: (values) => {
       setSubmit(values);

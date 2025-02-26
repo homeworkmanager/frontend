@@ -22,6 +22,10 @@ const AdminPanel = lazy(() =>
   import('@/components/Pages/AdminPanel/AdminPanel').then((module) => ({ default: module.AdminPanel }))
 );
 
+const ModerPanel = lazy(() =>
+  import('@/components/Pages/ModerPanel/ModerPanel').then((module) => ({ default: module.ModerPanel }))
+);
+
 const DayHomeworkMobile = lazy(() =>
   import('@/components/Pages/DayHomework/Mobile/DayHomeworkMobile').then((module) => ({
     default: module.DayHomeworkMobile
@@ -48,6 +52,7 @@ export {
   JournalDesktop,
   LessonModal,
   AdminPanel,
+  ModerPanel,
   DayHomeworkMobile,
   DayHomeworkDesktop,
   SubjectsNote,
