@@ -1,5 +1,6 @@
 import { postUserAuth, PostUserAuthConfig } from '@/utils/api/requests/user/auth';
 import { GetUserConfig, getUserData } from '@/utils/api/requests/user/get';
+import { deleteUserLogout } from '@/utils/api/requests/user/logout';
 import { postUserRegister, PostUserRegisterConfig } from '@/utils/api/requests/user/register';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -19,8 +20,11 @@ export const userApi = createApi({
     getUser: builder.query<GetUserResponse, GetUserConfig>({
       queryFn: (requestConfig: GetUserConfig) => getUserData(requestConfig),
       providesTags: ['GetUserConfig']
+    }),
+    deleteLogout: builder.mutation({
+      queryFn: () => deleteUserLogout()
     })
   })
 });
 
-export const { usePostRegisterMutation, usePostAuthMutation, useGetUserQuery } = userApi;
+export const { usePostRegisterMutation, usePostAuthMutation, useGetUserQuery, useDeleteLogoutMutation } = userApi;
