@@ -60,7 +60,7 @@ export const Header = () => {
           <NoteLogo className={clsx(styles['icon'], styles['note'], page === note && styles['current'])} />
         </Link>
 
-        <Link to="">
+        <Link to="/auth">
           <LogoutLogo className={clsx(styles['icon'])} />
         </Link>
 
