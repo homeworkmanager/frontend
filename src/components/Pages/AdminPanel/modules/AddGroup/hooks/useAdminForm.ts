@@ -1,6 +1,6 @@
 import { AdminSchema, AdminSchemasType } from '../shemas';
 
-import { usePostAdminAddGroupMutation } from '@/utils/redux/apiSlices/adminApiSlice/adminApi';
+import { usePostAdminAddGroupMutation } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
 import { useFormik } from 'formik';
 
 export const useAdminForm = () => {

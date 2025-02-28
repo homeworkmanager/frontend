@@ -18,7 +18,6 @@
   width: 88%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
 .active {
@@ -49,4 +48,33 @@
 .group-name {
   padding: 10px;
   cursor: pointer;
+}
+
+.submit {
+  margin: 1.5rem 0;
+}
+
+.modal-key {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px;
+  background-color: var(--component-background-color);
+  border-radius: 12px;
+
+  button {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.modal-header {
+  position: relative;
+
+  button {
+    width: fit-content;
+    position: absolute;
+    right: 0;
+  }
 }

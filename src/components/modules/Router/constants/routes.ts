@@ -5,9 +5,25 @@ const auth = main + 'auth';
 const journalMobile = main + 'journal-mobile';
 const journalDesktop = main + 'journal-desktop';
 const admin = main + 'admin';
-const moderatorMobile = main + 'moderator-mobile';
-const moderatorDesktop = main + 'moderator-desktop';
+const moder = main + 'moderator';
+const addHomeworkMobile = main + 'add/homework-mobile';
+const addHomeworkDesktop = main + 'add/homework-desktop';
 const profile = main + 'profile';
 const note = main + 'note';
 
-export { error, main, auth, journalMobile, journalDesktop, admin, moderatorMobile, moderatorDesktop, profile, note };
+const lessonModal = 'lesson';
+
+export {
+  error,
+  main,
+  auth,
+  journalMobile,
+  journalDesktop,
+  lessonModal,
+  admin,
+  moder,
+  addHomeworkMobile,
+  addHomeworkDesktop,
+  profile,
+  note
+};

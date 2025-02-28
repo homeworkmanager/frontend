@@ -10,7 +10,7 @@
   @media (min-width: 1050px) {
     max-width: var(--max-width-desktop);
     padding: 1rem 0 0;
-    margin-bottom: 36px;
+    margin-bottom: 28px;
   }
 }
 
@@ -20,7 +20,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 12%;
+  gap: 6%;
 }
 
 .journal {
@@ -30,24 +30,23 @@
 }
 
 .icon {
-  box-sizing: content-box;
-  padding: 0.25rem;
-  width: 24px;
-  height: 24px;
+  box-sizing: border-box;
+  padding: 0.1rem;
   cursor: pointer;
-  color: #fff;
   transition: 0.4s ease-in-out;
   border-radius: 0.5rem;
 }
 
-.add-icon {
-  padding: 0.25rem;
-  box-sizing: content-box;
-  margin: 0 auto;
-  width: 24px;
-  height: 24px;
-  transition: 0.4s ease-in-out;
-  border-radius: 0.5rem;
+.moder {
+  padding: 0.35rem;
+}
+
+.homework {
+  padding: 0.3rem;
+}
+
+.note {
+  padding: 0.35rem;
 }
 
 .current {

@@ -8,6 +8,7 @@ type InputVarinat = 'primary' | 'homework';
 interface InputProps extends React.ComponentProps<'input'> {
   label: string;
   name: string;
+  id?: string;
   value?: string | number;
   error?: string;
   variant: InputVarinat;
@@ -15,7 +16,7 @@ interface InputProps extends React.ComponentProps<'input'> {
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ variant, name, label, className, value, error, type, custom = false, ...props }, ref) => {
+  ({ variant, name, id, label, className, value, error, type, custom = false, ...props }, ref) => {
     return (
       <div className={styles['container']}>
         {!custom && (
@@ -25,12 +26,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <input
           ref={ref}
-          id={name}
+          id={id ?? name}
           value={value}
           name={name}
           type={type}
           placeholder={label[0].toLowerCase() + label.slice(1)}
-          className={clsx(styles[variant ?? ''], styles['input'], !custom && styles['onfocus'], className)}
+          className={clsx(styles[variant ?? ''], styles['input'], className)}
           {...props}
         />
         {error && <p className={styles.error}>{error}</p>}

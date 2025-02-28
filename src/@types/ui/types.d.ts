@@ -70,5 +70,5 @@ type CustomDatesByWeeks = CustomDate[][];
 type RestructHomeworkElement = { homeworkText: string; homeworkID: number; isCompleted: boolean };
 type RestructHomeworkArray = RestructHomeworkElement[];
 
-type RestructIndependentHomeworkElement = RestructHomeworkElement & { subjectName: string };
+type RestructIndependentHomeworkElement = RestructHomeworkElement & { dueDate: string; subjectName: string };
 type RestructIndependentHomeworkArray = RestructIndependentHomeworkElement[];

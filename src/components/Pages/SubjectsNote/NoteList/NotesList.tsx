@@ -12,6 +12,7 @@ import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
+import { formatText } from '@/utils/helpers/formatText';
 import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
@@ -27,35 +28,38 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
 
   const [addNoteOpen, setAddNoteOpen] = React.useState(false);
 
-  const [noteId, setNoteId] = React.useState(-1);
+  const [currentNote, setCurrentNote] = React.useState<Note>({ note_id: -1, subject_id: -1, note_text: '' });
 
   const [deleteNoteMutation, deleteNoteState] = useDeleteNoteMutation();
 
   const onAddNoteClick = () => {
     setAddNoteOpen((prev) => !prev);
-    setNoteId(-1);
+    setCurrentNote({ note_id: -1, subject_id: -1, note_text: '' });
   };
 
   const addNote = (note: Note) => {
-    setNotes((prev) => [...prev, { ...note, note_text: note.note_text.replace(/( {2})|(\n{2})/g, '') }]);
+    setNotes((prev) => [...prev, { ...note, note_text: formatText(note.note_text) }]);
     setAddNoteOpen(false);
   };
 
-  const removeNoteId = () => {
-    setNoteId(-1);
+  const removeCurrentNote = () => {
+    setCurrentNote({ note_id: -1, subject_id: -1, note_text: '' });
   };
 
-  const addNoteId = (id: number) => {
-    if (noteId !== -1) {
-      removeNoteId();
+  const addCurrentNote = (note: Note) => {
+    if (currentNote.note_id !== -1) {
+      removeCurrentNote();
       return;
     }
-    setNoteId(id);
+    setCurrentNote(note);
     setAddNoteOpen(false);
   };
 
   const changeNote = (note: Note) => {
-    setNotes((prev) => prev.map((item) => (item.note_id === note.note_id ? note : item)));
+    setNotes((prev) =>
+      prev.map((item) => (item.note_id === note.note_id ? { ...note, note_text: formatText(note.note_text) } : item))
+    );
+    removeCurrentNote();
   };
 
   const deleteLessonHomework = async (note: Note) => {
@@ -63,69 +67,93 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
 
     if (!response.error) {
       setNotes((prev) => prev.filter((item) => item.note_id !== note.note_id));
-      if (noteId === note.note_id) removeNoteId();
+      if (currentNote.note_id === note.note_id) removeCurrentNote();
     }
   };
 
+  const scrollHandler = (event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.currentTarget;
+    if (target.scrollTop > 0) {
+      target.style.backgroundColor = 'var(--component-background-color)';
+      return;
+    }
+    target.style.backgroundColor = '';
+  };
+
   return (
-    <MultiList>
-      {notes.map((note, noteIndex) => (
-        <MultiList.Row key={`${note.note_id}_${noteIndex}`} className={styles['']}>
-          <MultiList.Column {...(userRole >= ModeratorRole && { icons: 2 })}>
-            <Typhography tag="p" variant="thirdy" className={styles['number']} children={`${noteIndex + 1}. `} />
-            <Typhography tag="p" variant="thirdy" className={styles['text']} children={note.note_text} />
-          </MultiList.Column>
-          <MultiList.Column>
-            {userRole >= ModeratorRole && (
-              <>
-                {noteId === -1 || noteId === note.note_id ? (
-                  <Button
-                    variant="slide"
-                    onClick={() => addNoteId(note.note_id)}
-                    children={
-                      <ChangeLogo className={clsx(styles['icon'], noteId === note.note_id && styles['active'])} />
-                    }
-                  />
-                ) : (
-                  <div className={styles['icon']} />
-                )}
-                <Button
-                  variant="slide"
-                  onClick={() => deleteLessonHomework(note)}
-                  children={
-                    deleteNoteState.isLoading ? (
-                      <Loader spinnerSize={28} className={styles['loader']} />
+    <>
+      <div className={styles['notes-wrapper']} onScroll={(e) => scrollHandler(e)}>
+        <MultiList>
+          {notes.map((note, noteIndex) => (
+            <MultiList.Row key={`${note.note_id}_${noteIndex}`} className={styles['']}>
+              <MultiList.Column {...(userRole >= ModeratorRole && { icons: 2 })}>
+                <Typhography tag="p" variant="thirdy" className={styles['number']} children={`${noteIndex + 1}. `} />
+                <Typhography tag="p" variant="thirdy" className={styles['text']} children={note.note_text} />
+              </MultiList.Column>
+              <MultiList.Column>
+                {userRole >= ModeratorRole && (
+                  <>
+                    {currentNote.note_id === -1 || currentNote.note_id === note.note_id ? (
+                      <Button
+                        variant="slide"
+                        onClick={() => addCurrentNote(note)}
+                        children={
+                          <ChangeLogo
+                            className={clsx(styles['icon'], currentNote.note_id === note.note_id && styles['active'])}
+                          />
+                        }
+                      />
                     ) : (
-                      <DeleteLogo className={styles['delete-icon']} />
-                    )
-                  }
-                />
-              </>
-            )}
-          </MultiList.Column>
-        </MultiList.Row>
-      ))}
-      {notes.length === 0 && (
-        <MultiList.Row>
-          <MultiList.Column
-            children={
-              <Typhography tag="p" variant="thirdy" className={styles['not-found']} children={'Заметки не найдены'} />
-            }
-          />
-        </MultiList.Row>
-      )}
+                      <div className={styles['icon']} />
+                    )}
+                    <Button
+                      variant="slide"
+                      onClick={() => deleteLessonHomework(note)}
+                      children={
+                        deleteNoteState.isLoading ? (
+                          <Loader spinnerSize={28} className={styles['loader']} />
+                        ) : (
+                          <DeleteLogo className={styles['delete-icon']} />
+                        )
+                      }
+                    />
+                  </>
+                )}
+              </MultiList.Column>
+            </MultiList.Row>
+          ))}
+          {notes.length === 0 && (
+            <MultiList.Row>
+              <MultiList.Column
+                children={
+                  <Typhography
+                    tag="p"
+                    variant="thirdy"
+                    className={styles['not-found']}
+                    children={'Заметки не найдены'}
+                  />
+                }
+              />
+            </MultiList.Row>
+          )}
+        </MultiList>
+      </div>
       {userRole >= ModeratorRole && (
-        <Button
-          variant="slide"
-          onClick={onAddNoteClick}
-          className={styles['add-btn']}
-          children={<AddLogo className={clsx(styles['add-icon'], addNoteOpen && styles['active'])} />}
-        />
+        <>
+          <Button
+            variant="slide"
+            onClick={onAddNoteClick}
+            className={styles['add-btn']}
+            children={<AddLogo className={clsx(styles['add-icon'], addNoteOpen && styles['active'])} />}
+          />
+          <div>
+            {addNoteOpen && <AddNote subjectId={subjectId} addNote={addNote} />}
+            {currentNote.note_id !== -1 && (
+              <ChangeNote note={currentNote} subjectId={subjectId} changeNote={changeNote} />
+            )}
+          </div>
+        </>
       )}
-      {addNoteOpen && <AddNote subjectId={subjectId} addNote={addNote} />}
-      {noteId !== -1 && (
-        <ChangeNote noteId={noteId} subjectId={subjectId} removeNoteId={removeNoteId} changeNote={changeNote} />
-      )}
-    </MultiList>
+    </>
   );
 };

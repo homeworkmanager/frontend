@@ -1,9 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { LogInSchema, RegisterSchema, RegisterSchemaType } from '../schemas';
+import {
+  LogInSchema,
+  LogInSchemaType,
+  ProfileSchema,
+  ProfileSchemaType,
+  RegisterSchema,
+  RegisterSchemaType
+} from '../schemas';
 
-import { EntryContext } from '@/App/context/AuthContext';
 import { getUserData } from '@/utils/api/requests/user/get';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
@@ -12,10 +18,17 @@ import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
 import { useFormik } from 'formik';
 
-export const useAuth = () => {
-  const [stage, setStage] = React.useState<'login' | 'register'>('login');
+type Stages = 'login' | 'profile' | 'register';
+
+interface State {
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+}
+
+export const useAuthView = () => {
+  const [stage, setStage] = React.useState<Stages>('login');
   const dispatch = useAppDispatch();
-  const { isEntry, setIsEntry } = React.useContext(EntryContext);
   const navigate = useNavigate();
 
   const getAllGroups = useGetAllGroupsQuery(undefined);
@@ -31,33 +44,25 @@ export const useAuth = () => {
     name: '',
     surname: '',
     groupName: '',
+    registerKey: '',
     email: '',
     password: ''
   };
 
-  const changeStage = () => {
-    setStage((prev) => (prev === 'login' ? 'register' : 'login'));
+  const changeStage = (stage: Stages) => {
+    setStage(stage);
     form.setErrors({});
     form.setTouched({}, false);
   };
 
-  const [postRegister, { isLoading: isRegisterLoading, isError: isRegisterError, isSuccess: isRegisterSuccess }] =
-    usePostRegisterMutation();
-  const [postAuth, { isLoading: isAuthLoading, isError: isAuthError, isSuccess: isAuthSuccess }] =
-    usePostAuthMutation();
+  const [postRegister, postRegisterState] = usePostRegisterMutation();
+  const [postAuth, postAuthState] = usePostAuthMutation();
 
-  const currentState =
-    stage === 'register'
-      ? {
-          isLoading: isRegisterLoading,
-          isError: isRegisterError,
-          isSuccess: isRegisterSuccess
-        }
-      : {
-          isLoading: isAuthLoading,
-          isError: isAuthError,
-          isSuccess: isAuthSuccess
-        };
+  const stateByStage: Record<Stages, State> = {
+    register: postRegisterState,
+    profile: postRegisterState,
+    login: postAuthState
+  };
 
   const getUserAfterAuth = async () => {
     try {
@@ -71,10 +76,6 @@ export const useAuth = () => {
           group_name: data.group_name
         })
       );
-      if (isEntry) {
-        setIsEntry();
-      }
-      setIsEntry();
       navigate(JournalChooseMedia);
     } catch (error) {
       console.log(error);
@@ -82,38 +83,55 @@ export const useAuth = () => {
   };
 
   const setSubmit = async (values: RegisterSchemaType) => {
-    if (stage !== 'login') {
-      const postRegisterResponse = await postRegister({
-        params: {
-          name: values.name,
-          surname: values.surname,
-          email: values.email,
-          password: values.password,
-          groupId: groupsList?.[values.groupName] as number
-        }
-      });
-
-      if (!postRegisterResponse.error) {
-        setStage('login');
-      } else {
-        console.log(postRegisterResponse.error);
-      }
-    } else {
+    if (stage === 'login') {
       const postAuthResponse = await postAuth({
         params: {
           email: values.email,
           password: values.password
         }
       });
+
       if (!postAuthResponse.error) {
-        getUserAfterAuth();
+        await getUserAfterAuth();
+        return;
       }
+    }
+
+    if (stage === 'profile') {
+      changeStage('register');
+      return;
+    }
+
+    if (stage === 'register') {
+      const postRegisterResponse = await postRegister({
+        params: {
+          name: values.name,
+          surname: values.surname,
+          email: values.email,
+          registerKey: values.registerKey,
+          password: values.password,
+          groupId: groupsList?.[values.groupName] as number
+        }
+      });
+
+      if (!postRegisterResponse.error) {
+        changeStage('login');
+        return;
+      }
+
+      console.log(postRegisterResponse.error);
     }
   };
 
-  const form = useFormik<RegisterSchemaType>({
+  const schemas = {
+    login: LogInSchema,
+    profile: ProfileSchema,
+    register: RegisterSchema
+  } as const;
+
+  const form = useFormik<RegisterSchemaType & LogInSchemaType & ProfileSchemaType>({
     initialValues: authInitValues,
-    validationSchema: stage === 'login' ? LogInSchema : RegisterSchema,
+    validationSchema: schemas[stage],
     validateOnBlur: false,
     onSubmit: (values) => {
       setSubmit(values);
@@ -125,6 +143,6 @@ export const useAuth = () => {
     stage,
     groups: getAllGroupsResponse,
     func: { changeStage },
-    state: currentState
+    state: stateByStage[stage]
   };
 };

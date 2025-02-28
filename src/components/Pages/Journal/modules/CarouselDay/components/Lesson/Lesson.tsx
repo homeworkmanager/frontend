@@ -1,16 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { convertSummary } from './helpers/convertSummary';
+import { convertSummary } from '../../../../../../../utils/helpers/convertSummary';
+
 import styles from './Lesson.module.css';
-import { LessonCard } from './LessonCard/LessonCard';
-import { Modal } from '@/components/ui/Modal';
 import { Typhography } from '@/components/ui/Typhography';
 import clsx from 'clsx';
 
 interface LessonProps {
   apiData: OutputClass;
   Homeworks: RestructHomeworkArray;
-  updateHeight: () => void;
 }
 
 const lessonsNumbers = {
@@ -47,57 +46,22 @@ const getTeacher = (rawDescrciption: string) => {
   return `${stageB[0]} ${stageB[1]?.substring(0, 1)}. ${stageB[2]?.substring(0, 1)}.`;
 };
 
-export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
-  const [showInfo, setShowInfo] = React.useState(false);
-
-  const [homeworks, setHomeworks] = React.useState<RestructHomeworkElement[]>(() => [...Homeworks]);
-
+export const Lesson = ({ apiData, Homeworks }: LessonProps) => {
   const para = apiData.class;
 
   const paraBegin = convertDateToTime(para.startTime);
   const paraEnd = convertDateToTime(para.endTime);
 
-  const showDetails = () => setShowInfo((prev) => !prev);
+  const navigate = useNavigate();
 
-  const addLessonHomework = (homework: RestructHomeworkElement) => {
-    setHomeworks((prev) => [...prev, homework]);
-    updateHeight();
-  };
-
-  const deleteLessonHomework = (homework: RestructHomeworkElement) => {
-    setHomeworks((prev) => prev.filter((item) => item.homeworkID !== homework.homeworkID));
-    updateHeight();
-  };
-
-  const changeLessonHomework = (homework: RestructHomeworkElement) => {
-    setHomeworks((prev) => [
-      ...prev.map((item) => {
-        if (item.homeworkID === homework.homeworkID) {
-          return {
-            ...item,
-            homeworkText: homework.homeworkText,
-            isCompleted: false
-          };
-        }
-        return item;
-      })
-    ]);
-    updateHeight();
-  };
-
-  const changeLessonHomeworkStatus = (homework: RestructHomeworkElement) => {
-    setHomeworks((prev) => [
-      ...prev.map((item) => {
-        if (item.homeworkID === homework.homeworkID) {
-          return {
-            ...item,
-            isCompleted: !homework.isCompleted
-          };
-        }
-        return item;
-      })
-    ]);
-    updateHeight();
+  const showDetails = () => {
+    navigate(
+      {
+        pathname: 'lesson',
+        search: `?time=${encodeURIComponent(apiData.class.startTime)}`
+      },
+      { state: { apiData, Homeworks } }
+    );
   };
 
   return (
@@ -109,10 +73,10 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
             {para.category}
           </p>
         </header>
-        {homeworks.length > 0 && (
+        {Homeworks.length > 0 && (
           <ol className={styles['homework-info']}>
             <h4>Задание</h4>
-            {homeworks.map((homework, index) => (
+            {Homeworks.map((homework, index) => (
               <li key={homework.homeworkID} className={styles['task']}>
                 <div className={styles['task-text']}>
                   <p>{`${index + 1}. `}</p>
@@ -133,17 +97,6 @@ export const Lesson = ({ apiData, Homeworks, updateHeight }: LessonProps) => {
           <Typhography tag="p" variant="additional" children={getTeacher(para.description)} />
         </article>
       </section>
-      <Modal showInfo={showInfo} showDetails={showDetails}>
-        <LessonCard
-          apiData={apiData}
-          homeworks={homeworks}
-          showDetails={showDetails}
-          addHomework={addLessonHomework}
-          deleteHomework={deleteLessonHomework}
-          changeHomework={changeLessonHomework}
-          changeHomeworkStatus={changeLessonHomeworkStatus}
-        />
-      </Modal>
     </React.Fragment>
   );
 };

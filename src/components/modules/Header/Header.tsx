@@ -1,29 +1,45 @@
 import { useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import {
-  admin,
-  journalDesktop,
-  journalMobile,
-  moderatorDesktop,
-  moderatorMobile,
-  note
-} from '../Router/constants/routes';
+import { addHomeworkDesktop, addHomeworkMobile, admin, auth, moder, note } from '../Router/constants/routes';
 
 import styles from './Header.module.css';
+import { Button } from '@/components/ui/Button';
 import { AdminLogo } from '@/components/ui/Icons/Admin';
-import { ModeratorLogo } from '@/components/ui/Icons/Moderator';
+import { HomeworkLogo } from '@/components/ui/Icons/Homework';
+import { LogoutLogo } from '@/components/ui/Icons/Logout';
+import { ModerLogo } from '@/components/ui/Icons/Moder';
 import { NoteLogo } from '@/components/ui/Icons/Note';
-// import { SettingsLogo } from '@/components/ui/Icons/Settings';
+import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
-import { JournalChooseMedia, ModeratorChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 
 export const Header = () => {
   const { role, group_name } = useSelector(getUser);
   const page = useLocation().pathname;
+  const navigate = useNavigate();
+
+  const [deleteLogout, deleteLogoutState] = useDeleteLogoutMutation();
+
+  const deleteCookie = (name: string) => (document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`);
+
+  const logoutUser = async () => {
+    const deleteLogoutResponse = await deleteLogout({});
+
+    if (deleteLogoutResponse.error) {
+      console.error(deleteLogoutResponse);
+      return;
+    }
+
+    deleteCookie('session_key');
+    deleteCookie('session_expires');
+
+    navigate(auth, { replace: true });
+  };
 
   return (
     <header className={styles.header}>
@@ -31,35 +47,43 @@ export const Header = () => {
         <Typhography
           tag="h1"
           variant="header"
-          className={clsx(styles['journal'], (page === journalMobile || page === journalDesktop) && styles['current'])}
+          className={clsx(styles['journal'], page.split('-')[0] === '/journal' && styles['current'])} //для всех страниц journal (в том числе вложенных)
           children={group_name}
         />
       </Link>
 
       <div className={styles.container}>
         {role === AdminRole && (
-          <Link to="/admin">
+          <Link to={admin}>
             <AdminLogo className={clsx(styles['icon'], page === admin && styles['current'])} />
           </Link>
         )}
+
+        {role === ModeratorRole && (
+          <Link to={moder}>
+            <ModerLogo className={clsx(styles['icon'], styles['moder'], page === moder && styles['current'])} />
+          </Link>
+        )}
+
         {role >= ModeratorRole && (
-          <Link to={ModeratorChooseMedia}>
-            <ModeratorLogo
+          <Link to={AddHomeworkChooseMedia}>
+            <HomeworkLogo
               className={clsx(
-                styles['add-icon'],
-                (page === moderatorMobile || page === moderatorDesktop) && styles['current']
+                styles['icon'],
+                styles['homework'],
+                (page === addHomeworkMobile || page === addHomeworkDesktop) && styles['current']
               )}
             />
           </Link>
         )}
 
         <Link to="/note">
-          <NoteLogo className={clsx(styles['icon'], page === note && styles['current'])} />
+          <NoteLogo className={clsx(styles['icon'], styles['note'], page === note && styles['current'])} />
         </Link>
 
-        {/* <Link to="/profile">
-          <SettingsLogo className={styles['icon']} />
-        </Link> */}
+        <Button variant="slide" onClick={logoutUser}>
+          {deleteLogoutState.isLoading ? <Loader /> : <LogoutLogo className={clsx(styles['icon'])} />}
+        </Button>
       </div>
     </header>
   );

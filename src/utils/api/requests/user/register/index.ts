@@ -4,6 +4,7 @@ export type PostUserRegisterParams = {
   name: string;
   surname: string;
   email: string;
+  registerKey: string;
   password: string;
   groupId: number;
 };

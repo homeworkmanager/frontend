@@ -11,35 +11,47 @@ import {
   DayHomeworkMobile,
   JournalDesktop,
   JournalMobile,
+  LessonModal,
+  ModerPanel,
   ProfileSettings,
   SubjectsNote
 } from './constants/lazyImports';
 import {
+  addHomeworkDesktop,
+  addHomeworkMobile,
   admin,
   auth,
   error,
   journalDesktop,
   journalMobile,
+  lessonModal,
   main,
-  moderatorDesktop,
-  moderatorMobile,
+  moder,
   note,
   profile
 } from './constants/routes';
+import { LocationGuard } from './guards/LocationGuard';
 import { Loader } from '@/components/ui/Loader';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { AuthGuard } from './guards/AuthGuard';
 
 export const Router = () => {
-  const isAuth = !!document.cookie.match('session_key=');
   const userRole = useSelector(getUserRole);
   const journalType = JournalChooseMedia;
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route element={<Layout />}>
-        <Route path={main} element={<Navigate to={isAuth ? journalType : '/auth'} />} />
+        <Route
+          path={main}
+          element={
+            <AuthGuard>
+              <Navigate to={journalType} />
+            </AuthGuard>
+          }
+        />
         <Route path={error} element={<Navigate to="/" replace />} />
 
         <Route
@@ -50,73 +62,116 @@ export const Router = () => {
             </Suspense>
           }
         />
-        {isAuth && (
-          <>
-            <Route
-              path={journalMobile}
-              element={
-                <Suspense fallback={<Loader />}>
-                  {journalType === '/journal-mobile' ? <JournalMobile /> : <Navigate to={journalDesktop} />}
-                </Suspense>
-              }
-            />
+        <Route
+          path={journalMobile}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AuthGuard>
+                {journalType === '/journal-mobile' ? <JournalMobile /> : <Navigate to={journalDesktop} />}
+              </AuthGuard>
+            </Suspense>
+          }
+        >
+          <Route
+            path={lessonModal}
+            element={
+              <Suspense fallback={<div />}>
+                <LocationGuard>
+                  <LessonModal />
+                </LocationGuard>
+              </Suspense>
+            }
+          />
+        </Route>
 
-            <Route
-              path={journalDesktop}
-              element={
-                <Suspense fallback={<Loader />}>
-                  {journalType === '/journal-desktop' ? <JournalDesktop /> : <Navigate to={journalMobile} />}
-                </Suspense>
-              }
-            />
+        <Route
+          path={journalDesktop}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AuthGuard>
+                {journalType === '/journal-desktop' ? <JournalDesktop /> : <Navigate to={journalMobile} />}
+              </AuthGuard>
+            </Suspense>
+          }
+        >
+          <Route
+            path={lessonModal}
+            element={
+              <Suspense fallback={<div />}>
+                <LocationGuard>
+                  <LessonModal />
+                </LocationGuard>
+              </Suspense>
+            }
+          />
+        </Route>
 
-            <Route
-              path={admin}
-              element={
-                <Suspense fallback={<Loader />}>
-                  {userRole === AdminRole ? <AdminPanel /> : <Navigate to={journalType} />}
-                </Suspense>
-              }
-            />
+        <Route
+          path={admin}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AuthGuard>
+                {userRole === AdminRole ? <AdminPanel /> : <Navigate to={journalType} />}
+              </AuthGuard>
+            </Suspense>
+          }
+        />
 
-            <Route
-              path={moderatorMobile}
-              element={
-                <Suspense fallback={<Loader />}>
-                  {userRole >= ModeratorRole ? <DayHomeworkMobile /> : <Navigate to={journalMobile} />}
-                </Suspense>
-              }
-            />
+        <Route
+          path={moder}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AuthGuard>
+                {userRole === ModeratorRole ? <ModerPanel /> : <Navigate to={journalType} />}
+              </AuthGuard>
+            </Suspense>
+          }
+        />
 
-            <Route
-              path={moderatorDesktop}
-              element={
-                <Suspense fallback={<Loader />}>
-                  {userRole >= ModeratorRole ? <DayHomeworkDesktop /> : <Navigate to={journalDesktop} />}
-                </Suspense>
-              }
-            />
+        <Route
+          path={addHomeworkMobile}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AuthGuard>
+                {userRole >= ModeratorRole ? <DayHomeworkMobile /> : <Navigate to={journalMobile} />}
+              </AuthGuard>
+            </Suspense>
+          }
+        />
 
-            <Route
-              path={note}
-              element={
-                <Suspense fallback={<Loader />}>
-                  <SubjectsNote />
-                </Suspense>
-              }
-            />
+        <Route
+          path={addHomeworkDesktop}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AuthGuard>
+                {userRole >= ModeratorRole ? <DayHomeworkDesktop /> : <Navigate to={journalDesktop} />}
+              </AuthGuard>
+            </Suspense>
+          }
+        />
 
-            <Route
-              path={profile}
-              element={
-                <Suspense fallback={<Loader />}>
-                  <ProfileSettings />
-                </Suspense>
-              }
-            />
-          </>
-        )}
-      </Route>
+        <Route
+          path={note}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AuthGuard>
+                <SubjectsNote />
+              </AuthGuard>
+            </Suspense>
+          }
+        />
+
+        <Route
+          path={profile}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AuthGuard>
+                <ProfileSettings />
+              </AuthGuard>
+            </Suspense>
+          }
+        />
+      </Route >
     )
   );
 

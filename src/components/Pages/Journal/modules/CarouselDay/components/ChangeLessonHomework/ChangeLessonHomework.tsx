@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
+import { formatText } from '@/utils/helpers/formatText';
 import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { motion } from 'framer-motion';
 
@@ -30,7 +31,7 @@ export const ChangeLessonHomework = ({
     if (!response.error) {
       changeHomework({
         homeworkID: currentHomework.homeworkID,
-        homeworkText: homeworkText,
+        homeworkText: formatText(homeworkText),
         isCompleted: false
       });
       removeCurrentHomework();

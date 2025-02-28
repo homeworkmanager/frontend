@@ -9,8 +9,10 @@
 
   --button-accept-color: #ae8bff;
   --button-question-color: #8793a6;
+  --button-helper-color: gray;
 
   --component-background-color: #373d48;
+  --component-light-background-color: #444a56;
   --component-underline-color: #8793ab;
 
   --lect-background-color: #5b40fd;
@@ -28,7 +30,9 @@
 }
 
 body {
+  overflow: hidden;
   overscroll-behavior: none;
+  width: 100% !important;
 }
 
 ::-webkit-scrollbar {

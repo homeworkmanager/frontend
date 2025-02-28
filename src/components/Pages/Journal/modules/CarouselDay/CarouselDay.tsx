@@ -1,4 +1,5 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselDay.module.css';
@@ -22,51 +23,43 @@ export const CarouselDay = ({
   dayCarouselRef,
   ...props
 }: CarouselDayProps) => {
-  const updateHeight = () => {
-    if (dayCarouselRef.current) {
-      dayCarouselRef.current.swiper.wrapperEl.style.height = 'auto';
-    }
-  };
-
   return (
-    <section {...props}>
-      <Swiper
-        tag="ul"
-        ref={dayCarouselRef}
-        modules={[Virtual]}
-        virtual={{
-          slides: apiDates ?? [],
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          renderExternal: (swiper: any) => {
-            if (swiper.virtual?.cache) swiper.virtual.cache = {};
-          }
-        }}
-        slidesPerView={1}
-        initialSlide={currentDateIndex}
-        onSlideChange={onDayNodeScroll}
-        autoHeight={true}
-        speed={400}
-        observer={true}
-        className={styles['swiper-env']}
-      >
-        {apiDates.map((apiData, dayIndex) => (
-          <SwiperSlide key={dayIndex} virtualIndex={dayIndex} tag="li" className={styles['swiper-layout']}>
-            <div className={styles['day-card']}>
-              {apiData.outputClasses.length === 0 && <FreeDay />}
-              {apiData.outputClasses.length > 0 &&
-                apiData.outputClasses.map((value) => (
-                  <Lesson
-                    key={value.class.startTime}
-                    apiData={value}
-                    Homeworks={value.homework}
-                    updateHeight={updateHeight}
-                  />
-                ))}
-              <IndependentHomework Homeworks={apiData.independentHomeworks} updateHeight={updateHeight} />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </section>
+    <>
+      <section {...props}>
+        <Swiper
+          tag="ul"
+          ref={dayCarouselRef}
+          modules={[Virtual]}
+          virtual={{
+            slides: apiDates ?? [],
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            renderExternal: (swiper: any) => {
+              if (swiper.virtual?.cache) swiper.virtual.cache = {};
+            }
+          }}
+          slidesPerView={1}
+          initialSlide={currentDateIndex}
+          onSlideChange={onDayNodeScroll}
+          autoHeight={true}
+          speed={400}
+          observer={true}
+          className={styles['swiper-env']}
+        >
+          {apiDates.map((apiData, dayIndex) => (
+            <SwiperSlide key={dayIndex} virtualIndex={dayIndex} tag="li" className={styles['swiper-layout']}>
+              <div className={styles['day-card']}>
+                {apiData.outputClasses.length === 0 && <FreeDay />}
+                {apiData.outputClasses.length > 0 &&
+                  apiData.outputClasses.map((value) => (
+                    <Lesson key={value.class.startTime} apiData={value} Homeworks={value.homework} />
+                  ))}
+                <IndependentHomework Homeworks={apiData.independentHomeworks} dayCarouselRef={dayCarouselRef} />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+      <Outlet />
+    </>
   );
 };
