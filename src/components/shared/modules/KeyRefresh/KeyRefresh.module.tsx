@@ -34,6 +34,7 @@ export const KeyRefresh = ({ currentKey, groupId = -1, hideLabel = false }: KeyR
   return (
     <div className={styles['content']}>
       <Input
+        id={groupId.toString()}
         type="text"
         label={'Ключ'}
         variant={'primary'}

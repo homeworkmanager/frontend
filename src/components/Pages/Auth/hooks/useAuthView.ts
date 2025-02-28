@@ -10,7 +10,6 @@ import {
   RegisterSchemaType
 } from '../schemas';
 
-import { EntryContext } from '@/App/contexts/AuthContext';
 import { getUserData } from '@/utils/api/requests/user/get';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
@@ -30,7 +29,6 @@ interface State {
 export const useAuthView = () => {
   const [stage, setStage] = React.useState<Stages>('login');
   const dispatch = useAppDispatch();
-  const { isEntry, setIsEntry } = React.useContext(EntryContext);
   const navigate = useNavigate();
 
   const getAllGroups = useGetAllGroupsQuery(undefined);
@@ -78,10 +76,6 @@ export const useAuthView = () => {
           group_name: data.group_name
         })
       );
-      if (isEntry) {
-        setIsEntry();
-      }
-      setIsEntry();
       navigate(JournalChooseMedia);
     } catch (error) {
       console.log(error);
