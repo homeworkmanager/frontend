@@ -27,6 +27,7 @@
   background-color: var(--component-background-color);
   border-bottom: solid 1px var(--text-invert-color);
   height: 4rem;
+  padding: 0 0.5rem;
   align-items: center;
   justify-content: center;
   text-align: center;

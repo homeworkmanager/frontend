@@ -38,8 +38,7 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
   const [currentHomework, setCurrentHomework] = React.useState<RestructHomeworkElement>({
     homeworkText: '',
     homeworkID: -1,
-    isCompleted: false,
-    dueDate: ''
+    isCompleted: false
   });
 
   const updateHeight = () => {
@@ -49,7 +48,7 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
   };
 
   const removeCurrentHomework = () => {
-    setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false, dueDate: '' });
+    setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false });
     updateHeight();
   };
 
