@@ -30,7 +30,7 @@ export const Header = () => {
 
     const isLocal = window.location.hostname === 'localhost';
 
-    if (!isLocal) {
+    if (isLocal) {
       document.cookie = newCookie;
       return;
     }
