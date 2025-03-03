@@ -25,7 +25,18 @@ export const Header = () => {
 
   const [deleteLogout, deleteLogoutState] = useDeleteLogoutMutation();
 
-  const deleteCookie = (name: string) => (document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`);
+  const deleteCookie = (name: string) => {
+    const newCookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+
+    const isLocal = window.location.hostname === 'localhost';
+
+    if (!isLocal) {
+      document.cookie = newCookie;
+      return;
+    }
+
+    document.cookie = newCookie + `; SameSite=Lax; domain=unihelper.ru;`;
+  };
 
   const logoutUser = async () => {
     const deleteLogoutResponse = await deleteLogout({});
@@ -82,7 +93,7 @@ export const Header = () => {
         </Link>
 
         <Button variant="slide" onClick={logoutUser}>
-          {deleteLogoutState.isLoading ? <Loader /> : <LogoutLogo className={clsx(styles['icon'])} />}
+          {deleteLogoutState.isLoading ? <Loader /> : <LogoutLogo className={clsx(styles['icon'], styles['exit'])} />}
         </Button>
       </div>
     </header>

@@ -49,6 +49,11 @@
   padding: 0.35rem;
 }
 
+.exit {
+  padding: 0.35rem;
+  margin-bottom: 2px;
+}
+
 .current {
   background-color: var(--border-focus-color);
 }
