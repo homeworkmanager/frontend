@@ -110,9 +110,7 @@ export const Router = () => {
           path={admin}
           element={
             <Suspense fallback={<Loader />}>
-              <AuthGuard>
-                {userRole === AdminRole ? <AdminPanel /> : <Navigate to={journalType} />}
-              </AuthGuard>
+              <AuthGuard>{userRole === AdminRole ? <AdminPanel /> : <Navigate to={journalType} />}</AuthGuard>
             </Suspense>
           }
         />
@@ -121,9 +119,7 @@ export const Router = () => {
           path={moder}
           element={
             <Suspense fallback={<Loader />}>
-              <AuthGuard>
-                {userRole === ModeratorRole ? <ModerPanel /> : <Navigate to={journalType} />}
-              </AuthGuard>
+              <AuthGuard>{userRole === ModeratorRole ? <ModerPanel /> : <Navigate to={journalType} />}</AuthGuard>
             </Suspense>
           }
         />
@@ -171,7 +167,7 @@ export const Router = () => {
             </Suspense>
           }
         />
-      </Route >
+      </Route>
     )
   );
 
