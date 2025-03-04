@@ -30,12 +30,12 @@ import {
   note,
   profile
 } from './constants/routes';
+import { AuthGuard } from './guards/AuthGuard';
 import { LocationGuard } from './guards/LocationGuard';
 import { Loader } from '@/components/ui/Loader';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
-import { AuthGuard } from './guards/AuthGuard';
 
 export const Router = () => {
   const userRole = useSelector(getUserRole);
@@ -110,9 +110,7 @@ export const Router = () => {
           path={admin}
           element={
             <Suspense fallback={<Loader />}>
-              <AuthGuard>
-                {userRole === AdminRole ? <AdminPanel /> : <Navigate to={journalType} />}
-              </AuthGuard>
+              <AuthGuard>{userRole === AdminRole ? <AdminPanel /> : <Navigate to={journalType} />}</AuthGuard>
             </Suspense>
           }
         />
@@ -121,9 +119,7 @@ export const Router = () => {
           path={moder}
           element={
             <Suspense fallback={<Loader />}>
-              <AuthGuard>
-                {userRole === ModeratorRole ? <ModerPanel /> : <Navigate to={journalType} />}
-              </AuthGuard>
+              <AuthGuard>{userRole === ModeratorRole ? <ModerPanel /> : <Navigate to={journalType} />}</AuthGuard>
             </Suspense>
           }
         />
@@ -171,7 +167,7 @@ export const Router = () => {
             </Suspense>
           }
         />
-      </Route >
+      </Route>
     )
   );
 

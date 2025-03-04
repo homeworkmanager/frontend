@@ -41,10 +41,7 @@ function App() {
   };
 
   React.useEffect(() => {
-    if (!(
-      document.cookie.match('session_key=') &&
-      document.cookie.match('session_expires='))
-    ) return;
+    if (!(document.cookie.match('session_key=') && document.cookie.match('session_expires='))) return;
 
     setUserData();
 
