@@ -71,18 +71,18 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
     }
   };
 
-  const scrollHandler = (event: React.UIEvent<HTMLDivElement>) => {
-    const target = event.currentTarget;
-    if (target.scrollTop > 0) {
-      target.style.backgroundColor = 'var(--component-background-color)';
-      return;
-    }
-    target.style.backgroundColor = '';
-  };
+  // const scrollHandler = (event: React.UIEvent<HTMLDivElement>) => {
+  //   const target = event.currentTarget;
+  //   if (target.scrollTop > 0) {
+  //     target.style.backgroundColor = 'var(--component-background-color)';
+  //     return;
+  //   }
+  //   target.style.backgroundColor = '';
+  // };
 
   return (
     <>
-      <div className={styles['notes-wrapper']} onScroll={(e) => scrollHandler(e)}>
+      <div className={styles['notes-wrapper']}>
         <MultiList>
           {notes.map((note, noteIndex) => (
             <MultiList.Row key={`${note.note_id}_${noteIndex}`} className={styles['']}>

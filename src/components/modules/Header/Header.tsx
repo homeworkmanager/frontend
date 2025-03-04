@@ -14,6 +14,7 @@ import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { deleteCookie } from '@/utils/helpers/deleteCookie';
 import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
@@ -24,19 +25,6 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const [deleteLogout, deleteLogoutState] = useDeleteLogoutMutation();
-
-  const deleteCookie = (name: string) => {
-    const newCookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
-
-    const isLocal = window.location.hostname === 'localhost';
-
-    if (isLocal) {
-      document.cookie = newCookie;
-      return;
-    }
-
-    document.cookie = newCookie + `; SameSite=Lax; domain=unihelper.ru;`;
-  };
 
   const logoutUser = async () => {
     const deleteLogoutResponse = await deleteLogout({});
