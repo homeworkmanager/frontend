@@ -18,7 +18,6 @@ import {
   usePostModeratorAddHomeworkDateMutation
 } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
 import { Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
@@ -67,7 +66,7 @@ export const DayHomeworkMobile = () => {
     const date = new Date(
       homeworkDate.year,
       homeworkDate.month - 1,
-      homeworkDate.day + 1,
+      homeworkDate.day,
       Number(deadline.hours),
       Number(deadline.minutes)
     );
@@ -130,16 +129,7 @@ export const DayHomeworkMobile = () => {
   };
 
   return (
-    <motion.article
-      initial={{ x: '100%' }}
-      animate={{ x: 0 }}
-      exit={{ x: '100%' }}
-      transition={{
-        duration: 0.35,
-        ease: 'easeInOut'
-      }}
-      className={styles['layout']}
-    >
+    <article className={styles['layout']}>
       <CarouselWeek
         currentDate={currentDate}
         values={values}
@@ -245,6 +235,6 @@ export const DayHomeworkMobile = () => {
       {(postModeratorAddHomeworkDateState.isSuccess || postModeratorAddHomeworkDateState.isError) && (
         <SendHomework type="mobile" responseState={postModeratorAddHomeworkDateState} />
       )}
-    </motion.article>
+    </article>
   );
 };

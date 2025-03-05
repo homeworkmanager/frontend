@@ -48,10 +48,19 @@
 
 .notes-wrapper {
   padding: 10px;
+  padding-bottom: 0;
   overflow-y: scroll;
   scroll-behavior: smooth;
   height: 170px;
+  background-color: var(--component-background-color);
   border: solid 10px var(--component-light-background-color);
   border-bottom: none;
+  -webkit-transition: background-color 0.5s ease;
+  -o-transition: background-color 0.5s ease;
   transition: background-color 0.5s ease;
+}
+
+.notes-wrapper::-webkit-scrollbar {
+  display: inline;
+  width: 5px;
 }
