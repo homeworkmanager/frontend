@@ -66,7 +66,7 @@ export const DayHomeworkMobile = () => {
     const date = new Date(
       homeworkDate.year,
       homeworkDate.month - 1,
-      homeworkDate.day + 1,
+      homeworkDate.day,
       Number(deadline.hours),
       Number(deadline.minutes)
     );
