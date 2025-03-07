@@ -37,6 +37,12 @@
   border-radius: 0.5rem;
 }
 
+.hover {
+  &:hover {
+    background-color: var(--header-hover-color);
+  }
+}
+
 .moder {
   padding: 0.35rem;
 }
@@ -55,5 +61,5 @@
 }
 
 .current {
-  background-color: var(--border-focus-color);
+  background-color: var(--border-focus-color) !important;
 }
