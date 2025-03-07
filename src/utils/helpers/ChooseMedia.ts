@@ -12,4 +12,4 @@ const isMobile = Number(window.matchMedia('screen and (max-width: 1050px)').matc
 const JournalChooseMedia = journalRoutes[isMobile];
 const AddHomeworkChooseMedia = addHomeworkRoutes[isMobile];
 
-export { JournalChooseMedia, AddHomeworkChooseMedia };
+export { JournalChooseMedia, AddHomeworkChooseMedia, isMobile };

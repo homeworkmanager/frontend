@@ -8,14 +8,13 @@ import 'swiper/swiper-bundle.css';
 import styles from './CarouselMonth.module.css';
 import { firstSessionDay, monthsNumbers, weekDays } from '@/components/Pages/Journal/constants';
 import { Button } from '@/components/ui/Button';
+import { Slide } from '@/components/ui/Icons/Slide';
 import { findDayIndex } from '@/utils/helpers/findDayIndex';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import { getDaysForOtherCarousels } from '@/utils/helpers/getDaysForOtherCarousels';
 import clsx from 'clsx';
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
-import { Slide } from '@/components/ui/Icons/Slide';
-
 import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 interface carouselWeekProps {
   currentDate: CustomDate;
@@ -30,7 +29,7 @@ export const CarouselMonth = ({
   values,
   monthCarouselRef,
   currentDate,
-  setClickedDate,
+  setClickedDate
 }: carouselWeekProps) => {
   const daysByMonth = React.useMemo(() => getDaysForOtherCarousels(values, 35), []);
 
@@ -49,7 +48,7 @@ export const CarouselMonth = ({
     <section className={styles['carousel-month']}>
       <header className={styles['header']}>
         <div className={styles['date-container']}>
-          <Button className={clsx(styles["custom-prev"], "prev")} variant="slide" rotate={true}>
+          <Button className={clsx(styles['custom-prev'], 'prev')} variant="slide" rotate={true}>
             <Slide />
           </Button>
           <WeekHeader
@@ -58,7 +57,7 @@ export const CarouselMonth = ({
             monthsNumbers={monthsNumbers}
             variant="desktop"
           />
-          <Button className={clsx(styles["custom-next"], "next")} variant="slide">
+          <Button className={clsx(styles['custom-next'], 'next')} variant="slide">
             <Slide />
           </Button>
         </div>
