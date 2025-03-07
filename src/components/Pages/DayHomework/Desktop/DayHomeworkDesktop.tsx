@@ -113,7 +113,6 @@ export const DayHomeworkDesktop = () => {
     <article className={styles['layout']}>
       <div className={styles['content']}>
         <CarouselMonth
-          moderator={true}
           currentDate={currentDate}
           values={values}
           setClickedDate={onClickChooseDate}
