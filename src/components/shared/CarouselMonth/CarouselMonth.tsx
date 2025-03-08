@@ -66,7 +66,6 @@ export const CarouselMonth = ({
 
       if (event.key === 'ArrowDown' && currentDate.day < values.length - 7) {
         const newIndex = currentDate.day + 7;
-        console.log(newIndex);
         onScrollClick(newIndex);
       }
     };
