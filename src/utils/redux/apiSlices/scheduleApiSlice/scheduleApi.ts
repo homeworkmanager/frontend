@@ -1,3 +1,4 @@
+import { PatchAdminUpdateClasses, patchAdminUpdateClasses } from '@/utils/api/requests/admin/updateClasses';
 import { postHomeworkStatus, PostHomeworkStatusConfig } from '@/utils/api/requests/homework/status/homework_id';
 import {
   postModeratorAddHomeworkClass,
@@ -24,6 +25,10 @@ export const scheduleApi = createApi({
     getAllSchedule: builder.query<AllScheduleResponse, GetAllScheduleConfig>({
       queryFn: ({ params, config }: GetAllScheduleConfig) => getAllSchedule({ params, config }),
       providesTags: ['GetAllSchedule']
+    }),
+    patchAdminUpdateClasses: builder.mutation<AdminUpdateClassesResponse, PatchAdminUpdateClasses>({
+      queryFn: (requestConfig?: PatchAdminUpdateClasses) => patchAdminUpdateClasses(requestConfig),
+      invalidatesTags: ['GetAllSchedule']
     }),
     postModeratorAddHomeworkClass: builder.mutation({
       queryFn: ({ params, config }: PostModeratorAddHomeworkClassConfig) =>
@@ -56,6 +61,7 @@ export const scheduleApi = createApi({
 
 export const {
   useGetAllScheduleQuery,
+  usePatchAdminUpdateClassesMutation,
   usePostModeratorAddHomeworkClassMutation,
   usePostModeratorAddHomeworkDateMutation,
   useDeleteModeratorHomeworkMutation,

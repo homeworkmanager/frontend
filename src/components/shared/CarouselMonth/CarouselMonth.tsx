@@ -42,7 +42,43 @@ export const CarouselMonth = ({
 
   const onScrollClick = (dayIndex: number) => {
     setClickedDate(dayIndex);
+    monthCarouselRef.current?.swiper.slideTo(Math.ceil((dayIndex + 1) / 35) - 1, 0);
   };
+
+  React.useEffect(() => {
+    const horizontalKeyDownNavigation = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowRight' && currentDate.day !== values.length - 1) {
+        const newIndex = currentDate.day + 1;
+        onScrollClick(newIndex);
+      }
+
+      if (event.key === 'ArrowLeft' && currentDate.day !== 0) {
+        const newIndex = currentDate.day - 1;
+        onScrollClick(newIndex);
+      }
+    };
+
+    const verticalKeyDownNavigation = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowUp' && currentDate.day > 6) {
+        const newIndex = currentDate.day - 7;
+        onScrollClick(newIndex);
+      }
+
+      if (event.key === 'ArrowDown' && currentDate.day < values.length - 7) {
+        const newIndex = currentDate.day + 7;
+        console.log(newIndex);
+        onScrollClick(newIndex);
+      }
+    };
+
+    document.addEventListener('keydown', horizontalKeyDownNavigation);
+    document.addEventListener('keydown', verticalKeyDownNavigation);
+
+    return () => {
+      document.removeEventListener('keydown', horizontalKeyDownNavigation);
+      document.removeEventListener('keydown', verticalKeyDownNavigation);
+    };
+  }, [currentDate.day]);
 
   return (
     <section className={styles['carousel-month']}>
@@ -77,14 +113,14 @@ export const CarouselMonth = ({
         navigation={{ prevEl: '.prev', nextEl: '.next' }}
         speed={500}
       >
-        {daysByMonth.map((value, slideIndex) => (
+        {daysByMonth.map((slide, slideIndex) => (
           <SwiperSlide key={slideIndex} tag="li">
             <ul className={styles['month-card']}>
-              {value.map((value, dayIndex) => (
+              {slide.map((day, dayIndex) => (
                 <li
                   key={dayIndex}
                   className={styles['month-container']}
-                  onClick={() => onScrollClick(findIndexByDate(values, value))}
+                  onClick={() => onScrollClick(findIndexByDate(values, day))}
                 >
                   <div
                     className={clsx(
@@ -93,9 +129,9 @@ export const CarouselMonth = ({
                       currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
                     )}
                   >
-                    <p>{value.day}</p>
+                    <p>{day.day}</p>
                   </div>
-                  {value.lessons.length > 0 && <LessonsList lessons={value.lessons} />}
+                  {day.lessons.length > 0 && <LessonsList lessons={day.lessons} />}
                 </li>
               ))}
             </ul>
