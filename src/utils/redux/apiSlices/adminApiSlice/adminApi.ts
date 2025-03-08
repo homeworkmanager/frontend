@@ -1,6 +1,5 @@
 import { patchAdminRefreshAllData, PatchAdminRefreshAllDataConfig } from '@/utils/api/requests/admin/refreshAllData';
 import { patchAdminRole, PatchAdminRoleConfig } from '@/utils/api/requests/admin/role/id';
-import { PatchAdminUpdateClasses, patchAdminUpdateClasses } from '@/utils/api/requests/admin/updateClasses';
 import { getAdminUsers, GetAdminUsersConfig } from '@/utils/api/requests/admin/users';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -13,10 +12,6 @@ export const adminApi = createApi({
       queryFn: (requestConfig?: PatchAdminRefreshAllDataConfig) => patchAdminRefreshAllData(requestConfig),
       invalidatesTags: ['PatchAdminRefreshAllData']
     }),
-    patchAdminUpdateClasses: builder.mutation<AdminUpdateClassesResponse, PatchAdminUpdateClasses>({
-      queryFn: (requestConfig?: PatchAdminUpdateClasses) => patchAdminUpdateClasses(requestConfig),
-      invalidatesTags: ['PatchAdminUpdateClasses']
-    }),
     getAdminUsers: builder.query<AdminUsersResponse, GetAdminUsersConfig>({
       queryFn: (requestConfig?: GetAdminUsersConfig) => getAdminUsers(requestConfig),
       providesTags: ['GetAdminUsers']
@@ -28,9 +23,4 @@ export const adminApi = createApi({
   })
 });
 
-export const {
-  usePatchAdminRefreshAllDataMutation,
-  usePatchAdminUpdateClassesMutation,
-  useGetAdminUsersQuery,
-  usePatchAdminRoleMutation
-} = adminApi;
+export const { usePatchAdminRefreshAllDataMutation, useGetAdminUsersQuery, usePatchAdminRoleMutation } = adminApi;

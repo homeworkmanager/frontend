@@ -75,11 +75,11 @@ export const CarouselWeek = ({
         {daysByWeeks.map((week, slideIndex) => (
           <SwiperSlide key={slideIndex} tag="li">
             <ul className={styles['carousel-week-slide']}>
-              {week.map((value, dayIndex) => (
+              {week.map((day, dayIndex) => (
                 <li
                   key={dayIndex}
                   className={styles['carousel-date-item']}
-                  onClick={() => setClickedDate(findIndexByDate(values, value))}
+                  onClick={() => setClickedDate(findIndexByDate(values, day))}
                 >
                   <p className={styles['day']}>{weekDays[dayIndex]}</p>
                   <div
@@ -89,9 +89,9 @@ export const CarouselWeek = ({
                       currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
                     )}
                   >
-                    <p className={styles['date']}>{value.day}</p>
+                    <p className={styles['date']}>{day.day}</p>
                   </div>
-                  {value.lessons.length > 0 && <LessonsList lessons={value.lessons} />}
+                  {day.lessons.length > 0 && <LessonsList lessons={day.lessons} />}
                 </li>
               ))}
             </ul>
