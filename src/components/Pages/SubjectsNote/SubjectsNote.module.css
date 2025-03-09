@@ -1,15 +1,18 @@
 .container {
   margin-top: 10px;
-  overflow-y: scroll;
+  overflow-y: auto;
   scroll-behavior: smooth;
 }
 
 .content {
-  display: -ms-grid;
+  display: -webkit-grid;
   display: grid;
+  -webkit-grid-auto-flow: dense;
   grid-auto-flow: dense;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  grid-auto-rows: repeat(auto-fit, 1fr);
+  -webkit-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  -webkit-grid-auto-rows: auto;
+  grid-auto-rows: auto;
   gap: 1rem;
   container-type: inline-size;
   padding: 0 10px;
@@ -24,18 +27,12 @@
 }
 
 .subject-wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   background-color: var(--component-background-color);
   border-bottom: solid 1px var(--text-invert-color);
   height: 4rem;
   padding: 0 0.5rem;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
   text-align: center;
 }
