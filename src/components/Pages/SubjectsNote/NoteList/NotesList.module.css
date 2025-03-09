@@ -49,7 +49,7 @@
 .notes-wrapper {
   padding: 10px;
   padding-bottom: 0;
-  overflow-y: auto;
+  overflow-y: scroll;
   scroll-behavior: smooth;
   height: 170px;
   background-color: var(--component-background-color);
