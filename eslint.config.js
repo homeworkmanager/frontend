@@ -19,6 +19,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      'no-console': ['error'],
       'simple-import-sort/imports': [
         'error',
         {

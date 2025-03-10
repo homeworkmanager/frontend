@@ -30,6 +30,7 @@ export const Header = () => {
     const deleteLogoutResponse = await deleteLogout({});
 
     if (deleteLogoutResponse.error) {
+      // eslint-disable-next-line no-console
       console.error(deleteLogoutResponse);
       return;
     }
