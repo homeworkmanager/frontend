@@ -44,8 +44,8 @@ export const JournalMobile = () => {
   };
 
   const onDayNodeScroll = () => {
-    const dayNode = (dayCarouselRef.current as SwiperRef)?.swiper;
-    const weekNode = (weekCarouselRef.current as SwiperRef)?.swiper;
+    const dayNode = (dayCarouselRef.current as SwiperRef).swiper;
+    const weekNode = (weekCarouselRef.current as SwiperRef).swiper;
 
     if (dayNode === undefined || weekNode === undefined) return;
 
@@ -58,6 +58,7 @@ export const JournalMobile = () => {
       month: values[dayNode.activeIndex].month,
       day: dayNode.activeIndex
     });
+
     const newWeekIndex = Math.ceil((dayNode.activeIndex + 1) / 7) - 1;
 
     if (weekNode.realIndex !== newWeekIndex) {

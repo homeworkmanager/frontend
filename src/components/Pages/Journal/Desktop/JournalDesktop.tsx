@@ -27,18 +27,26 @@ export const JournalDesktop = () => {
   };
 
   const onDayNodeScroll = () => {
-    const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.activeIndex;
+    const dayNode = (dayCarouselRef.current as SwiperRef).swiper;
     const monthNode = (monthCarouselRef.current as SwiperRef).swiper;
 
-    setActiveMonthNode(dayNodeIndex);
+    if (dayNode === undefined || monthNode === undefined) return;
+
+    if (dayNode.animating) return;
+
+    setActiveMonthNode(dayNode.activeIndex);
 
     setCurrentDate({
-      year: values[dayNodeIndex].year,
-      month: values[dayNodeIndex].month,
-      day: dayNodeIndex
+      year: values[dayNode.activeIndex].year,
+      month: values[dayNode.activeIndex].month,
+      day: dayNode.activeIndex
     });
 
-    monthNode.slideTo(Math.ceil((dayNodeIndex + 1) / 35) - 1, 0);
+    const newMonthIndex = Math.ceil((dayNode.activeIndex + 1) / 35) - 1;
+
+    if (monthNode.realIndex !== newMonthIndex) {
+      monthNode.slideTo(newMonthIndex, 400);
+    }
   };
 
   return (

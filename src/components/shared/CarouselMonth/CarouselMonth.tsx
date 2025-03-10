@@ -93,7 +93,7 @@ export const CarouselMonth = ({
             <Slide />
           </Button>
           <WeekHeader
-            currentDate={values[currentDay.current]}
+            currentDate={values[currentDate.day]}
             firstSessionDay={firstSessionDay}
             monthsNumbers={monthsNumbers}
             variant="desktop"
