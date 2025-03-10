@@ -15,7 +15,7 @@ api.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    if (error.response?.status === 403 || error.response?.status === 500) {
+    if (error.response?.status === 401) {
       deleteCookie('session_key');
       deleteCookie('session_expires');
       window.location.href = '/auth';
