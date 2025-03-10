@@ -13,6 +13,7 @@ function App() {
     try {
       await getUserRefresh();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -30,6 +31,7 @@ function App() {
         })
       );
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };

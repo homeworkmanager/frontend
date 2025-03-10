@@ -40,32 +40,38 @@ export const CarouselMonth = ({
 
   const [todaySlide, todayIndexInSlide] = React.useRef([currentSlide, dayIndexInSlide]).current;
 
+  const currentDay = React.useRef<number>(currentDate.day);
+
   const onScrollClick = (dayIndex: number) => {
     setClickedDate(dayIndex);
     monthCarouselRef.current?.swiper.slideTo(Math.ceil((dayIndex + 1) / 35) - 1, 0);
   };
 
   React.useEffect(() => {
+    currentDay.current = currentDate.day;
+  }, [currentDate.day]);
+
+  React.useEffect(() => {
     const horizontalKeyDownNavigation = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight' && currentDate.day !== values.length - 1) {
-        const newIndex = currentDate.day + 1;
+      if (event.key === 'ArrowRight' && currentDay.current !== values.length - 1) {
+        const newIndex = currentDay.current + 1;
         onScrollClick(newIndex);
       }
 
-      if (event.key === 'ArrowLeft' && currentDate.day !== 0) {
-        const newIndex = currentDate.day - 1;
+      if (event.key === 'ArrowLeft' && currentDay.current !== 0) {
+        const newIndex = currentDay.current - 1;
         onScrollClick(newIndex);
       }
     };
 
     const verticalKeyDownNavigation = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowUp' && currentDate.day > 6) {
-        const newIndex = currentDate.day - 7;
+      if (event.key === 'ArrowUp' && currentDay.current > 6) {
+        const newIndex = currentDay.current - 7;
         onScrollClick(newIndex);
       }
 
-      if (event.key === 'ArrowDown' && currentDate.day < values.length - 7) {
-        const newIndex = currentDate.day + 7;
+      if (event.key === 'ArrowDown' && currentDay.current < values.length - 7) {
+        const newIndex = currentDay.current + 7;
         onScrollClick(newIndex);
       }
     };
@@ -77,7 +83,7 @@ export const CarouselMonth = ({
       document.removeEventListener('keydown', horizontalKeyDownNavigation);
       document.removeEventListener('keydown', verticalKeyDownNavigation);
     };
-  }, [currentDate.day]);
+  }, []);
 
   return (
     <section className={styles['carousel-month']}>
@@ -87,7 +93,7 @@ export const CarouselMonth = ({
             <Slide />
           </Button>
           <WeekHeader
-            currentDate={values[currentDate.day]}
+            currentDate={values[currentDay.current]}
             firstSessionDay={firstSessionDay}
             monthsNumbers={monthsNumbers}
             variant="desktop"
