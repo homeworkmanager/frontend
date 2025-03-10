@@ -41,6 +41,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         mode: 'production',
+        skipWaiting: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,webmanifest}'],
         navigateFallback: '/index.html',
         runtimeCaching: [

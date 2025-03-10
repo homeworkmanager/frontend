@@ -12,6 +12,7 @@ import { ModerLogo } from '@/components/ui/Icons/Moder';
 import { NoteLogo } from '@/components/ui/Icons/Note';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
+import { cookieExpires, cookieKey } from '@/utils/constants/cookieNames';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { AddHomeworkChooseMedia, isMobile, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
@@ -35,8 +36,8 @@ export const Header = () => {
       return;
     }
 
-    deleteCookie('session_key');
-    deleteCookie('session_expires');
+    deleteCookie(cookieKey);
+    deleteCookie(cookieExpires);
 
     navigate(auth, { replace: true });
   };

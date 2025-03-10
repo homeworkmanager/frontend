@@ -1,3 +1,4 @@
+import { cookieExpires, cookieKey } from '../constants/cookieNames';
 import { deleteCookie } from '../helpers/deleteCookie';
 
 import axios, { AxiosError } from 'axios';
@@ -16,8 +17,8 @@ api.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      deleteCookie('session_key');
-      deleteCookie('session_expires');
+      deleteCookie(cookieKey);
+      deleteCookie(cookieExpires);
       window.location.href = '/auth';
     }
   }
