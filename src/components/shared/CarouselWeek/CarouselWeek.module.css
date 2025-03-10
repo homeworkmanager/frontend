@@ -12,8 +12,8 @@
 }
 
 .carousel-week-slide {
-  display: flex !important;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   padding: 0 2%;
 }
 
@@ -21,7 +21,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
   height: calc(100% / 7);
 }
 
@@ -39,7 +38,7 @@
   aspect-ratio: 1 / 1;
   transition: background-color 0.3s ease-in-out;
   -webkit-tap-highlight-color: transparent;
-  width: 75%;
+  width: 80%;
 }
 
 .date {
