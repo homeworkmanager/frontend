@@ -1,5 +1,5 @@
 .carousel-week {
-  margin-bottom: 1.3rem;
+  margin-bottom: 0.3rem;
 }
 
 .navigation {
@@ -36,7 +36,7 @@
   color: var(--text-invert-color);
   border-radius: 30%;
   aspect-ratio: 1 / 1;
-  transition: background-color 0.3s ease-in-out;
+  /* transition: background-color 0.3s ease-in-out; */
   -webkit-tap-highlight-color: transparent;
   width: 80%;
 }
@@ -53,6 +53,10 @@
 
 .today {
   background-color: var(--today-color);
+
+  p {
+    transform: scale(1.1);
+  }
 }
 
 .active {
@@ -61,4 +65,9 @@
   p {
     transform: scale(1.1);
   }
+}
+
+.change-view {
+  margin: auto;
+  rotate: 90deg;
 }

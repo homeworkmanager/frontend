@@ -60,6 +60,8 @@ export const DayHomeworkMobile = () => {
 
   const weekCarouselRef = React.useRef<SwiperRef>(null);
 
+  const daysCount = React.useRef<DaysCount>(7);
+
   const activeWeekNode = React.useMemo(() => findIndexByDate(values, homeworkDate), [homeworkDate]);
 
   const sendLessonHomework = async () => {
@@ -97,24 +99,7 @@ export const DayHomeworkMobile = () => {
     setHomeworkDate({ year: values[index].year, month: values[index].month, day: values[index].day });
   };
 
-  const onWeekNodeScroll = () => {
-    const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
-
-    if (weekNodeIndex * 7 <= activeWeekNode && weekNodeIndex * 7 + 6 > activeWeekNode) {
-      setCurrentDate({
-        year: values[activeWeekNode].year,
-        month: values[activeWeekNode].month,
-        day: activeWeekNode
-      });
-      return;
-    }
-
-    setCurrentDate({
-      year: values[weekNodeIndex * 7 + 6].year,
-      month: values[weekNodeIndex * 7 + 6].month,
-      day: weekNodeIndex * 7 + 6
-    });
-  };
+  const setDate = (date: CustomDate) => setCurrentDate(date);
 
   const onScrollHours = () => {
     setDeadline({ ...deadline, hours: hours[hoursRef.current!.swiper.realIndex] });
@@ -133,8 +118,9 @@ export const DayHomeworkMobile = () => {
       <CarouselWeek
         currentDate={currentDate}
         values={values}
-        onWeekNodeScroll={onWeekNodeScroll}
+        setDate={setDate}
         setClickedDate={onClickChooseDate}
+        daysCount={daysCount}
         weekCarouselRef={weekCarouselRef}
         activeWeekNode={activeWeekNode}
       />

@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 
-import { findDayIndex } from '../../../utils/helpers/findDayIndex';
-import { findIndexByDate } from '../../../utils/helpers/findIndexByDate';
-import { getDaysForOtherCarousels } from '../../../utils/helpers/getDaysForOtherCarousels';
-import { firstSessionDay, monthsNumbers, weekDays } from '../../Pages/Journal/constants';
 import { LessonsList } from '../modules/LessonsList/LessonsList';
 import { WeekHeader } from '../modules/WeekHeader/WeekHeader';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselWeek.module.css';
+import { firstSessionDay, monthsNumbers, weekDays } from '@/components/Pages/Journal/constants';
 import { Button } from '@/components/ui/Button';
 import { Slide } from '@/components/ui/Icons/Slide';
+import { findDayIndex } from '@/utils/helpers/findDayIndex';
+import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
+import { getDaysForOtherCarousels } from '@/utils/helpers/getDaysForOtherCarousels';
 import clsx from 'clsx';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
@@ -20,8 +20,9 @@ interface carouselWeekProps {
   currentDate: CustomDate;
   activeWeekNode: number;
   values: ValuesDates;
-  onWeekNodeScroll: () => void;
+  setDate: (date: CustomDate) => void;
   setClickedDate: (index: number) => void;
+  daysCount: React.MutableRefObject<DaysCount>;
   weekCarouselRef: React.RefObject<SwiperRef>;
 }
 
@@ -29,23 +30,90 @@ export const CarouselWeek = ({
   currentDate,
   activeWeekNode,
   values,
-  onWeekNodeScroll,
+  setDate,
+  daysCount,
   weekCarouselRef,
   setClickedDate
 }: carouselWeekProps) => {
-  const daysByWeeks = React.useMemo(() => getDaysForOtherCarousels(values, 7), []);
+  const [daysByWeeks, setDaysByWeeks] = React.useState(() => getDaysForOtherCarousels(values, daysCount.current));
 
   const [currentSlide, dayIndexInSlide] = React.useMemo(
     () => findDayIndex(values[activeWeekNode], daysByWeeks),
     [activeWeekNode, daysByWeeks]
   );
 
-  const [todaySlide, todayIndexInSlide] = React.useRef([currentSlide, dayIndexInSlide]).current;
+  const initialParams = React.useRef({ currentSlide, dayIndexInSlide });
+
+  const onWeekNodeScroll = () => {
+    const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
+
+    if (
+      weekNodeIndex * daysCount.current <= activeWeekNode &&
+      weekNodeIndex * daysCount.current + (daysCount.current === 7 ? 6 : 13) >= activeWeekNode
+    ) {
+      setDate({
+        year: values[activeWeekNode].year,
+        month: values[activeWeekNode].month,
+        day: activeWeekNode
+      });
+      return;
+    }
+
+    setDate({
+      year: values[weekNodeIndex * daysCount.current].year,
+      month: values[weekNodeIndex * daysCount.current].month,
+      day: weekNodeIndex * daysCount.current
+    });
+  };
+
+  const updateInitialParams = (newDaysCount: number) => {
+    if (newDaysCount === 14) {
+      initialParams.current = {
+        currentSlide: initialParams.current.currentSlide / 2,
+        dayIndexInSlide:
+          initialParams.current.currentSlide % 2 === 0
+            ? initialParams.current.dayIndexInSlide
+            : initialParams.current.dayIndexInSlide + 7
+      };
+      return;
+    }
+
+    initialParams.current = {
+      currentSlide: initialParams.current.currentSlide * 2,
+      dayIndexInSlide:
+        initialParams.current.dayIndexInSlide > 6
+          ? initialParams.current.dayIndexInSlide - 7
+          : initialParams.current.dayIndexInSlide
+    };
+  };
+
+  const changeWeekCarouselView = () => {
+    const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
+    const newDaysCount = daysCount.current === 7 ? 14 : 7;
+
+    updateInitialParams(newDaysCount);
+
+    setDaysByWeeks(() => getDaysForOtherCarousels(values, newDaysCount));
+
+    daysCount.current = newDaysCount;
+
+    if (newDaysCount === 7) return;
+
+    const targetSlideIndex = weekNodeIndex / 2;
+    weekCarouselRef.current?.swiper.slideTo(targetSlideIndex, 0);
+  };
+
+  React.useLayoutEffect(() => {
+    if (daysByWeeks.length === values.length / 14 || daysCount.current === 14) return;
+
+    const targetSlideIndex = currentDate.day / 7;
+    weekCarouselRef.current?.swiper.slideTo(targetSlideIndex, 0);
+  }, [daysCount.current]);
 
   return (
     <section className={styles['carousel-week']}>
       <header className={styles['navigation']}>
-        <Button className="custom-prev" variant="slide" rotate={true}>
+        <Button className="custom-prev" variant="slide" rotate>
           <Slide />
         </Button>
         <WeekHeader
@@ -85,7 +153,9 @@ export const CarouselWeek = ({
                   <div
                     className={clsx(
                       styles['date-card'],
-                      todaySlide === slideIndex && todayIndexInSlide === dayIndex && styles['today'],
+                      Math.floor(initialParams.current.currentSlide) === slideIndex &&
+                      initialParams.current.dayIndexInSlide === dayIndex &&
+                      styles['today'],
                       currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
                     )}
                   >
@@ -98,6 +168,7 @@ export const CarouselWeek = ({
           </SwiperSlide>
         ))}
       </Swiper>
+      <Button variant="slide" className={styles['change-view']} children={<Slide />} onClick={changeWeekCarouselView} />
     </section>
   );
 };

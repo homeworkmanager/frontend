@@ -17,11 +17,14 @@ import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { AddHomeworkChooseMedia, isMobile, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
 import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
+import { useAppDispatch } from '@/utils/redux/store';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { logOut } from '@/utils/redux/storeSlices/userSlice/slice';
 import clsx from 'clsx';
 
 export const Header = () => {
   const { role, group_name } = useSelector(getUser);
+  const dispatch = useAppDispatch();
   const page = useLocation().pathname;
   const navigate = useNavigate();
 
@@ -38,6 +41,7 @@ export const Header = () => {
 
     deleteCookie(cookieKey);
     deleteCookie(cookieExpires);
+    dispatch(logOut());
 
     navigate(auth, { replace: true });
   };

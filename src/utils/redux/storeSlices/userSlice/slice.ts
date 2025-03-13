@@ -10,7 +10,7 @@ const initialState: TodosState = {
     name: '',
     surname: '',
     email: '',
-    group_name: ''
+    group_name: 'ББББ-00-00'
   }
 };
 
