@@ -107,8 +107,7 @@ export const CarouselWeek = ({
   };
 
   React.useLayoutEffect(() => {
-    if (transitionStatus.current === false)
-      transitionStatus.current = true;
+    if (transitionStatus.current === false) transitionStatus.current = true;
 
     if (daysCount.current === 14) return;
 
@@ -161,8 +160,8 @@ export const CarouselWeek = ({
                       styles['date-card'],
                       transitionStatus.current && styles['bg-transition'],
                       Math.floor(initialParams.current.currentSlide) === slideIndex &&
-                      initialParams.current.dayIndexInSlide === dayIndex &&
-                      styles['today'],
+                        initialParams.current.dayIndexInSlide === dayIndex &&
+                        styles['today'],
                       currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
                     )}
                   >
