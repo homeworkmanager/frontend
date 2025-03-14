@@ -36,9 +36,12 @@
   color: var(--text-invert-color);
   border-radius: 30%;
   aspect-ratio: 1 / 1;
-  /* transition: background-color 0.3s ease-in-out; */
   -webkit-tap-highlight-color: transparent;
   width: 80%;
+}
+
+.bg-transition {
+  transition: background-color 0.3s ease-in-out;
 }
 
 .date {

@@ -43,6 +43,7 @@ export const CarouselWeek = ({
   );
 
   const initialParams = React.useRef({ currentSlide, dayIndexInSlide });
+  const transitionStatus = React.useRef(true);
 
   const onWeekNodeScroll = () => {
     const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
@@ -88,6 +89,8 @@ export const CarouselWeek = ({
   };
 
   const changeWeekCarouselView = () => {
+    transitionStatus.current = false;
+
     const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
     const newDaysCount = daysCount.current === 7 ? 14 : 7;
 
@@ -104,7 +107,10 @@ export const CarouselWeek = ({
   };
 
   React.useLayoutEffect(() => {
-    if (daysByWeeks.length === values.length / 14 || daysCount.current === 14) return;
+    if (transitionStatus.current === false)
+      transitionStatus.current = true;
+
+    if (daysCount.current === 14) return;
 
     const targetSlideIndex = currentDate.day / 7;
     weekCarouselRef.current?.swiper.slideTo(targetSlideIndex, 0);
@@ -153,6 +159,7 @@ export const CarouselWeek = ({
                   <div
                     className={clsx(
                       styles['date-card'],
+                      transitionStatus.current && styles['bg-transition'],
                       Math.floor(initialParams.current.currentSlide) === slideIndex &&
                       initialParams.current.dayIndexInSlide === dayIndex &&
                       styles['today'],
