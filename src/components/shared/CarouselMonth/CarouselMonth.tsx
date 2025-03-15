@@ -53,6 +53,7 @@ export const CarouselMonth = ({
 
   React.useEffect(() => {
     const horizontalKeyDownNavigation = (event: KeyboardEvent) => {
+      if (window.location.pathname.split('-')[1] !== 'desktop') return;
       if (event.key === 'ArrowRight' && currentDay.current !== values.length - 1) {
         const newIndex = currentDay.current + 1;
         onScrollClick(newIndex);
@@ -65,6 +66,7 @@ export const CarouselMonth = ({
     };
 
     const verticalKeyDownNavigation = (event: KeyboardEvent) => {
+      if (window.location.pathname.split('-')[1] !== 'desktop') return;
       if (event.key === 'ArrowUp' && currentDay.current > 6) {
         const newIndex = currentDay.current - 7;
         onScrollClick(newIndex);

@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import styles from './Lesson.module.css';
 import { Typhography } from '@/components/ui/Typhography';
+import { convertDateToTime } from '@/utils/helpers/convertDateToTime';
 import { convertSummary } from '@/utils/helpers/convertSummary';
 import clsx from 'clsx';
 
@@ -27,12 +28,6 @@ const lessonColor = {
   Зачет: 'zach',
   Консультация: 'cons',
   Экзамен: 'exam'
-};
-
-const convertDateToTime = (rawDate: string) => {
-  const timePart = rawDate.split('T')[1];
-  const [hours, minutes] = timePart.split(':');
-  return `${hours}:${minutes}`;
 };
 
 const getTeacher = (rawDescrciption: string) => {
