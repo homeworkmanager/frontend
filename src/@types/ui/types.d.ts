@@ -57,6 +57,8 @@ interface CustomDate {
   day: number;
 }
 
+type DaysCount = 7 | 14;
+
 type Lesson = OutputClass;
 type Lessons = Lesson[];
 type AllLessons = Lessons[];

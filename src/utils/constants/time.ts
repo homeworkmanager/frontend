@@ -5,7 +5,7 @@ export const startDate: StartDateType = {
 };
 
 export const scheduleBeginDate = {
-  date: '03.02.2025',
+  date: new Date('2025.02.03').toISOString(),
   days: 161
 };
 
