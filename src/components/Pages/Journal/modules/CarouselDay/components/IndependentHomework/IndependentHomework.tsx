@@ -12,6 +12,7 @@ import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/constants/userRoles';
+import { convertDateToTime } from '@/utils/helpers/convertDateToTime';
 import { formatText } from '@/utils/helpers/formatText';
 import {
   useDeleteModeratorHomeworkMutation,
@@ -121,10 +122,7 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                         tag="p"
                         variant="small"
                         style={{ marginBottom: '.5rem', color: 'var(--time-color)' }}
-                        children={`До ${new Date(homework.dueDate).toLocaleTimeString('ru-RU', {
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}`}
+                        children={`До ${convertDateToTime(homework.dueDate)}`}
                       />
                     </MultiList.Column>
                   </MultiList.Row>
