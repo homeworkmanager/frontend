@@ -13,6 +13,7 @@ import { findDayIndex } from '@/utils/helpers/findDayIndex';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import { getDaysForOtherCarousels } from '@/utils/helpers/getDaysForOtherCarousels';
 import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
@@ -115,6 +116,27 @@ export const CarouselWeek = ({
     weekCarouselRef.current?.swiper.slideTo(targetSlideIndex, 0);
   }, [daysCount.current]);
 
+  // const slideVariants = {
+  //   hidden: (daysCount: number) => ({
+  //     y: daysCount === 14 ? -100 : 100,
+  //     opacity: 0,
+  //   }),
+  //   visible: {
+  //     y: 0,
+  //     opacity: 1,
+  //     transition: { type: 'spring', stiffness: 100, damping: 20 },
+  //   },
+  // };
+
+  // const contentVariants = {
+  //   hidden: { opacity: 0, y: 20 },
+  //   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  // };
+
+  // const getTransition = (index: number) => ({
+  //   delay: index * 0.1,
+  // });
+
   return (
     <section className={styles['carousel-week']}>
       <header className={styles['navigation']}>
@@ -145,34 +167,48 @@ export const CarouselWeek = ({
           prevEl: '.custom-prev'
         }}
       >
-        {daysByWeeks.map((week, slideIndex) => (
-          <SwiperSlide key={slideIndex} tag="li">
-            <ul className={styles['carousel-week-slide']}>
-              {week.map((day, dayIndex) => (
-                <li
-                  key={dayIndex}
-                  className={styles['carousel-date-item']}
-                  onClick={() => setClickedDate(findIndexByDate(values, day))}
-                >
-                  <p className={styles['day']}>{weekDays[dayIndex]}</p>
-                  <div
-                    className={clsx(
-                      styles['date-card'],
-                      transitionStatus.current && styles['bg-transition'],
-                      Math.floor(initialParams.current.currentSlide) === slideIndex &&
-                        initialParams.current.dayIndexInSlide === dayIndex &&
-                        styles['today'],
-                      currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
-                    )}
+        <AnimatePresence>
+          {daysByWeeks.map((week, slideIndex) => (
+            <SwiperSlide key={slideIndex} tag="li">
+              <motion.ul
+                key={`${slideIndex}-${daysCount.current}`}
+                className={styles['carousel-week-slide']}
+
+                // {...(slideIndex === currentSlide && {
+                //   initial: 'hidden',
+                //   animate: 'visible',
+                //   exit: 'exit',
+                //   variants: slideVariants,
+                //   custom: daysCount.current,
+                //   transition: getTransition(slideIndex),
+                // })}
+              >
+                {week.map((day, dayIndex) => (
+                  <motion.li
+                    key={`${day.year} ${day.month} ${day.day}`}
+                    className={styles['carousel-date-item']}
+                    onClick={() => setClickedDate(findIndexByDate(values, day))}
                   >
-                    <p className={styles['date']}>{day.day}</p>
-                  </div>
-                  {day.lessons.length > 0 && <LessonsList lessons={day.lessons} />}
-                </li>
-              ))}
-            </ul>
-          </SwiperSlide>
-        ))}
+                    <motion.p className={styles['day']}>{weekDays[dayIndex]}</motion.p>
+                    <motion.div
+                      className={clsx(
+                        styles['date-card'],
+                        transitionStatus.current && styles['bg-transition'],
+                        Math.floor(initialParams.current.currentSlide) === slideIndex &&
+                          initialParams.current.dayIndexInSlide === dayIndex &&
+                          styles['today'],
+                        currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
+                      )}
+                    >
+                      <p className={styles['date']}>{day.day}</p>
+                    </motion.div>
+                    {day.lessons.length > 0 && <LessonsList lessons={day.lessons} />}
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </SwiperSlide>
+          ))}
+        </AnimatePresence>
       </Swiper>
       <Button variant="slide" className={styles['change-view']} children={<Slide />} onClick={changeWeekCarouselView} />
     </section>
