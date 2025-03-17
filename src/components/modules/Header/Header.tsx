@@ -12,15 +12,19 @@ import { ModerLogo } from '@/components/ui/Icons/Moder';
 import { NoteLogo } from '@/components/ui/Icons/Note';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
+import { cookieExpires, cookieKey } from '@/utils/constants/cookieNames';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
-import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { AddHomeworkChooseMedia, isMobile, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
 import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
+import { useAppDispatch } from '@/utils/redux/store';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { logOut } from '@/utils/redux/storeSlices/userSlice/slice';
 import clsx from 'clsx';
 
 export const Header = () => {
   const { role, group_name } = useSelector(getUser);
+  const dispatch = useAppDispatch();
   const page = useLocation().pathname;
   const navigate = useNavigate();
 
@@ -30,15 +34,19 @@ export const Header = () => {
     const deleteLogoutResponse = await deleteLogout({});
 
     if (deleteLogoutResponse.error) {
+      // eslint-disable-next-line no-console
       console.error(deleteLogoutResponse);
       return;
     }
 
-    deleteCookie('session_key');
-    deleteCookie('session_expires');
+    deleteCookie(cookieKey);
+    deleteCookie(cookieExpires);
+    dispatch(logOut());
 
     navigate(auth, { replace: true });
   };
+
+  const isDesktop = !isMobile;
 
   return (
     <header className={styles.header}>
@@ -54,13 +62,22 @@ export const Header = () => {
       <div className={styles.container}>
         {role === AdminRole && (
           <Link to={admin}>
-            <AdminLogo className={clsx(styles['icon'], page === admin && styles['current'])} />
+            <AdminLogo
+              className={clsx(styles['icon'], isDesktop && styles['hover'], page === admin && styles['current'])}
+            />
           </Link>
         )}
 
         {role === ModeratorRole && (
           <Link to={moder}>
-            <ModerLogo className={clsx(styles['icon'], styles['moder'], page === moder && styles['current'])} />
+            <ModerLogo
+              className={clsx(
+                styles['icon'],
+                isDesktop && styles['hover'],
+                styles['moder'],
+                page === moder && styles['current']
+              )}
+            />
           </Link>
         )}
 
@@ -69,6 +86,7 @@ export const Header = () => {
             <HomeworkLogo
               className={clsx(
                 styles['icon'],
+                isDesktop && styles['hover'],
                 styles['homework'],
                 (page === addHomeworkMobile || page === addHomeworkDesktop) && styles['current']
               )}
@@ -77,11 +95,22 @@ export const Header = () => {
         )}
 
         <Link to="/note">
-          <NoteLogo className={clsx(styles['icon'], styles['note'], page === note && styles['current'])} />
+          <NoteLogo
+            className={clsx(
+              styles['icon'],
+              isDesktop && styles['hover'],
+              styles['note'],
+              page === note && styles['current']
+            )}
+          />
         </Link>
 
         <Button variant="slide" onClick={logoutUser}>
-          {deleteLogoutState.isLoading ? <Loader /> : <LogoutLogo className={clsx(styles['icon'], styles['exit'])} />}
+          {deleteLogoutState.isLoading ? (
+            <Loader />
+          ) : (
+            <LogoutLogo className={clsx(styles['icon'], isDesktop && styles['hover'], styles['exit'])} />
+          )}
         </Button>
       </div>
     </header>

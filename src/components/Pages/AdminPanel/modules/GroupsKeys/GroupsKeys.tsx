@@ -16,6 +16,7 @@ export const GroupsKeys = () => {
   const refreshAll = async () => {
     const response = await patchAdminKeysRegenerate({});
 
+    // eslint-disable-next-line no-console
     if (response.error) console.log(response.error);
   };
 

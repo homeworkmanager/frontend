@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import './styles/index.ts';
 
-import App from './App';
+import App from './app/index.tsx';
 import { store } from './utils/redux/store.ts';
 import { registerSW } from 'virtual:pwa-register';
 

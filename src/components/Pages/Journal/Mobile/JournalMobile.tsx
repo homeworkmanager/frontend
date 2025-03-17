@@ -13,7 +13,7 @@ export const JournalMobile = () => {
 
   const [activeWeekNode, setActiveWeekNode] = React.useState(currentDateIndex);
 
-  const [currentDate, setCurrentDate] = React.useState(() => ({
+  const [currentDate, setCurrentDate] = React.useState<CustomDate>(() => ({
     year: values[currentDateIndex].year,
     month: values[currentDateIndex].month,
     day: currentDateIndex
@@ -22,30 +22,13 @@ export const JournalMobile = () => {
   const dayCarouselRef = React.useRef<SwiperRef>(null);
   const weekCarouselRef = React.useRef<SwiperRef>(null);
 
-  const onWeekNodeScroll = () => {
-    const weekNodeIndex = (weekCarouselRef.current as SwiperRef).swiper.realIndex;
-    if (dayCarouselRef.current !== null) {
-      const dayNodeIndex = (dayCarouselRef.current as SwiperRef).swiper.realIndex;
-      if (weekNodeIndex * 7 <= activeWeekNode && weekNodeIndex * 7 + 6 > activeWeekNode) {
-        setCurrentDate({
-          year: values[dayNodeIndex].year,
-          month: values[dayNodeIndex].month,
-          day: dayNodeIndex
-        });
-        return;
-      }
-    }
+  const daysCount = React.useRef<DaysCount>(7);
 
-    setCurrentDate({
-      year: values[weekNodeIndex * 7].year,
-      month: values[weekNodeIndex * 7].month,
-      day: weekNodeIndex * 7
-    });
-  };
+  const setDate = (date: CustomDate) => setCurrentDate(date);
 
   const onDayNodeScroll = () => {
-    const dayNode = (dayCarouselRef.current as SwiperRef)?.swiper;
-    const weekNode = (weekCarouselRef.current as SwiperRef)?.swiper;
+    const dayNode = (dayCarouselRef.current as SwiperRef).swiper;
+    const weekNode = (weekCarouselRef.current as SwiperRef).swiper;
 
     if (dayNode === undefined || weekNode === undefined) return;
 
@@ -58,7 +41,8 @@ export const JournalMobile = () => {
       month: values[dayNode.activeIndex].month,
       day: dayNode.activeIndex
     });
-    const newWeekIndex = Math.ceil((dayNode.activeIndex + 1) / 7) - 1;
+
+    const newWeekIndex = Math.ceil((dayNode.activeIndex + 1) / daysCount.current) - 1;
 
     if (weekNode.realIndex !== newWeekIndex) {
       weekNode.slideTo(newWeekIndex, 400);
@@ -77,10 +61,11 @@ export const JournalMobile = () => {
       {getScheduleStatus.success && (
         <>
           <CarouselWeek
+            values={values}
             currentDate={currentDate}
             activeWeekNode={activeWeekNode}
-            values={values}
-            onWeekNodeScroll={onWeekNodeScroll}
+            setDate={setDate}
+            daysCount={daysCount}
             weekCarouselRef={weekCarouselRef}
             setClickedDate={onDateNodeClick}
           />

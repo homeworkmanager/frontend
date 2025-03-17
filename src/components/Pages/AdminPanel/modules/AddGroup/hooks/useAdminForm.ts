@@ -15,7 +15,6 @@ export const useAdminForm = () => {
       adminIcal: ''
     },
     onSubmit: async (values) => {
-      console.log(values);
       await postGroup({
         params: {
           name: values.adminGroup,

@@ -1,10 +1,9 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { convertSummary } from '../../../../../../../utils/helpers/convertSummary';
 
 import styles from './Lesson.module.css';
 import { Typhography } from '@/components/ui/Typhography';
+import { convertDateToTime } from '@/utils/helpers/convertDateToTime';
+import { convertSummary } from '@/utils/helpers/convertSummary';
 import clsx from 'clsx';
 
 interface LessonProps {
@@ -29,12 +28,6 @@ const lessonColor = {
   Зачет: 'zach',
   Консультация: 'cons',
   Экзамен: 'exam'
-};
-
-const convertDateToTime = (rawDate: string) => {
-  const timePart = rawDate.split('T')[1];
-  const [hours, minutes] = timePart.split(':');
-  return `${hours}:${minutes}`;
 };
 
 const getTeacher = (rawDescrciption: string) => {
@@ -65,38 +58,36 @@ export const Lesson = ({ apiData, Homeworks }: LessonProps) => {
   };
 
   return (
-    <React.Fragment>
-      <section className={styles.container} onClick={showDetails}>
-        <header className={styles.header}>
-          <h3 className={styles['subject']}>{convertSummary(para.summary)}</h3>
-          <p className={clsx(styles['type'], styles[lessonColor[para.category as keyof typeof lessonColor]])}>
-            {para.category}
-          </p>
-        </header>
-        {Homeworks.length > 0 && (
-          <ol className={styles['homework-info']}>
-            <h4>Задание</h4>
-            {Homeworks.map((homework, index) => (
-              <li key={homework.homeworkID} className={styles['task']}>
-                <div className={styles['task-text']}>
-                  <p>{`${index + 1}. `}</p>
-                  <p className={clsx(styles['homework'], homework.isCompleted && styles['complete'])}>
-                    {homework.homeworkText}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        )}
-        <article className={styles['time-info']}>
-          <p>{`${lessonsNumbers[paraBegin as keyof typeof lessonsNumbers]} пара`}</p>
-          <p>{`${paraBegin} - ${paraEnd}`}</p>
-        </article>
-        <article className={styles['cabinet-info']}>
-          <Typhography tag="p" variant="additional" children={para.location} />
-          <Typhography tag="p" variant="additional" children={getTeacher(para.description)} />
-        </article>
-      </section>
-    </React.Fragment>
+    <section className={styles.container} onClick={showDetails}>
+      <header className={styles.header}>
+        <h3 className={styles['subject']}>{convertSummary(para.summary)}</h3>
+        <p className={clsx(styles['type'], styles[lessonColor[para.category as keyof typeof lessonColor]])}>
+          {para.category}
+        </p>
+      </header>
+      {Homeworks.length > 0 && (
+        <ol className={styles['homework-info']}>
+          <h4>Задание</h4>
+          {Homeworks.map((homework, index) => (
+            <li key={homework.homeworkID} className={styles['task']}>
+              <div className={styles['task-text']}>
+                <p>{`${index + 1}. `}</p>
+                <p className={clsx(styles['homework'], homework.isCompleted && styles['complete'])}>
+                  {homework.homeworkText}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+      <article className={styles['time-info']}>
+        <p>{`${lessonsNumbers[paraBegin as keyof typeof lessonsNumbers]} пара`}</p>
+        <p>{`${paraBegin} - ${paraEnd}`}</p>
+      </article>
+      <article className={styles['cabinet-info']}>
+        <Typhography tag="p" variant="additional" children={para.location} />
+        <Typhography tag="p" variant="additional" children={getTeacher(para.description)} />
+      </article>
+    </section>
   );
 };

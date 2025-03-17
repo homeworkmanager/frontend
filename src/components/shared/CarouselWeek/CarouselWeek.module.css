@@ -1,5 +1,5 @@
 .carousel-week {
-  margin-bottom: 1.3rem;
+  margin-bottom: 0.3rem;
 }
 
 .navigation {
@@ -12,8 +12,8 @@
 }
 
 .carousel-week-slide {
-  display: flex !important;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
   padding: 0 2%;
 }
 
@@ -21,7 +21,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
   height: calc(100% / 7);
 }
 
@@ -37,9 +36,12 @@
   color: var(--text-invert-color);
   border-radius: 30%;
   aspect-ratio: 1 / 1;
-  transition: background-color 0.3s ease-in-out;
   -webkit-tap-highlight-color: transparent;
-  width: 75%;
+  width: 80%;
+}
+
+.bg-transition {
+  transition: background-color 0.3s ease-in-out;
 }
 
 .date {
@@ -54,6 +56,10 @@
 
 .today {
   background-color: var(--today-color);
+
+  p {
+    transform: scale(1.1);
+  }
 }
 
 .active {
@@ -62,4 +68,9 @@
   p {
     transform: scale(1.1);
   }
+}
+
+.change-view {
+  margin: auto;
+  rotate: 90deg;
 }

@@ -71,15 +71,6 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
     }
   };
 
-  // const scrollHandler = (event: React.UIEvent<HTMLDivElement>) => {
-  //   const target = event.currentTarget;
-  //   if (target.scrollTop > 0) {
-  //     target.style.backgroundColor = 'var(--component-background-color)';
-  //     return;
-  //   }
-  //   target.style.backgroundColor = '';
-  // };
-
   return (
     <>
       <div className={styles['notes-wrapper']}>

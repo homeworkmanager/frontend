@@ -78,6 +78,7 @@ export const useAuthView = () => {
       );
       navigate(JournalChooseMedia);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -118,7 +119,7 @@ export const useAuthView = () => {
         changeStage('login');
         return;
       }
-
+      // eslint-disable-next-line no-console
       console.log(postRegisterResponse.error);
     }
   };
