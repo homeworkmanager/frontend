@@ -115,7 +115,7 @@ export const CarouselWeek = ({
     weekCarouselRef.current?.swiper.slideTo(targetSlideIndex, 0);
   }, [daysCount.current]);
 
-  const slideVariants = {
+  const slideVariants = (index: number) => ({
     hidden: {
       x: 300,
       opacity: 0
@@ -123,9 +123,9 @@ export const CarouselWeek = ({
     visible: {
       x: 0,
       opacity: 1,
-      transition: { type: 'tween', duration: 0.75 }
+      transition: { type: 'tween', duration: 0.375, delay: index * 0.035 }
     }
-  };
+  });
 
   return (
     <section className={styles['carousel-week']}>
@@ -161,11 +161,17 @@ export const CarouselWeek = ({
           {daysByWeeks.map((week, slideIndex) => (
             <SwiperSlide key={slideIndex} tag="li">
               <motion.ul key={`${slideIndex}-${daysCount.current}`} className={styles['carousel-week-slide']}>
-                {week.slice(0, 7).map((day, dayIndex) => (
+                {week.map((day, dayIndex) => (
                   <motion.li
                     key={`${day.year} ${day.month} ${day.day}`}
                     className={styles['carousel-date-item']}
                     onClick={() => setClickedDate(findIndexByDate(values, day))}
+                    {...(slideIndex === currentSlide &&
+                      dayIndex >= 7 && {
+                        initial: 'hidden',
+                        animate: 'visible',
+                        variants: slideVariants(dayIndex)
+                      })}
                   >
                     <motion.p className={styles['day']}>{weekDays[dayIndex]}</motion.p>
                     <motion.div
@@ -176,32 +182,6 @@ export const CarouselWeek = ({
                           initialParams.current.dayIndexInSlide === dayIndex &&
                           styles['today'],
                         currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
-                      )}
-                    >
-                      <p className={styles['date']}>{day.day}</p>
-                    </motion.div>
-                    {day.lessons.length > 0 && <LessonsList lessons={day.lessons} />}
-                  </motion.li>
-                ))}
-                {week.slice(7, 14).map((day, dayIndex) => (
-                  <motion.li
-                    key={`${day.year} ${day.month} ${day.day}`}
-                    className={styles['carousel-date-item']}
-                    onClick={() => setClickedDate(findIndexByDate(values, day))}
-                    {...(slideIndex === currentSlide && {
-                      initial: 'hidden',
-                      animate: 'visible',
-                      variants: slideVariants
-                    })}
-                  >
-                    <motion.div
-                      className={clsx(
-                        styles['date-card'],
-                        transitionStatus.current && styles['bg-transition'],
-                        Math.floor(initialParams.current.currentSlide) === slideIndex &&
-                          initialParams.current.dayIndexInSlide === dayIndex + 7 &&
-                          styles['today'],
-                        currentSlide === slideIndex && dayIndexInSlide === dayIndex + 7 && styles['active']
                       )}
                     >
                       <p className={styles['date']}>{day.day}</p>
