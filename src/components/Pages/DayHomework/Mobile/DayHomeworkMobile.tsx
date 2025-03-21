@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import { formatText } from '@/utils/helpers/formatText';
+import { pad } from '@/utils/helpers/pad';
 import {
   useGetSubjectsQuery,
   usePostModeratorAddHomeworkDateMutation
@@ -66,11 +67,11 @@ export const DayHomeworkMobile = () => {
 
   const sendLessonHomework = async () => {
     const date = new Date(
-      homeworkDate.year,
-      homeworkDate.month - 1,
-      homeworkDate.day,
-      Number(deadline.hours),
-      Number(deadline.minutes)
+      new Date(
+        `${homeworkDate.year}-${pad(homeworkDate.month)}-${pad(homeworkDate.day)}T${deadline.hours}:${deadline.minutes}:00`.concat(
+          '.000+03:00'
+        )
+      ).toISOString()
     );
     const isoDate = date.toISOString();
 
