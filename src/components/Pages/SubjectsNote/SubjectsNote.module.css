@@ -10,7 +10,7 @@
   -webkit-grid-auto-flow: dense;
   grid-auto-flow: dense;
   -webkit-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   -webkit-grid-auto-rows: auto;
   grid-auto-rows: auto;
   gap: 1rem;
