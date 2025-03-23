@@ -14,7 +14,7 @@ import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
 import { cookieExpires, cookieKey } from '@/utils/constants/cookieNames';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
-import { AddHomeworkChooseMedia, isMobile, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
 import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { useAppDispatch } from '@/utils/redux/store';
@@ -46,8 +46,6 @@ export const Header = () => {
     navigate(auth, { replace: true });
   };
 
-  const isDesktop = !isMobile;
-
   return (
     <header className={styles.header}>
       <Link to={JournalChooseMedia} replace>
@@ -63,7 +61,7 @@ export const Header = () => {
         {role === AdminRole && (
           <Link to={admin}>
             <AdminLogo
-              className={clsx(styles['icon'], isDesktop && styles['hover'], page === admin && styles['current'])}
+              className={clsx(styles['icon'], page === admin && styles['current'])}
             />
           </Link>
         )}
@@ -73,7 +71,6 @@ export const Header = () => {
             <ModerLogo
               className={clsx(
                 styles['icon'],
-                isDesktop && styles['hover'],
                 styles['moder'],
                 page === moder && styles['current']
               )}
@@ -86,7 +83,6 @@ export const Header = () => {
             <HomeworkLogo
               className={clsx(
                 styles['icon'],
-                isDesktop && styles['hover'],
                 styles['homework'],
                 (page === addHomeworkMobile || page === addHomeworkDesktop) && styles['current']
               )}
@@ -98,7 +94,6 @@ export const Header = () => {
           <NoteLogo
             className={clsx(
               styles['icon'],
-              isDesktop && styles['hover'],
               styles['note'],
               page === note && styles['current']
             )}
@@ -109,7 +104,7 @@ export const Header = () => {
           {deleteLogoutState.isLoading ? (
             <Loader />
           ) : (
-            <LogoutLogo className={clsx(styles['icon'], isDesktop && styles['hover'], styles['exit'])} />
+            <LogoutLogo className={clsx(styles['icon'], styles['exit'])} />
           )}
         </Button>
       </div>
