@@ -37,8 +37,8 @@
   border-radius: 0.5rem;
 }
 
-.hover {
-  &:hover {
+@media (min-width: 1050px) {
+  .icon:hover {
     background-color: var(--header-hover-color);
   }
 }

@@ -22,7 +22,7 @@ const manifest: Partial<ManifestOptions> | false = {
       type: 'image/png'
     }
   ],
-  orientation: 'any',
+  orientation: 'portrait',
   display: 'standalone',
   lang: 'ru-RU',
   start_url: '/'
