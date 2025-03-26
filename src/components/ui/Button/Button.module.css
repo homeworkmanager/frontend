@@ -37,6 +37,14 @@
   margin: auto auto;
 }
 
+.attention {
+  border: 2px solid var(--button-attention-color);
+  color: var(--button-attention-color);
+  border-radius: 8px;
+  font-size: 15px;
+  padding: 0.4rem 0.8rem;
+}
+
 .menu-item {
   font-size: 16px;
   font-weight: 400;

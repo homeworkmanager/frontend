@@ -1,50 +1,21 @@
 import { useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-import { addHomeworkDesktop, addHomeworkMobile, admin, auth, moder, note } from '../Router/constants/routes';
+import { addHomeworkDesktop, addHomeworkMobile, note, profile } from '../Router/constants/routes';
 
 import styles from './Header.module.css';
-import { Button } from '@/components/ui/Button';
-import { AdminLogo } from '@/components/ui/Icons/Admin';
 import { HomeworkLogo } from '@/components/ui/Icons/Homework';
-import { LogoutLogo } from '@/components/ui/Icons/Logout';
-import { ModerLogo } from '@/components/ui/Icons/Moder';
 import { NoteLogo } from '@/components/ui/Icons/Note';
-import { Loader } from '@/components/ui/Loader';
+import { ProfileLogo } from '@/components/ui/Icons/Profile';
 import { Typhography } from '@/components/ui/Typhography';
-import { cookieExpires, cookieKey } from '@/utils/constants/cookieNames';
-import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
+import { ModeratorRole } from '@/utils/constants/userRoles';
 import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
-import { deleteCookie } from '@/utils/helpers/deleteCookie';
-import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
-import { useAppDispatch } from '@/utils/redux/store';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
-import { logOut } from '@/utils/redux/storeSlices/userSlice/slice';
 import clsx from 'clsx';
 
 export const Header = () => {
   const { role, group_name } = useSelector(getUser);
-  const dispatch = useAppDispatch();
   const page = useLocation().pathname;
-  const navigate = useNavigate();
-
-  const [deleteLogout, deleteLogoutState] = useDeleteLogoutMutation();
-
-  const logoutUser = async () => {
-    const deleteLogoutResponse = await deleteLogout({});
-
-    if (deleteLogoutResponse.error) {
-      // eslint-disable-next-line no-console
-      console.error(deleteLogoutResponse);
-      return;
-    }
-
-    deleteCookie(cookieKey);
-    deleteCookie(cookieExpires);
-    dispatch(logOut());
-
-    navigate(auth, { replace: true });
-  };
 
   return (
     <header className={styles.header}>
@@ -58,26 +29,6 @@ export const Header = () => {
       </Link>
 
       <div className={styles.container}>
-        {role === AdminRole && (
-          <Link to={admin}>
-            <AdminLogo
-              className={clsx(styles['icon'], page === admin && styles['current'])}
-            />
-          </Link>
-        )}
-
-        {role === ModeratorRole && (
-          <Link to={moder}>
-            <ModerLogo
-              className={clsx(
-                styles['icon'],
-                styles['moder'],
-                page === moder && styles['current']
-              )}
-            />
-          </Link>
-        )}
-
         {role >= ModeratorRole && (
           <Link to={AddHomeworkChooseMedia}>
             <HomeworkLogo
@@ -91,22 +42,11 @@ export const Header = () => {
         )}
 
         <Link to="/note">
-          <NoteLogo
-            className={clsx(
-              styles['icon'],
-              styles['note'],
-              page === note && styles['current']
-            )}
-          />
+          <NoteLogo className={clsx(styles['icon'], styles['note'], page === note && styles['current'])} />
         </Link>
-
-        <Button variant="slide" onClick={logoutUser}>
-          {deleteLogoutState.isLoading ? (
-            <Loader />
-          ) : (
-            <LogoutLogo className={clsx(styles['icon'], styles['exit'])} />
-          )}
-        </Button>
+        <Link to="/profile">
+          <ProfileLogo className={clsx(styles['icon'], styles['note'], page === profile && styles['current'])} />
+        </Link>
       </div>
     </header>
   );

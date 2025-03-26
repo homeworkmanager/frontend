@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './Button.module.css';
 import clsx from 'clsx';
 
-type ButtonVariant = 'accept' | 'question' | 'menu-item' | 'slide';
+type ButtonVariant = 'accept' | 'question' | 'attention' | 'menu-item' | 'slide';
 
 interface ButtonProps extends React.ComponentProps<'button'> {
   variant?: ButtonVariant;

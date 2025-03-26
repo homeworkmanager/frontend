@@ -13,7 +13,7 @@ import {
   JournalMobile,
   LessonModal,
   ModerPanel,
-  ProfileSettings,
+  Profile,
   SubjectsNote
 } from './constants/lazyImports';
 import {
@@ -97,7 +97,7 @@ export const Router = () => {
           <Route
             path={lessonModal}
             element={
-              <Suspense fallback={<div />}>
+              <Suspense>
                 <LocationGuard>
                   <LessonModal />
                 </LocationGuard>
@@ -160,9 +160,9 @@ export const Router = () => {
         <Route
           path={profile}
           element={
-            <Suspense fallback={<Loader />}>
+            <Suspense>
               <AuthGuard>
-                <ProfileSettings />
+                <Profile />
               </AuthGuard>
             </Suspense>
           }
