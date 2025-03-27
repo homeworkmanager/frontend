@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { AdminLogo } from '@/components/ui/Icons/Admin';
 import { ModerLogo } from '@/components/ui/Icons/Moder';
 import { Loader } from '@/components/ui/Loader';
+import { Typhography } from '@/components/ui/Typhography';
 import { cookieExpires, cookieKey } from '@/utils/constants/cookieNames';
 import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
@@ -43,8 +44,19 @@ export const ProfileSettings = () => {
   return (
     <article className={styles.container}>
       <div className={styles['content']}>
+        <div className={styles['user-info']}>
+          <Typhography
+            tag="h3"
+            variant="secondary"
+            className={styles['fio']}
+            children={`${user.name} ${user.surname}`}
+          />
+          <Typhography tag="h4" variant="secondary" className={styles['group']} children={`${user.group_name}`} />
+        </div>
+        <Typhography tag="p" variant="small" className={styles['email']} children={user.email} />
+
         <div className={styles['actions']}>
-          <Button variant="attention" onClick={logoutUser}>
+          <Button variant="attention" color="warn" onClick={logoutUser}>
             {deleteLogoutState.isLoading ? <Loader /> : 'Выйти из аккаунта'}
           </Button>
           {user.role === AdminRole && (
@@ -58,6 +70,12 @@ export const ProfileSettings = () => {
               <ModerLogo className={clsx(styles['icon'], styles['moder'])} />
             </Link>
           )}
+        </div>
+        <Typhography tag="p" variant="secondary" className={styles['theme']} children={<span>Тема</span>} />
+
+        <div className={styles['theme-actions']}>
+          <Button variant="attention" onClick={() => {}} className={clsx(styles['active'])} children="Тёмная" />
+          <Button variant="attention" onClick={() => {}} className={styles['temp']} children="Скоро" />
         </div>
       </div>
     </article>

@@ -3,6 +3,7 @@ import React from 'react';
 import { Router } from '@/components/modules/Router/Router';
 import { getUserData } from '@/utils/api/requests/user/get';
 import { getUserRefresh } from '@/utils/api/requests/user/refresh';
+import { cookieExpires, cookieKey } from '@/utils/constants/cookieNames';
 import { maxTimeToRefresh } from '@/utils/constants/maxTimeToRefresh';
 import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
@@ -38,16 +39,14 @@ function App() {
 
   const getTimeUpdateSession = (cookie: string) => {
     const expiresDate = new Date(document.cookie.match(cookie)?.input?.split('=')[2].split('+')[0] as string);
-    expiresDate.setHours(expiresDate.getHours() + 3); //поменять с гринвича на мск
     return expiresDate.getTime() - new Date().getTime();
   };
 
   React.useEffect(() => {
-    if (!(document.cookie.match('session_key=') && document.cookie.match('session_expires='))) return;
-
+    if (!(document.cookie.match(cookieExpires) && document.cookie.match(cookieKey))) return;
     setUserData();
 
-    if (getTimeUpdateSession('session_expires=') < maxTimeToRefresh) {
+    if (getTimeUpdateSession(cookieKey) < maxTimeToRefresh) {
       refreshCookies();
     }
   }, [dispatch]);

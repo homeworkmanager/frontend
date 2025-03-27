@@ -38,8 +38,7 @@
 }
 
 .attention {
-  border: 2px solid var(--button-attention-color);
-  color: var(--button-attention-color);
+  border: 2px solid transparent;
   border-radius: 8px;
   font-size: 15px;
   padding: 0.4rem 0.8rem;
