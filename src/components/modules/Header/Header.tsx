@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
-import { addHomeworkDesktop, addHomeworkMobile, note, profile } from '../Router/constants/routes';
+import { addHomeworkDesktop, addHomeworkMobile, features, note } from '../../../utils/configs/routes.config';
 
 import styles from './Header.module.css';
+import { FeaturesLogo } from '@/components/ui/Icons/Features';
 import { HomeworkLogo } from '@/components/ui/Icons/Homework';
 import { NoteLogo } from '@/components/ui/Icons/Note';
-import { ProfileLogo } from '@/components/ui/Icons/Profile';
 import { Typhography } from '@/components/ui/Typhography';
-import { ModeratorRole } from '@/utils/constants/userRoles';
+import { ModeratorRole } from '@/utils/configs/userRoles.config';
 import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
@@ -41,11 +41,11 @@ export const Header = () => {
           </Link>
         )}
 
-        <Link to="/note">
+        <Link to={note}>
           <NoteLogo className={clsx(styles['icon'], styles['note'], page === note && styles['current'])} />
         </Link>
-        <Link to="/profile">
-          <ProfileLogo className={clsx(styles['icon'], styles['note'], page === profile && styles['current'])} />
+        <Link to={features}>
+          <FeaturesLogo className={clsx(styles['icon'], styles['note'], page === features && styles['current'])} />
         </Link>
       </div>
     </header>

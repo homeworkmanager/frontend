@@ -8,7 +8,9 @@ const lessonModal = 'lesson';
 const addHomeworkMobile = main + 'add/homework-mobile';
 const addHomeworkDesktop = main + 'add/homework-desktop';
 const note = main + 'note';
-const profile = main + 'profile';
+const features = main + 'features';
+const profile = 'profile';
+const theme = 'theme';
 const admin = main + 'admin';
 const moder = main + 'moderator';
 
@@ -19,10 +21,12 @@ export {
   journalMobile,
   journalDesktop,
   lessonModal,
-  admin,
-  moder,
   addHomeworkMobile,
   addHomeworkDesktop,
   note,
-  profile
+  features,
+  profile,
+  theme,
+  admin,
+  moder
 };

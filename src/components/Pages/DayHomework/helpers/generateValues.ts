@@ -1,4 +1,4 @@
-import { scheduleBeginDate, startDate } from '@/utils/constants/time';
+import { scheduleBeginDate, startDate } from '@/utils/configs/time.config';
 import { createDate } from '@/utils/helpers/createDate';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 

@@ -42,8 +42,8 @@ const SubjectsNote = lazy(() =>
   import('@/components/Pages/SubjectsNote/SubjectsNote').then((module) => ({ default: module.SubjectsNote }))
 );
 
-const Profile = lazy(() =>
-  import('@/components/Pages/Profile/Profile').then((module) => ({ default: module.ProfileSettings }))
+const Features = lazy(() =>
+  import('@/components/Pages/Profile/Features').then((module) => ({ default: module.ProfileSettings }))
 );
 
 export {
@@ -56,5 +56,5 @@ export {
   DayHomeworkMobile,
   DayHomeworkDesktop,
   SubjectsNote,
-  Profile
+  Features
 };

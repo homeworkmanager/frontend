@@ -13,7 +13,7 @@ import { Slide } from '@/components/ui/Icons/Slide';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { ModeratorRole } from '@/utils/constants/userRoles';
+import { ModeratorRole } from '@/utils/configs/userRoles.config';
 import { convertSummary } from '@/utils/helpers/convertSummary';
 import {
   useDeleteModeratorHomeworkMutation,

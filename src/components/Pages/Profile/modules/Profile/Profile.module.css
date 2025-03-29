@@ -1,0 +1,21 @@
+.content {
+  max-width: 360px;
+
+  @media (max-width: 1050px) {
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+
+  margin-bottom: 0.5rem;
+}
+
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.email {
+  color: var(--button-helper-color);
+  margin-bottom: 0.6rem;
+}

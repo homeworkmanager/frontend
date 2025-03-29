@@ -11,7 +11,7 @@ import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { ModeratorRole } from '@/utils/constants/userRoles';
+import { ModeratorRole } from '@/utils/configs/userRoles.config';
 import { convertDateToTime } from '@/utils/helpers/convertDateToTime';
 import { formatText } from '@/utils/helpers/formatText';
 import {

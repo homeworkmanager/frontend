@@ -1,0 +1,32 @@
+.container {
+  width: 100%;
+  margin: 0 auto;
+  max-width: var(--max-width-mobile);
+
+  @media (min-width: 1050px) {
+    max-width: var(--max-width-desktop);
+  }
+}
+
+.content {
+  max-width: 360px;
+
+  @media (max-width: 1050px) {
+    margin: 0 auto;
+    padding: 0 25px;
+  }
+
+  margin-bottom: 0.5rem;
+}
+
+.link {
+  width: 100%;
+  background-color: var(--component-light-background-color);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.moder {
+  padding: 0.2rem;
+}
