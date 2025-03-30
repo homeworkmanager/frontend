@@ -166,7 +166,7 @@ export const CarouselWeek = ({
                     key={`${day.year} ${day.month} ${day.day}`}
                     className={styles['carousel-date-item']}
                     onClick={() => setClickedDate(findIndexByDate(values, day))}
-                    {...(slideIndex === currentSlide &&
+                    {...(slideIndex === (weekCarouselRef.current as SwiperRef).swiper.realIndex &&
                       dayIndex >= 7 && {
                         initial: 'hidden',
                         animate: 'visible',
