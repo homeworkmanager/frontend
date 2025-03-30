@@ -5,7 +5,7 @@ import styles from './Profile.module.css';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { cookieExpires, cookieKey } from '@/utils/configs/cookieNames.config';
+import { cookieKey } from '@/utils/configs/cookieNames.config';
 import { auth } from '@/utils/configs/routes.config';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
 import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
@@ -31,7 +31,6 @@ export const Profile = () => {
     }
 
     deleteCookie(cookieKey);
-    deleteCookie(cookieExpires);
     dispatch(logOut());
 
     navigate(auth, { replace: true });
