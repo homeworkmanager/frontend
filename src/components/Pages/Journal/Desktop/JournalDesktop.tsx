@@ -27,8 +27,8 @@ export const JournalDesktop = () => {
   };
 
   const onDayNodeScroll = () => {
-    const dayNode = (dayCarouselRef.current as SwiperRef).swiper;
-    const monthNode = (monthCarouselRef.current as SwiperRef).swiper;
+    const dayNode = dayCarouselRef.current?.swiper;
+    const monthNode = monthCarouselRef.current?.swiper;
 
     if (dayNode === undefined || monthNode === undefined) return;
 

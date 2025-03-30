@@ -27,8 +27,8 @@ export const JournalMobile = () => {
   const setDate = (date: CustomDate) => setCurrentDate(date);
 
   const onDayNodeScroll = () => {
-    const dayNode = (dayCarouselRef.current as SwiperRef).swiper;
-    const weekNode = (weekCarouselRef.current as SwiperRef).swiper;
+    const dayNode = dayCarouselRef.current?.swiper;
+    const weekNode = weekCarouselRef.current?.swiper;
 
     if (dayNode === undefined || weekNode === undefined) return;
 
@@ -51,7 +51,7 @@ export const JournalMobile = () => {
 
   const onDateNodeClick = (index: number) => {
     if (dayCarouselRef) {
-      (dayCarouselRef.current as SwiperRef).swiper.slideTo(index, 0);
+      dayCarouselRef.current?.swiper.slideTo(index, 0);
     }
   };
 
