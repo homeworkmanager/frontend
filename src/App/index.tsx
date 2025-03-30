@@ -3,14 +3,14 @@ import React from 'react';
 import { Router } from '@/components/modules/Router/Router';
 import { getUserData } from '@/utils/api/requests/user/get';
 import { getUserRefresh } from '@/utils/api/requests/user/refresh';
-import { cookieExpires, cookieKey } from '@/utils/configs/cookieNames.config';
+import { cookieKey } from '@/utils/configs/cookieNames.config';
 import { maxTimeToRefresh } from '@/utils/configs/maxTimeToRefresh.config';
 import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
 
 function App() {
   const dispatch = useAppDispatch();
-  const refreshCookies = async () => {
+  const refreshCookie = async () => {
     try {
       await getUserRefresh();
     } catch (error) {
@@ -43,11 +43,11 @@ function App() {
   };
 
   React.useEffect(() => {
-    if (!(document.cookie.match(cookieExpires) && document.cookie.match(cookieKey))) return;
+    if (!document.cookie.match(cookieKey)) return;
     setUserData();
 
     if (getTimeUpdateSession(cookieKey) < maxTimeToRefresh) {
-      refreshCookies();
+      refreshCookie();
     }
   }, [dispatch]);
 
