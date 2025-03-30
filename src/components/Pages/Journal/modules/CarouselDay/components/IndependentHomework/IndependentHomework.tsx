@@ -155,7 +155,7 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                         <>
                           {currentHomework.homeworkID === -1 || currentHomework.homeworkID === homework.homeworkID ? (
                             <Button
-                              variant="slide"
+                              variant="logo"
                               onClick={() => addCurrentHomework(homework)}
                               children={
                                 <ChangeLogo
@@ -170,7 +170,7 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                             <div style={{ width: '24px', height: '24px', marginLeft: '6px' }} />
                           )}
                           <Button
-                            variant="slide"
+                            variant="logo"
                             onClick={() => removeHomework(homework)}
                             children={
                               deleteHomeworkState.isLoading && currentHomework.homeworkID === homework.homeworkID ? (

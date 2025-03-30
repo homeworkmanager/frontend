@@ -28,7 +28,7 @@ export const Header = () => {
         />
       </Link>
 
-      <div className={styles.container}>
+      <nav className={styles.container}>
         {role >= ModeratorRole && (
           <Link to={AddHomeworkChooseMedia}>
             <HomeworkLogo
@@ -45,9 +45,9 @@ export const Header = () => {
           <NoteLogo className={clsx(styles['icon'], styles['note'], page === note && styles['current'])} />
         </Link>
         <Link to={features}>
-          <FeaturesLogo className={clsx(styles['icon'], styles['note'], page === features && styles['current'])} />
+          <FeaturesLogo className={clsx(styles['icon'], styles['features'], page === features && styles['current'])} />
         </Link>
-      </div>
+      </nav>
     </header>
   );
 };

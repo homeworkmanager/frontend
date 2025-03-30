@@ -45,10 +45,10 @@ export const KeyRefresh = ({ currentKey, groupId = -1, hideLabel = false }: KeyR
         onChange={(e) => setKey(e.target.value)}
       />
       <div className={styles['buttons']}>
-        <Button variant="slide" onClick={onRefresh} disabled={patchModeratorKeyRegenerateState.isLoading}>
+        <Button variant="logo" onClick={onRefresh} disabled={patchModeratorKeyRegenerateState.isLoading}>
           <RefreshLogo className={styles['refresh']} />
         </Button>
-        <Button variant="slide" onClick={onClickCopyText}>
+        <Button variant="logo" onClick={onClickCopyText}>
           <CopyLogo className={styles['refresh']} />
         </Button>
       </div>

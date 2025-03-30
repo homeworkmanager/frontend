@@ -9,8 +9,6 @@ const addHomeworkMobile = main + 'add/homework-mobile';
 const addHomeworkDesktop = main + 'add/homework-desktop';
 const note = main + 'note';
 const features = main + 'features';
-const profile = 'profile';
-const theme = 'theme';
 const admin = main + 'admin';
 const moder = main + 'moderator';
 
@@ -25,8 +23,6 @@ export {
   addHomeworkDesktop,
   note,
   features,
-  profile,
-  theme,
   admin,
   moder
 };

@@ -43,7 +43,7 @@ const SubjectsNote = lazy(() =>
 );
 
 const Features = lazy(() =>
-  import('@/components/Pages/Profile/Features').then((module) => ({ default: module.ProfileSettings }))
+  import('@/components/Pages/Features/Features').then((module) => ({ default: module.ProfileSettings }))
 );
 
 export {

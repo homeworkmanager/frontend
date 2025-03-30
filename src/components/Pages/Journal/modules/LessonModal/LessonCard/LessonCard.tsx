@@ -105,7 +105,7 @@ export const LessonCard = ({
       className={styles['layout']}
     >
       <header className={styles['header']}>
-        <Button variant="slide" rotate={true} className={styles['close']} onClick={showDetails}>
+        <Button variant="logo" rotate={true} className={styles['close']} onClick={showDetails}>
           <Slide />
         </Button>
         <Typhography tag="h3" variant="secondary" children={'Предмет'} />
@@ -149,7 +149,7 @@ export const LessonCard = ({
                     <>
                       {currentHomework?.homeworkID === -1 || currentHomework?.homeworkID === homework.homeworkID ? (
                         <Button
-                          variant="slide"
+                          variant="logo"
                           onClick={() => addCurrentHomework(homework)}
                           children={
                             <ChangeLogo
@@ -164,7 +164,7 @@ export const LessonCard = ({
                         <div style={{ width: '24px', height: '24px', marginLeft: '6px' }} />
                       )}
                       <Button
-                        variant="slide"
+                        variant="logo"
                         onClick={() => deleteLessonHomework(homework)}
                         children={
                           deleteHomeworkState.isLoading ? (

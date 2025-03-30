@@ -1,16 +1,17 @@
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import styles from './Profile.module.css';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { cookieKey, cookieExpires } from '@/utils/configs/cookieNames.config';
+import { cookieExpires, cookieKey } from '@/utils/configs/cookieNames.config';
 import { auth } from '@/utils/configs/routes.config';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
 import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { useAppDispatch } from '@/utils/redux/store';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
 import { logOut } from '@/utils/redux/storeSlices/userSlice/slice';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import styles from './Profile.module.css';
 
 export const Profile = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +38,7 @@ export const Profile = () => {
   };
 
   return (
-    <div className={styles['content']}>
+    <section className={styles['content']}>
       <div className={styles['user-info']}>
         <Typhography tag="h3" variant="secondary" className={styles['fio']} children={`${user.name} ${user.surname}`} />
         <Typhography tag="h4" variant="secondary" className={styles['group']} children={`${user.group_name}`} />
@@ -47,6 +48,6 @@ export const Profile = () => {
       <Button variant="attention" color="warn" onClick={logoutUser}>
         {deleteLogoutState.isLoading ? <Loader /> : 'Выйти из аккаунта'}
       </Button>
-    </div>
+    </section>
   );
 };

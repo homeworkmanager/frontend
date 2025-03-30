@@ -12,7 +12,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-@media (hover:hover) {
+@media (hover: hover) {
   .container:hover {
     background-color: var(--component-light-background-color);
     transform: scale(1.015);

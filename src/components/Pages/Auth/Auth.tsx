@@ -128,7 +128,7 @@ export const Auth = () => {
         <Modal showInfo={stage === 'register'} showDetails={() => func.changeStage('profile')}>
           <form onSubmit={form.handleSubmit} className={styles['modal-key']}>
             <header className={styles['modal-header']}>
-              <Button variant="slide" type="button" onClick={() => func.changeStage('profile')}>
+              <Button variant="logo" type="button" onClick={() => func.changeStage('profile')}>
                 <QuitLogo />
               </Button>
             </header>
