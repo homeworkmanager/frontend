@@ -4,7 +4,7 @@ import styles from './Users.module.css';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
-import { AdminRole, BaseRole, ModeratorRole } from '@/utils/constants/userRoles';
+import { AdminRole, BaseRole, ModeratorRole } from '@/utils/configs/userRoles.config';
 import { useDropdown } from '@/utils/hooks/useDropdown';
 import { useGetAdminUsersQuery, usePatchAdminRoleMutation } from '@/utils/redux/apiSlices/adminApiSlice/adminApi';
 import clsx from 'clsx';

@@ -1,0 +1,41 @@
+.content {
+  width: 80%;
+  max-width: 360px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px;
+  background-color: var(--component-background-color);
+  border-radius: 12px;
+}
+
+.theme {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+
+.theme-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  button {
+    border-color: var(--button-helper-color);
+    color: var(--text-invert-color);
+  }
+}
+
+.temp {
+  border: 2px dashed var(--button-helper-color) !important;
+}
+
+.active {
+  border-color: var(--border-focus-color) !important;
+}

@@ -11,7 +11,7 @@ import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { ModeratorRole } from '@/utils/constants/userRoles';
+import { ModeratorRole } from '@/utils/configs/userRoles.config';
 import { formatText } from '@/utils/helpers/formatText';
 import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
@@ -86,7 +86,7 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
                   <>
                     {currentNote.note_id === -1 || currentNote.note_id === note.note_id ? (
                       <Button
-                        variant="slide"
+                        variant="logo"
                         onClick={() => addCurrentNote(note)}
                         children={
                           <ChangeLogo
@@ -98,7 +98,7 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
                       <div className={styles['icon']} />
                     )}
                     <Button
-                      variant="slide"
+                      variant="logo"
                       onClick={() => deleteLessonHomework(note)}
                       children={
                         deleteNoteState.isLoading ? (
@@ -132,7 +132,7 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
       {userRole >= ModeratorRole && (
         <>
           <Button
-            variant="slide"
+            variant="logo"
             onClick={onAddNoteClick}
             className={styles['add-btn']}
             children={<AddLogo className={clsx(styles['add-icon'], addNoteOpen && styles['active'])} />}

@@ -9,31 +9,31 @@ import {
   Auth,
   DayHomeworkDesktop,
   DayHomeworkMobile,
+  Features,
   JournalDesktop,
   JournalMobile,
   LessonModal,
   ModerPanel,
-  ProfileSettings,
   SubjectsNote
 } from './constants/lazyImports';
+import { AuthGuard } from './guards/AuthGuard';
+import { LocationGuard } from './guards/LocationGuard';
+import { Loader } from '@/components/ui/Loader';
 import {
   addHomeworkDesktop,
   addHomeworkMobile,
   admin,
   auth,
   error,
+  features,
   journalDesktop,
   journalMobile,
   lessonModal,
   main,
   moder,
-  note,
-  profile
-} from './constants/routes';
-import { AuthGuard } from './guards/AuthGuard';
-import { LocationGuard } from './guards/LocationGuard';
-import { Loader } from '@/components/ui/Loader';
-import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
+  note
+} from '@/utils/configs/routes.config';
+import { AdminRole, ModeratorRole } from '@/utils/configs/userRoles.config';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 
@@ -97,7 +97,7 @@ export const Router = () => {
           <Route
             path={lessonModal}
             element={
-              <Suspense fallback={<div />}>
+              <Suspense>
                 <LocationGuard>
                   <LessonModal />
                 </LocationGuard>
@@ -158,11 +158,11 @@ export const Router = () => {
         />
 
         <Route
-          path={profile}
+          path={features}
           element={
-            <Suspense fallback={<Loader />}>
+            <Suspense>
               <AuthGuard>
-                <ProfileSettings />
+                <Features />
               </AuthGuard>
             </Suspense>
           }

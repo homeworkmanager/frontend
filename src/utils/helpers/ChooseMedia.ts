@@ -1,9 +1,4 @@
-import {
-  addHomeworkDesktop,
-  addHomeworkMobile,
-  journalDesktop,
-  journalMobile
-} from '@/components/modules/Router/constants/routes';
+import { addHomeworkDesktop, addHomeworkMobile, journalDesktop, journalMobile } from '@/utils/configs/routes.config';
 
 const journalRoutes = [journalDesktop, journalMobile];
 const addHomeworkRoutes = [addHomeworkDesktop, addHomeworkMobile];

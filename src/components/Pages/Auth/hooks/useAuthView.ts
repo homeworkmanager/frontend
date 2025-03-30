@@ -26,6 +26,15 @@ interface State {
   isError: boolean;
 }
 
+const authInitValues = {
+  name: '',
+  surname: '',
+  groupName: '',
+  registerKey: '',
+  email: '',
+  password: ''
+};
+
 export const useAuthView = () => {
   const [stage, setStage] = React.useState<Stages>('login');
   const dispatch = useAppDispatch();
@@ -39,15 +48,6 @@ export const useAuthView = () => {
     acc[group.name] = group.group_id;
     return acc;
   }, {});
-
-  const authInitValues = {
-    name: '',
-    surname: '',
-    groupName: '',
-    registerKey: '',
-    email: '',
-    password: ''
-  };
 
   const changeStage = (stage: Stages) => {
     setStage(stage);
@@ -83,7 +83,7 @@ export const useAuthView = () => {
     }
   };
 
-  const setSubmit = async (values: RegisterSchemaType) => {
+  const setSubmit = async (values: RegisterSchemaType & LogInSchemaType & ProfileSchemaType) => {
     if (stage === 'login') {
       const postAuthResponse = await postAuth({
         params: {
@@ -130,7 +130,7 @@ export const useAuthView = () => {
     register: RegisterSchema
   } as const;
 
-  const form = useFormik<RegisterSchemaType & LogInSchemaType & ProfileSchemaType>({
+  const form = useFormik({
     initialValues: authInitValues,
     validationSchema: schemas[stage],
     validateOnBlur: false,

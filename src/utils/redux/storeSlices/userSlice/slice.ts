@@ -2,11 +2,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface TodosState {
-  readonly data: User;
+  data: User;
 }
 const initialState: TodosState = {
   data: {
-    role: 1,
+    role: 0,
     name: '',
     surname: '',
     email: '',

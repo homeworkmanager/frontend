@@ -1,4 +1,4 @@
-import { cookieExpires, cookieKey } from '../constants/cookieNames';
+import { cookieExpires, cookieKey } from '../configs/cookieNames.config';
 import { deleteCookie } from '../helpers/deleteCookie';
 
 import axios, { AxiosError } from 'axios';

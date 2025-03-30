@@ -1,1 +1,1 @@
-type User = Omit<GetUserResponse, 'user_id', 'data'>;
+type User = Omit<UserOrigin, 'user_id' | 'data'>;
