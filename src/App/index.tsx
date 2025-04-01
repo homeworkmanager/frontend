@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Router } from '@/components/modules/Router/Router';
-import { getUserData } from '@/utils/api/requests/user/get';
 import { getUserRefresh } from '@/utils/api/requests/user/refresh';
 import { cookieKey } from '@/utils/configs/cookieNames.config';
 import { maxTimeToRefresh } from '@/utils/configs/maxTimeToRefresh.config';
 import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
+import { checkUserData } from '@/utils/helpers/checkUserData';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ function App() {
 
   const setUserData = async () => {
     try {
-      const { data } = await getUserData();
+      const { data } = await checkUserData();
       dispatch(
         logIn({
           role: data.role,

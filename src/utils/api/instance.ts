@@ -19,7 +19,15 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       deleteCookie(cookieKey);
       window.location.href = '/auth';
+      return Promise.reject(error);
     }
+
+    if (error.response?.status && error.response.status >= 500) {
+      const networkError = new Error('Network Error');
+      return Promise.reject(networkError);
+    }
+
+    return Promise.reject(error);
   }
 );
 
