@@ -1,4 +1,4 @@
-import { UNIHELPER_DB_CONFIG } from '../configs/db';
+import { UNIHELPER_DB_CONFIG } from '../configs/db.config';
 
 import IndexedDBService from './core';
 

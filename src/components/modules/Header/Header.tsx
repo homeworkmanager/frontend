@@ -9,12 +9,13 @@ import { HomeworkLogo } from '@/components/ui/Icons/Homework';
 import { NoteLogo } from '@/components/ui/Icons/Note';
 import { Typhography } from '@/components/ui/Typhography';
 import { ModeratorRole } from '@/utils/configs/userRoles.config';
-import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/chooseMedia';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 
 export const Header = () => {
   const { role, group_name } = useSelector(getUser);
+
   const page = useLocation().pathname;
 
   return (

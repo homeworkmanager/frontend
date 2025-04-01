@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Router } from '@/components/modules/Router/Router';
 import { getUserRefresh } from '@/utils/api/requests/user/refresh';
-import { cookieKey } from '@/utils/configs/cookieNames.config';
+import { cookieKey } from '@/utils/configs/cookie.config';
 import { maxTimeToRefresh } from '@/utils/configs/maxTimeToRefresh.config';
+import { checkUserData } from '@/utils/helpers/checkUserData';
 import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
-import { checkUserData } from '@/utils/helpers/checkUserData';
 
 function App() {
   const dispatch = useAppDispatch();

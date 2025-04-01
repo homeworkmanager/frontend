@@ -31,8 +31,6 @@ export const scheduleApi = createApi({
         try {
           const response = await getAllSchedule({ params, config });
 
-          // if (Math.ceil(response.status / 100) === 5) throw new Error('Network Error');
-
           await scheduleRepo.set(cacheKey, response.data);
 
           return { data: response.data };

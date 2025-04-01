@@ -16,11 +16,7 @@ export const noteApi = createApi({
         const notesRepo = await dbRepositories.notes;
 
         try {
-          // if (!window.navigator.onLine) throw new Error('Network Error');
-
           const response = await getNote(requestConfig);
-
-          // if (Math.ceil(response.status / 100) === 5) throw new Error('Network Error');
 
           await notesRepo.set(cacheKey, response.data);
 

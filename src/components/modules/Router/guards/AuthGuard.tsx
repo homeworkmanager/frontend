@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-import { cookieKey } from '@/utils/configs/cookieNames.config';
+import { cookieKey } from '@/utils/configs/cookie.config';
 import { auth } from '@/utils/configs/routes.config';
 
 interface LocationGuardProps {

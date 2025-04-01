@@ -1,10 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import styles from './Features.module.css';
 import { Profile } from './modules/Profile/Profile';
 import { Theme } from './modules/Theme/Theme';
+import { routerNavigator } from '@/components/modules/Router/Navigator';
 import { Button } from '@/components/ui/Button';
 import { AdminLogo } from '@/components/ui/Icons/Admin';
 import { ModerLogo } from '@/components/ui/Icons/Moder';
@@ -19,8 +20,6 @@ type ModuleVariants = 'profile' | 'theme' | 'none';
 
 export const ProfileSettings = () => {
   const role = useSelector(getUserRole);
-  const navigate = useNavigate();
-
   const [moduleShow, setModuleShow] = React.useState<ModuleVariants>('none');
 
   const onShowTheme = () => setModuleShow((prev) => (prev === 'none' ? 'theme' : 'none'));
@@ -35,7 +34,7 @@ export const ProfileSettings = () => {
             <Button
               variant="attention"
               className={styles['link']}
-              onClick={() => navigate(moder)}
+              onClick={() => routerNavigator.to(moder, { replace: true })}
               children={
                 <>
                   <ModerLogo className={styles['moder']} />
@@ -50,7 +49,7 @@ export const ProfileSettings = () => {
           <Button
             variant="attention"
             className={styles['link']}
-            onClick={() => navigate(admin)}
+            onClick={() => routerNavigator.to(admin, { replace: true })}
             children={
               <>
                 <AdminLogo />

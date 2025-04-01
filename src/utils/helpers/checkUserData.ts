@@ -8,8 +8,6 @@ export const checkUserData = async () => {
   try {
     const response = await getUserData();
 
-    // if (Math.ceil(response.status / 100) === 5) throw new Error('Network Error');
-
     await userRepo.set(cacheKey, response.data);
     return { data: response.data };
 

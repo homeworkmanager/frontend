@@ -1,13 +1,17 @@
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import styles from './Profile.module.css';
+import { routerNavigator } from '@/components/modules/Router/Navigator';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { cookieKey } from '@/utils/configs/cookieNames.config';
+import { cookieKey } from '@/utils/configs/cookie.config';
+import { UNIHELPER_DB_CONFIG } from '@/utils/configs/db.config';
 import { auth } from '@/utils/configs/routes.config';
+import IndexedDBService from '@/utils/db/core';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
+import { noteApi } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
+import { scheduleApi } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { useAppDispatch } from '@/utils/redux/store';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
@@ -15,8 +19,6 @@ import { logOut } from '@/utils/redux/storeSlices/userSlice/slice';
 
 export const Profile = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
   const user = useSelector(getUser);
 
   const [deleteLogout, deleteLogoutState] = useDeleteLogoutMutation();
@@ -30,10 +32,14 @@ export const Profile = () => {
       return;
     }
 
+    IndexedDBService.dropDataBase(UNIHELPER_DB_CONFIG);
     deleteCookie(cookieKey);
-    dispatch(logOut());
 
-    navigate(auth, { replace: true });
+    dispatch(scheduleApi.util.invalidateTags(['GetAllSchedule']));
+    dispatch(noteApi.util.invalidateTags(['GetNote']));
+
+    routerNavigator.to(auth, { replace: true });
+    dispatch(logOut());
   };
 
   return (

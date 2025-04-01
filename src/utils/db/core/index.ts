@@ -32,7 +32,7 @@ class IndexedDBService {
     });
   }
 
-  static async createRepository<T extends CacheItem<unknown>>(config: DBConfig, storeName: string) {
+  static async createRepository<T extends CacheItem>(config: DBConfig, storeName: string) {
     const get = async (key: string): Promise<T | undefined> => {
       const db = await this.getDb(config);
 
@@ -52,31 +52,32 @@ class IndexedDBService {
         const tx = db.transaction(storeName, 'readwrite');
         const store = tx.objectStore(storeName);
 
-        store.put({ key, data: data, timestamp: Date.now() });
+        store.put({ key, data, timestamp: Date.now() });
 
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
       });
     };
 
-    const clear = async (key: string): Promise<void> => {
-      const db = await this.getDb(config);
-      await new Promise((res, rej) => {
-        const tx = db.transaction(storeName, 'readwrite');
-        const store = tx.objectStore(storeName);
-
-        store.delete(key);
-
-        tx.onerror = () => rej(tx.error);
-        tx.oncomplete = () => res(undefined);
-      });
-    };
-
     return {
       get,
-      set,
-      clear
+      set
     };
+  }
+
+  static async dropDataBase(config: DBConfig): Promise<void> {
+    await new Promise((res, rej) => {
+      if (this.instances.has(config.name)) {
+        const db = this.instances.get(config.name)!;
+        db?.close();
+        this.instances.delete(config.name);
+      }
+
+      const deleteRequest = indexedDB.deleteDatabase(config.name);
+      deleteRequest.onblocked = () => rej(new Error(`База ${config.name} заблокирована для удаления`));
+      deleteRequest.onerror = () => rej(deleteRequest.error);
+      deleteRequest.onsuccess = () => res(deleteRequest.result);
+    });
   }
 }
 
