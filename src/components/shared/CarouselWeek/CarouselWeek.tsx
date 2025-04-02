@@ -130,7 +130,7 @@ export const CarouselWeek = ({
   return (
     <section className={styles['carousel-week']}>
       <header className={styles['navigation']}>
-        <Button className="custom-prev" variant="slide" rotate>
+        <Button className="custom-prev" variant="logo" rotate>
           <Slide />
         </Button>
         <WeekHeader
@@ -139,7 +139,7 @@ export const CarouselWeek = ({
           monthsNumbers={monthsNumbers}
           variant="mobile"
         />
-        <Button className="custom-next" variant="slide">
+        <Button className="custom-next" variant="logo">
           <Slide />
         </Button>
       </header>
@@ -194,7 +194,7 @@ export const CarouselWeek = ({
           ))}
         </AnimatePresence>
       </Swiper>
-      <Button variant="slide" className={styles['change-view']} children={<Slide />} onClick={changeWeekCarouselView} />
+      <Button variant="logo" className={styles['change-view']} children={<Slide />} onClick={changeWeekCarouselView} />
     </section>
   );
 };

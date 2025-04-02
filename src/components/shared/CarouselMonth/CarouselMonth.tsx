@@ -91,7 +91,7 @@ export const CarouselMonth = ({
     <section className={styles['carousel-month']}>
       <header className={styles['header']}>
         <div className={styles['date-container']}>
-          <Button className={clsx(styles['custom-prev'], 'prev')} variant="slide" rotate={true}>
+          <Button className={clsx(styles['custom-prev'], 'prev')} variant="logo" rotate={true}>
             <Slide />
           </Button>
           <WeekHeader
@@ -100,7 +100,7 @@ export const CarouselMonth = ({
             monthsNumbers={monthsNumbers}
             variant="desktop"
           />
-          <Button className={clsx(styles['custom-next'], 'next')} variant="slide">
+          <Button className={clsx(styles['custom-next'], 'next')} variant="logo">
             <Slide />
           </Button>
         </div>

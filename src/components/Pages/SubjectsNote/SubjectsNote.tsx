@@ -5,7 +5,7 @@ import { NotesList } from './NoteList/NotesList';
 import styles from './SubjectsNote.module.css';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { ModeratorRole } from '@/utils/constants/userRoles';
+import { ModeratorRole } from '@/utils/configs/userRoles.config';
 import { useGetNoteQuery } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 

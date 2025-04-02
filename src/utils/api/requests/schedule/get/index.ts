@@ -7,5 +7,9 @@ type GetAllScheduleParams = {
 
 export type GetAllScheduleConfig = AxiosRequestConfig<GetAllScheduleParams>;
 
-export const getAllSchedule = async ({ params, config }: GetAllScheduleConfig) =>
-  api.get<AllScheduleResponse>(`/schedule/get?from_time=${params.from_time}&days_count=${params.days_count}`, config);
+export const getAllSchedule = async ({ params, config }: GetAllScheduleConfig) => {
+  return api.get<AllScheduleResponse>(
+    `/schedule/get?from_time=${params.from_time}&days_count=${params.days_count}`,
+    config
+  );
+};

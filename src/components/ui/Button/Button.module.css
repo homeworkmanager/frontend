@@ -37,12 +37,27 @@
   margin: auto auto;
 }
 
+.attention {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 15px;
+  padding: 0.4rem 0.8rem;
+  transition: all 0.25s ease-in-out;
+}
+
+@media (min-width: 1050px) {
+  .attention:hover {
+    transform: scale(1.05);
+    border-color: var(--border-focus-color);
+  }
+}
+
 .menu-item {
   font-size: 16px;
   font-weight: 400;
 }
 
-.slide {
+.logo {
   display: flex;
   align-items: center;
   justify-content: center;

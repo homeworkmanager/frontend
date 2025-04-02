@@ -1,4 +1,4 @@
-import { semStart } from '../constants/time';
+import { semStart } from '../configs/time.config';
 
 const startDate = new Date(semStart.year, semStart.month - 1, semStart.day);
 

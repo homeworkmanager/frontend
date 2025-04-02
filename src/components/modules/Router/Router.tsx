@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 
@@ -9,32 +10,32 @@ import {
   Auth,
   DayHomeworkDesktop,
   DayHomeworkMobile,
+  Features,
   JournalDesktop,
   JournalMobile,
   LessonModal,
   ModerPanel,
-  ProfileSettings,
   SubjectsNote
 } from './constants/lazyImports';
+import { AuthGuard } from './guards/AuthGuard';
+import { LocationGuard } from './guards/LocationGuard';
+import { Loader } from '@/components/ui/Loader';
 import {
   addHomeworkDesktop,
   addHomeworkMobile,
   admin,
   auth,
   error,
+  features,
   journalDesktop,
   journalMobile,
   lessonModal,
   main,
   moder,
-  note,
-  profile
-} from './constants/routes';
-import { AuthGuard } from './guards/AuthGuard';
-import { LocationGuard } from './guards/LocationGuard';
-import { Loader } from '@/components/ui/Loader';
-import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
-import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+  note
+} from '@/utils/configs/routes.config';
+import { AdminRole, ModeratorRole } from '@/utils/configs/userRoles.config';
+import { JournalChooseMedia } from '@/utils/helpers/chooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 
 export const Router = () => {
@@ -97,7 +98,7 @@ export const Router = () => {
           <Route
             path={lessonModal}
             element={
-              <Suspense fallback={<div />}>
+              <Suspense>
                 <LocationGuard>
                   <LessonModal />
                 </LocationGuard>
@@ -158,11 +159,11 @@ export const Router = () => {
         />
 
         <Route
-          path={profile}
+          path={features}
           element={
-            <Suspense fallback={<Loader />}>
+            <Suspense>
               <AuthGuard>
-                <ProfileSettings />
+                <Features />
               </AuthGuard>
             </Suspense>
           }
@@ -171,5 +172,7 @@ export const Router = () => {
     )
   );
 
-  return <RouterProvider router={router}></RouterProvider>;
+  React.useEffect(() => {}, []);
+
+  return <RouterProvider router={router} />;
 };

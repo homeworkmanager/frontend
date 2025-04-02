@@ -15,6 +15,7 @@ import {
 import { patchModeratorHomework, PatchModeratorHomeworkConfig } from '@/utils/api/requests/moderator/update';
 import { getAllSchedule, GetAllScheduleConfig } from '@/utils/api/requests/schedule/get';
 import { getSubjects, GetSubjectsConfig } from '@/utils/api/requests/subjects';
+import dbRepositories from '@/utils/db/UniHelper';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const scheduleApi = createApi({
@@ -23,7 +24,30 @@ export const scheduleApi = createApi({
   tagTypes: ['GetAllSchedule', 'GetSubjects'],
   endpoints: (builder) => ({
     getAllSchedule: builder.query<AllScheduleResponse, GetAllScheduleConfig>({
-      queryFn: ({ params, config }: GetAllScheduleConfig) => getAllSchedule({ params, config }),
+      async queryFn({ params, config }: GetAllScheduleConfig) {
+        const cacheKey = 'schedule';
+        const scheduleRepo = await dbRepositories.schedule;
+
+        try {
+          const response = await getAllSchedule({ params, config });
+
+          await scheduleRepo.set(cacheKey, response.data);
+
+          return { data: response.data };
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          const cached = await scheduleRepo.get(cacheKey);
+
+          if (cached) return { data: cached?.data };
+
+          return {
+            error: {
+              status: error.response?.status,
+              data: error.response?.data || error.message
+            }
+          };
+        }
+      },
       providesTags: ['GetAllSchedule']
     }),
     patchAdminUpdateClasses: builder.mutation<AdminUpdateClassesResponse, PatchAdminUpdateClasses>({
