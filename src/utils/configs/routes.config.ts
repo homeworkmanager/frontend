@@ -1,28 +1,28 @@
-const error = '*';
-const main = '/';
+const ERROR = '*';
+const MAIN = '/';
 
-const auth = main + 'auth';
-const journalMobile = main + 'journal-mobile';
-const journalDesktop = main + 'journal-desktop';
-const lessonModal = 'lesson';
-const addHomeworkMobile = main + 'add/homework-mobile';
-const addHomeworkDesktop = main + 'add/homework-desktop';
-const note = main + 'note';
-const features = main + 'features';
-const admin = main + 'admin';
-const moder = main + 'moderator';
+const AUTH = MAIN + 'auth';
+const JOURNAL_MOBILE = MAIN + 'journal-mobile';
+const JOURNAL_DESKTOP = MAIN + 'journal-desktop';
+const LESSON_MODAL = 'lesson';
+const ADD_HOMEWORK_MOBILE = MAIN + 'add/homework-mobile';
+const ADD_HOMEWORK_DESKTOP = MAIN + 'add/homework-desktop';
+const NOTE = MAIN + 'note';
+const FEATURES = MAIN + 'features';
+const ADMIN = MAIN + 'admin';
+const MODER = MAIN + 'moderator';
 
 export {
-  error,
-  main,
-  auth,
-  journalMobile,
-  journalDesktop,
-  lessonModal,
-  addHomeworkMobile,
-  addHomeworkDesktop,
-  note,
-  features,
-  admin,
-  moder
+  ERROR,
+  MAIN,
+  AUTH,
+  JOURNAL_MOBILE,
+  JOURNAL_DESKTOP,
+  LESSON_MODAL,
+  ADD_HOMEWORK_MOBILE,
+  ADD_HOMEWORK_DESKTOP,
+  NOTE,
+  FEATURES,
+  ADMIN,
+  MODER
 };

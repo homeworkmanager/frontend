@@ -2,7 +2,7 @@ import { calculateWeek } from '../../../../utils/helpers/calculateWeek';
 import { monthData } from '../../../Pages/Journal/constants';
 
 import { Typhography } from '@/components/ui/Typhography';
-import { semStart } from '@/utils/configs/time.config';
+import { SEMSTART } from '@/utils/configs/time.config';
 
 type WeekHeaderVariant = 'mobile' | 'desktop';
 
@@ -15,7 +15,7 @@ interface WeekHeaderProps {
 
 export const WeekHeader = ({ currentDate, variant, firstSessionDay }: WeekHeaderProps) => {
   const sessionStartDate = new Date(firstSessionDay.year, firstSessionDay.month, firstSessionDay.day);
-  const semStartDate = new Date(semStart.year, semStart.month, semStart.day);
+  const semStartDate = new Date(SEMSTART.year, SEMSTART.month, SEMSTART.day);
   const weekView =
     new Date(currentDate.year, currentDate.month, currentDate.day) < sessionStartDate &&
     new Date(currentDate.year, currentDate.month, currentDate.day) >= semStartDate;

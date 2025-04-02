@@ -74,7 +74,7 @@ class IndexedDBService {
       }
 
       const deleteRequest = indexedDB.deleteDatabase(config.name);
-      deleteRequest.onblocked = () => rej(new Error(`База ${config.name} заблокирована для удаления`));
+      deleteRequest.onblocked = () => rej(new Error(`DB ${config.name} blocked for deletion`));
       deleteRequest.onerror = () => rej(deleteRequest.error);
       deleteRequest.onsuccess = () => res(deleteRequest.result);
     });

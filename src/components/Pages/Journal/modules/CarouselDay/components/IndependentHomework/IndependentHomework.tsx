@@ -11,7 +11,7 @@ import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { ModeratorRole } from '@/utils/configs/userRoles.config';
+import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
 import { convertDateToTime } from '@/utils/helpers/convertDateToTime';
 import { formatText } from '@/utils/helpers/formatText';
 import {
@@ -137,7 +137,7 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                     </MultiList.Column>
                   </MultiList.Row>
                   <MultiList.Row>
-                    <MultiList.Column icons={userRole >= ModeratorRole ? 3 : 1}>
+                    <MultiList.Column icons={userRole >= MODERATOR_ROLE ? 3 : 1}>
                       <Typhography
                         tag="p"
                         variant="thirdy"
@@ -151,7 +151,7 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                       ) : (
                         <Checkbox checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
                       )}
-                      {userRole >= ModeratorRole && (
+                      {userRole >= MODERATOR_ROLE && (
                         <>
                           {currentHomework.homeworkID === -1 || currentHomework.homeworkID === homework.homeworkID ? (
                             <Button

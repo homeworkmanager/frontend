@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Router } from '@/components/modules/Router/Router';
 import { getUserRefresh } from '@/utils/api/requests/user/refresh';
-import { cookieKey } from '@/utils/configs/cookie.config';
-import { maxTimeToRefresh } from '@/utils/configs/maxTimeToRefresh.config';
+import { COOKIE_KEY } from '@/utils/configs/cookie.config';
+import { MAXT_TIME_TO_REFRESH } from '@/utils/configs/maxTimeToRefresh.config';
 import { checkUserData } from '@/utils/helpers/checkUserData';
 import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
@@ -43,10 +43,10 @@ function App() {
   };
 
   React.useEffect(() => {
-    if (!document.cookie.match(cookieKey)) return;
+    if (!document.cookie.match(COOKIE_KEY)) return;
     setUserData();
 
-    if (getTimeUpdateSession(cookieKey) < maxTimeToRefresh) {
+    if (getTimeUpdateSession(COOKIE_KEY) < MAXT_TIME_TO_REFRESH) {
       refreshCookie();
     }
   }, [dispatch]);

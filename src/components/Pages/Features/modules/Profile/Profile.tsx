@@ -5,9 +5,9 @@ import { routerNavigator } from '@/components/modules/Router/Navigator';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { cookieKey } from '@/utils/configs/cookie.config';
+import { COOKIE_KEY } from '@/utils/configs/cookie.config';
 import { UNIHELPER_DB_CONFIG } from '@/utils/configs/db.config';
-import { auth } from '@/utils/configs/routes.config';
+import { AUTH } from '@/utils/configs/routes.config';
 import IndexedDBService from '@/utils/db/core';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
 import { noteApi } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
@@ -33,12 +33,12 @@ export const Profile = () => {
     }
 
     IndexedDBService.dropDataBase(UNIHELPER_DB_CONFIG);
-    deleteCookie(cookieKey);
+    deleteCookie(COOKIE_KEY);
 
     dispatch(scheduleApi.util.invalidateTags(['GetAllSchedule']));
     dispatch(noteApi.util.invalidateTags(['GetNote']));
 
-    routerNavigator.to(auth, { replace: true });
+    routerNavigator.to(AUTH, { replace: true });
     dispatch(logOut());
   };
 

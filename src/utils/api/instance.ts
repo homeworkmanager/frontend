@@ -1,6 +1,6 @@
-import { cookieKey } from '../configs/cookie.config';
+import { COOKIE_KEY } from '../configs/cookie.config';
 import { UNIHELPER_DB_CONFIG } from '../configs/db.config';
-import { auth } from '../configs/routes.config';
+import { AUTH } from '../configs/routes.config';
 import IndexedDBService from '../db/core';
 import { deleteCookie } from '../helpers/deleteCookie';
 
@@ -22,8 +22,8 @@ api.interceptors.response.use(
   (error: AxiosError) => {
     if (error.response?.status === 401) {
       IndexedDBService.dropDataBase(UNIHELPER_DB_CONFIG);
-      deleteCookie(cookieKey);
-      routerNavigator.to(auth, { replace: true });
+      deleteCookie(COOKIE_KEY);
+      routerNavigator.to(AUTH, { replace: true });
     }
 
     return Promise.reject(error);

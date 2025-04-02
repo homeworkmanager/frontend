@@ -1,5 +1,5 @@
-const BaseRole = 1;
-const ModeratorRole = 2;
-const AdminRole = 3;
+const BASE_ROLE = 1;
+const MODERATOR_ROLE = 2;
+const ADMIN_ROLE = 3;
 
-export { BaseRole, ModeratorRole, AdminRole };
+export { BASE_ROLE, MODERATOR_ROLE, ADMIN_ROLE };

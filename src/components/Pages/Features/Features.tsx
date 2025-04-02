@@ -12,8 +12,8 @@ import { ModerLogo } from '@/components/ui/Icons/Moder';
 import { ThemeLogo } from '@/components/ui/Icons/Theme';
 import { Modal } from '@/components/ui/Modal';
 import { Typhography } from '@/components/ui/Typhography';
-import { admin, moder } from '@/utils/configs/routes.config';
-import { AdminRole, ModeratorRole } from '@/utils/configs/userRoles.config';
+import { ADMIN, MODER } from '@/utils/configs/routes.config';
+import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 
 type ModuleVariants = 'profile' | 'theme' | 'none';
@@ -29,12 +29,12 @@ export const ProfileSettings = () => {
       <Profile />
       <div className={styles['content']}>
         <Typhography tag="p" variant="thirdy" className={styles['settings']} children="" />
-        {role === ModeratorRole && (
-          <Link to={moder}>
+        {role === MODERATOR_ROLE && (
+          <Link to={MODER}>
             <Button
               variant="attention"
               className={styles['link']}
-              onClick={() => routerNavigator.to(moder, { replace: true })}
+              onClick={() => routerNavigator.to(MODER, { replace: true })}
               children={
                 <>
                   <ModerLogo className={styles['moder']} />
@@ -45,11 +45,11 @@ export const ProfileSettings = () => {
           </Link>
         )}
 
-        {role === AdminRole && (
+        {role === ADMIN_ROLE && (
           <Button
             variant="attention"
             className={styles['link']}
-            onClick={() => routerNavigator.to(admin, { replace: true })}
+            onClick={() => routerNavigator.to(ADMIN, { replace: true })}
             children={
               <>
                 <AdminLogo />
