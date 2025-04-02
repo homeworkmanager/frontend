@@ -43,6 +43,12 @@
   font-size: 15px;
   padding: 0.4rem 0.8rem;
   transition: all 0.25s ease-in-out;
+
+  &:disabled {
+    opacity: 0.4;
+    transform: scale(1) !important;
+    cursor: auto;
+  }
 }
 
 @media (min-width: 1050px) {

@@ -11,7 +11,7 @@ import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
+import { MODERATOR_ROLE, OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
 import { convertDateToTime } from '@/utils/helpers/convertDateToTime';
 import { formatText } from '@/utils/helpers/formatText';
 import {
@@ -149,7 +149,7 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                       {postHomeworkStatusState.isLoading ? (
                         <Loader spinnerSize={24} className={styles['loader']} />
                       ) : (
-                        <Checkbox checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
+                        <Checkbox disabled={userRole === OFFLINE_ROLE} checked={homework.isCompleted} onChange={() => changeHomeworkStatus(homework)} />
                       )}
                       {userRole >= MODERATOR_ROLE && (
                         <>

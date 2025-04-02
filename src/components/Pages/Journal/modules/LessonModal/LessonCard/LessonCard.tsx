@@ -13,7 +13,7 @@ import { Slide } from '@/components/ui/Icons/Slide';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
+import { MODERATOR_ROLE, OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
 import { convertSummary } from '@/utils/helpers/convertSummary';
 import {
   useDeleteModeratorHomeworkMutation,
@@ -143,7 +143,7 @@ export const LessonCard = ({
                   {postHomeworkStatusState.isLoading ? (
                     <Loader spinnerSize={24} className={styles['loader']} />
                   ) : (
-                    <Checkbox checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />
+                    <Checkbox disabled={userRole === OFFLINE_ROLE} checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />
                   )}
                   {userRole >= MODERATOR_ROLE && (
                     <>

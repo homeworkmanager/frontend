@@ -1,4 +1,5 @@
 import { getUserData } from '../api/requests/user/get';
+import { OFFLINE_ROLE } from '../configs/userRoles.config';
 import dbRepositories from '../db/UniHelper';
 
 export const checkUserData = async () => {
@@ -8,7 +9,7 @@ export const checkUserData = async () => {
   try {
     const response = await getUserData();
 
-    await userRepo.set(cacheKey, response.data);
+    await userRepo.set(cacheKey, { ...response.data, role: OFFLINE_ROLE });
     return { data: response.data };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,7 +23,7 @@ export const checkUserData = async () => {
         status: error.response?.status,
         data: error.response.data || error.message
       },
-      data: { role: 1, name: '', surname: '', email: '', group_name: '' }
+      data: { role: OFFLINE_ROLE, name: '', surname: '', email: '', group_name: '' }
     };
   }
 };
