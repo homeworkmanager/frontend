@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {
   LogInSchema,
@@ -10,8 +9,9 @@ import {
   RegisterSchemaType
 } from '../schemas';
 
-import { getUserData } from '@/utils/api/requests/user/get';
-import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { routerNavigator } from '@/components/modules/Router/Navigator';
+import { checkUserData } from '@/utils/helpers/checkUserData';
+import { JournalChooseMedia } from '@/utils/helpers/chooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
 import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { useAppDispatch } from '@/utils/redux/store';
@@ -38,7 +38,6 @@ const authInitValues = {
 export const useAuthView = () => {
   const [stage, setStage] = React.useState<Stages>('login');
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const getAllGroups = useGetAllGroupsQuery(undefined);
 
@@ -66,7 +65,7 @@ export const useAuthView = () => {
 
   const getUserAfterAuth = async () => {
     try {
-      const { data } = await getUserData();
+      const { data } = await checkUserData();
       dispatch(
         logIn({
           role: data.role,
@@ -76,7 +75,7 @@ export const useAuthView = () => {
           group_name: data.group_name
         })
       );
-      navigate(JournalChooseMedia);
+      routerNavigator.to(JournalChooseMedia, { replace: true });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

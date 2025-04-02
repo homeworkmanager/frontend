@@ -13,7 +13,7 @@ import { Slide } from '@/components/ui/Icons/Slide';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { ModeratorRole } from '@/utils/configs/userRoles.config';
+import { MODERATOR_ROLE, OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
 import { convertSummary } from '@/utils/helpers/convertSummary';
 import {
   useDeleteModeratorHomeworkMutation,
@@ -125,7 +125,7 @@ export const LessonCard = ({
           <MultiList>
             {homeworks.map((homework, index) => (
               <MultiList.Row key={homework.homeworkID}>
-                <MultiList.Column icons={userRole >= ModeratorRole ? 3 : 1}>
+                <MultiList.Column icons={userRole >= MODERATOR_ROLE ? 3 : 1}>
                   <Typhography
                     tag="p"
                     variant="thirdy"
@@ -143,9 +143,9 @@ export const LessonCard = ({
                   {postHomeworkStatusState.isLoading ? (
                     <Loader spinnerSize={24} className={styles['loader']} />
                   ) : (
-                    <Checkbox checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />
+                    <Checkbox disabled={userRole === OFFLINE_ROLE} checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />
                   )}
-                  {userRole >= ModeratorRole && (
+                  {userRole >= MODERATOR_ROLE && (
                     <>
                       {currentHomework?.homeworkID === -1 || currentHomework?.homeworkID === homework.homeworkID ? (
                         <Button
@@ -206,7 +206,7 @@ export const LessonCard = ({
           ))}
           {description.length === 0 && <Typhography tag="p" variant="thirdy" children={'Не указан'} />}
         </article>
-        {userRole >= ModeratorRole && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
+        {userRole >= MODERATOR_ROLE && <AddLessonHomework apiData={apiData} addHomework={addHomework} />}
       </section>
     </motion.aside>
   );

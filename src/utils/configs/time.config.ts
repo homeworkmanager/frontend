@@ -1,22 +1,22 @@
 import { pad } from '../helpers/pad';
 
-const startDate: StartDateType = {
+const START_DATE: StartDateType = {
   year: 2025,
   month: 2,
   day: 3
 };
 
-const semStart = {
+const SEM_START = {
   year: 2025,
   month: 2,
   day: 10
 };
 
-const scheduleBeginDate = {
+const SCHEDULE_BEGIN_DATE = {
   date: new Date(
-    `${startDate.year}-${pad(startDate.month)}-${pad(startDate.day)}T00:00:00`.concat('.000+03:00')
+    `${START_DATE.year}-${pad(START_DATE.month)}-${pad(START_DATE.day)}T00:00:00`.concat('.000+03:00')
   ).toISOString(),
   days: 161
 };
 
-export { startDate, semStart, scheduleBeginDate };
+export { START_DATE, SEM_START, SCHEDULE_BEGIN_DATE };

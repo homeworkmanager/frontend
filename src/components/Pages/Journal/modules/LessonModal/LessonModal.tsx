@@ -1,9 +1,10 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { LessonCard } from './LessonCard/LessonCard';
+import { routerNavigator } from '@/components/modules/Router/Navigator';
 import { Modal } from '@/components/ui/Modal';
-import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { JournalChooseMedia } from '@/utils/helpers/chooseMedia';
 import { formatText } from '@/utils/helpers/formatText';
 
 export const LessonModal = () => {
@@ -12,10 +13,6 @@ export const LessonModal = () => {
   const { apiData, Homeworks } = location.state;
 
   const [homeworks, setHomeworks] = React.useState<RestructHomeworkArray>(Homeworks);
-
-  const navigate = useNavigate();
-
-  const journalType = JournalChooseMedia;
 
   const addLessonHomework = (homework: RestructHomeworkElement) => {
     setHomeworks((prev) => [...prev, { ...homework, homeworkText: formatText(homework.homeworkText) }]);
@@ -59,7 +56,7 @@ export const LessonModal = () => {
   React.useEffect(() => {
     if (!showInfo) {
       const timer = setTimeout(() => {
-        navigate(`${journalType}`, { replace: true });
+        routerNavigator.to(JournalChooseMedia, { replace: true });
       }, 150);
 
       return () => clearTimeout(timer);

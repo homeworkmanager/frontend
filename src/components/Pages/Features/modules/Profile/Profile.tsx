@@ -1,22 +1,25 @@
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import styles from './Profile.module.css';
+import { routerNavigator } from '@/components/modules/Router/Navigator';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import { cookieKey } from '@/utils/configs/cookieNames.config';
-import { auth } from '@/utils/configs/routes.config';
+import { COOKIE_KEY } from '@/utils/configs/cookie.config';
+import { UNIHELPER_DB_CONFIG } from '@/utils/configs/db.config';
+import { AUTH } from '@/utils/configs/routes.config';
+import IndexedDBService from '@/utils/db/core';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
+import { noteApi } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
+import { scheduleApi } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
 import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { useAppDispatch } from '@/utils/redux/store';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
 import { logOut } from '@/utils/redux/storeSlices/userSlice/slice';
+import { OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
 
 export const Profile = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
   const user = useSelector(getUser);
 
   const [deleteLogout, deleteLogoutState] = useDeleteLogoutMutation();
@@ -30,10 +33,14 @@ export const Profile = () => {
       return;
     }
 
-    deleteCookie(cookieKey);
-    dispatch(logOut());
+    IndexedDBService.dropDataBase(UNIHELPER_DB_CONFIG);
+    deleteCookie(COOKIE_KEY);
 
-    navigate(auth, { replace: true });
+    dispatch(scheduleApi.util.invalidateTags(['GetAllSchedule']));
+    dispatch(noteApi.util.invalidateTags(['GetNote']));
+
+    dispatch(logOut());
+    routerNavigator.to(AUTH, { replace: true });
   };
 
   return (
@@ -44,7 +51,7 @@ export const Profile = () => {
       </div>
       <Typhography tag="p" variant="small" className={styles['email']} children={user.email} />
 
-      <Button variant="attention" color="warn" onClick={logoutUser}>
+      <Button disabled={user.role === OFFLINE_ROLE} variant="attention" color="warn" onClick={logoutUser}>
         {deleteLogoutState.isLoading ? <Loader /> : 'Выйти из аккаунта'}
       </Button>
     </section>

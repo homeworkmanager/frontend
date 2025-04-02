@@ -1,10 +1,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-export interface TodosState {
+export interface UserState {
   data: User;
 }
-const initialState: TodosState = {
+const initialState: UserState = {
   data: {
     role: 0,
     name: '',
@@ -31,7 +31,7 @@ export const userSlice = createSlice({
       state.data = user;
     },
     logOut(state) {
-      state.data = {} as User;
+      state.data = initialState.data;
     }
   }
 });
