@@ -11,7 +11,7 @@ import {
 
 import { routerNavigator } from '@/components/modules/Router/Navigator';
 import { checkUserData } from '@/utils/helpers/checkUserData';
-import { JournalChooseMedia } from '@/utils/helpers/chooseMedia';
+import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
 import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { useAppDispatch } from '@/utils/redux/store';

@@ -35,7 +35,7 @@ import {
   NOTE
 } from '@/utils/configs/routes.config';
 import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
-import { JournalChooseMedia } from '@/utils/helpers/chooseMedia';
+import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 
 export const Router = () => {
