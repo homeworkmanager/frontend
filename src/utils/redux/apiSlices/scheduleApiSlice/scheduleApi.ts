@@ -27,7 +27,7 @@ export const scheduleApi = createApi({
     getAllSchedule: builder.query<AllScheduleResponse, GetAllScheduleConfig>({
       async queryFn({ params, config }: GetAllScheduleConfig) {
         const scheduleCacheKey = 'schedule';
-        const noteCacheKey = 'schedule';
+        const noteCacheKey = 'notes';
         const scheduleRepo = await dbRepositories.schedule;
         const notesRepo = await dbRepositories.notes;
 
