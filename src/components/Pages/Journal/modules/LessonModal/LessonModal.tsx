@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { LessonCard } from './LessonCard/LessonCard';
 import { routerNavigator } from '@/components/modules/Router/Navigator';
 import { Modal } from '@/components/ui/Modal';
-import { JournalChooseMedia } from '@/utils/helpers/chooseMedia';
+import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { formatText } from '@/utils/helpers/formatText';
 
 export const LessonModal = () => {

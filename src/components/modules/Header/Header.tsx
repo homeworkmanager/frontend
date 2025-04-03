@@ -9,7 +9,7 @@ import { HomeworkLogo } from '@/components/ui/Icons/Homework';
 import { NoteLogo } from '@/components/ui/Icons/Note';
 import { Typhography } from '@/components/ui/Typhography';
 import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
-import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/chooseMedia';
+import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 
