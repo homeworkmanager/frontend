@@ -4,7 +4,7 @@ import styles from './Users.module.css';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
-import { AdminRole, BaseRole, ModeratorRole } from '@/utils/constants/userRoles';
+import { ADMIN_ROLE, BASE_ROLE, MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
 import { useDropdown } from '@/utils/hooks/useDropdown';
 import { useGetAdminUsersQuery, usePatchAdminRoleMutation } from '@/utils/redux/apiSlices/adminApiSlice/adminApi';
 import clsx from 'clsx';
@@ -12,15 +12,15 @@ import clsx from 'clsx';
 const roles = [
   {
     name: 'Стандарт',
-    role: BaseRole
+    role: BASE_ROLE
   },
   {
     name: 'Модератор',
-    role: ModeratorRole
+    role: MODERATOR_ROLE
   },
   {
     name: 'Администратор',
-    role: AdminRole
+    role: ADMIN_ROLE
   }
 ];
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {
   LogInSchema,
@@ -10,8 +9,9 @@ import {
   RegisterSchemaType
 } from '../schemas';
 
-import { getUserData } from '@/utils/api/requests/user/get';
-import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { routerNavigator } from '@/components/modules/Router/Navigator';
+import { checkUserData } from '@/utils/helpers/checkUserData';
+import { JournalChooseMedia } from '@/utils/helpers/chooseMedia';
 import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
 import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
 import { useAppDispatch } from '@/utils/redux/store';
@@ -26,10 +26,18 @@ interface State {
   isError: boolean;
 }
 
+const authInitValues = {
+  name: '',
+  surname: '',
+  groupName: '',
+  registerKey: '',
+  email: '',
+  password: ''
+};
+
 export const useAuthView = () => {
   const [stage, setStage] = React.useState<Stages>('login');
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const getAllGroups = useGetAllGroupsQuery(undefined);
 
@@ -39,15 +47,6 @@ export const useAuthView = () => {
     acc[group.name] = group.group_id;
     return acc;
   }, {});
-
-  const authInitValues = {
-    name: '',
-    surname: '',
-    groupName: '',
-    registerKey: '',
-    email: '',
-    password: ''
-  };
 
   const changeStage = (stage: Stages) => {
     setStage(stage);
@@ -66,7 +65,7 @@ export const useAuthView = () => {
 
   const getUserAfterAuth = async () => {
     try {
-      const { data } = await getUserData();
+      const { data } = await checkUserData();
       dispatch(
         logIn({
           role: data.role,
@@ -76,14 +75,14 @@ export const useAuthView = () => {
           group_name: data.group_name
         })
       );
-      navigate(JournalChooseMedia);
+      routerNavigator.to(JournalChooseMedia, { replace: true });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
   };
 
-  const setSubmit = async (values: RegisterSchemaType) => {
+  const setSubmit = async (values: RegisterSchemaType & LogInSchemaType & ProfileSchemaType) => {
     if (stage === 'login') {
       const postAuthResponse = await postAuth({
         params: {
@@ -130,7 +129,7 @@ export const useAuthView = () => {
     register: RegisterSchema
   } as const;
 
-  const form = useFormik<RegisterSchemaType & LogInSchemaType & ProfileSchemaType>({
+  const form = useFormik({
     initialValues: authInitValues,
     validationSchema: schemas[stage],
     validateOnBlur: false,

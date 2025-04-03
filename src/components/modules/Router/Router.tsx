@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 
@@ -9,32 +10,32 @@ import {
   Auth,
   DayHomeworkDesktop,
   DayHomeworkMobile,
+  Features,
   JournalDesktop,
   JournalMobile,
   LessonModal,
   ModerPanel,
-  ProfileSettings,
   SubjectsNote
 } from './constants/lazyImports';
-import {
-  addHomeworkDesktop,
-  addHomeworkMobile,
-  admin,
-  auth,
-  error,
-  journalDesktop,
-  journalMobile,
-  lessonModal,
-  main,
-  moder,
-  note,
-  profile
-} from './constants/routes';
 import { AuthGuard } from './guards/AuthGuard';
 import { LocationGuard } from './guards/LocationGuard';
 import { Loader } from '@/components/ui/Loader';
-import { AdminRole, ModeratorRole } from '@/utils/constants/userRoles';
-import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import {
+  ADD_HOMEWORK_DESKTOP,
+  ADD_HOMEWORK_MOBILE,
+  ADMIN,
+  AUTH,
+  ERROR,
+  FEATURES,
+  JOURNAL_DESKTOP,
+  JOURNAL_MOBILE,
+  LESSON_MODAL,
+  MAIN,
+  MODER,
+  NOTE
+} from '@/utils/configs/routes.config';
+import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
+import { JournalChooseMedia } from '@/utils/helpers/chooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 
 export const Router = () => {
@@ -45,17 +46,17 @@ export const Router = () => {
     createRoutesFromElements(
       <Route element={<Layout />}>
         <Route
-          path={main}
+          path={MAIN}
           element={
             <AuthGuard>
               <Navigate to={journalType} />
             </AuthGuard>
           }
         />
-        <Route path={error} element={<Navigate to="/" replace />} />
+        <Route path={ERROR} element={<Navigate to="/" replace />} />
 
         <Route
-          path={auth}
+          path={AUTH}
           element={
             <Suspense fallback={<Loader />}>
               <Auth />
@@ -63,17 +64,17 @@ export const Router = () => {
           }
         />
         <Route
-          path={journalMobile}
+          path={JOURNAL_MOBILE}
           element={
             <Suspense fallback={<Loader />}>
               <AuthGuard>
-                {journalType === '/journal-mobile' ? <JournalMobile /> : <Navigate to={journalDesktop} />}
+                {journalType === '/journal-mobile' ? <JournalMobile /> : <Navigate to={JOURNAL_DESKTOP} />}
               </AuthGuard>
             </Suspense>
           }
         >
           <Route
-            path={lessonModal}
+            path={LESSON_MODAL}
             element={
               <Suspense fallback={<div />}>
                 <LocationGuard>
@@ -85,19 +86,19 @@ export const Router = () => {
         </Route>
 
         <Route
-          path={journalDesktop}
+          path={JOURNAL_DESKTOP}
           element={
             <Suspense fallback={<Loader />}>
               <AuthGuard>
-                {journalType === '/journal-desktop' ? <JournalDesktop /> : <Navigate to={journalMobile} />}
+                {journalType === '/journal-desktop' ? <JournalDesktop /> : <Navigate to={JOURNAL_MOBILE} />}
               </AuthGuard>
             </Suspense>
           }
         >
           <Route
-            path={lessonModal}
+            path={LESSON_MODAL}
             element={
-              <Suspense fallback={<div />}>
+              <Suspense>
                 <LocationGuard>
                   <LessonModal />
                 </LocationGuard>
@@ -107,47 +108,47 @@ export const Router = () => {
         </Route>
 
         <Route
-          path={admin}
+          path={ADMIN}
           element={
             <Suspense fallback={<Loader />}>
-              <AuthGuard>{userRole === AdminRole ? <AdminPanel /> : <Navigate to={journalType} />}</AuthGuard>
+              <AuthGuard>{userRole === ADMIN_ROLE ? <AdminPanel /> : <Navigate to={journalType} />}</AuthGuard>
             </Suspense>
           }
         />
 
         <Route
-          path={moder}
+          path={MODER}
           element={
             <Suspense fallback={<Loader />}>
-              <AuthGuard>{userRole === ModeratorRole ? <ModerPanel /> : <Navigate to={journalType} />}</AuthGuard>
+              <AuthGuard>{userRole === MODERATOR_ROLE ? <ModerPanel /> : <Navigate to={journalType} />}</AuthGuard>
             </Suspense>
           }
         />
 
         <Route
-          path={addHomeworkMobile}
+          path={ADD_HOMEWORK_MOBILE}
           element={
             <Suspense fallback={<Loader />}>
               <AuthGuard>
-                {userRole >= ModeratorRole ? <DayHomeworkMobile /> : <Navigate to={journalMobile} />}
+                {userRole >= MODERATOR_ROLE ? <DayHomeworkMobile /> : <Navigate to={JOURNAL_MOBILE} />}
               </AuthGuard>
             </Suspense>
           }
         />
 
         <Route
-          path={addHomeworkDesktop}
+          path={ADD_HOMEWORK_DESKTOP}
           element={
             <Suspense fallback={<Loader />}>
               <AuthGuard>
-                {userRole >= ModeratorRole ? <DayHomeworkDesktop /> : <Navigate to={journalDesktop} />}
+                {userRole >= MODERATOR_ROLE ? <DayHomeworkDesktop /> : <Navigate to={JOURNAL_DESKTOP} />}
               </AuthGuard>
             </Suspense>
           }
         />
 
         <Route
-          path={note}
+          path={NOTE}
           element={
             <Suspense fallback={<Loader />}>
               <AuthGuard>
@@ -158,11 +159,11 @@ export const Router = () => {
         />
 
         <Route
-          path={profile}
+          path={FEATURES}
           element={
-            <Suspense fallback={<Loader />}>
+            <Suspense>
               <AuthGuard>
-                <ProfileSettings />
+                <Features />
               </AuthGuard>
             </Suspense>
           }
@@ -171,5 +172,7 @@ export const Router = () => {
     )
   );
 
-  return <RouterProvider router={router}></RouterProvider>;
+  React.useEffect(() => { }, []);
+
+  return <RouterProvider router={router} />;
 };
