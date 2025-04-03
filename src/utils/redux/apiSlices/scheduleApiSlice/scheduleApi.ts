@@ -13,6 +13,7 @@ import {
   DeleteModeratorHomeworkConfig
 } from '@/utils/api/requests/moderator/delete/homeworkID';
 import { patchModeratorHomework, PatchModeratorHomeworkConfig } from '@/utils/api/requests/moderator/update';
+import { getNote } from '@/utils/api/requests/note';
 import { getAllSchedule, GetAllScheduleConfig } from '@/utils/api/requests/schedule/get';
 import { getSubjects, GetSubjectsConfig } from '@/utils/api/requests/subjects';
 import dbRepositories from '@/utils/db/UniHelper';
@@ -25,18 +26,24 @@ export const scheduleApi = createApi({
   endpoints: (builder) => ({
     getAllSchedule: builder.query<AllScheduleResponse, GetAllScheduleConfig>({
       async queryFn({ params, config }: GetAllScheduleConfig) {
-        const cacheKey = 'schedule';
+        const scheduleCacheKey = 'schedule';
+        const noteCacheKey = 'schedule';
         const scheduleRepo = await dbRepositories.schedule;
+        const notesRepo = await dbRepositories.notes;
 
         try {
-          const response = await getAllSchedule({ params, config });
+          const scheduleResponse = await getAllSchedule({ params, config });
 
-          await scheduleRepo.set(cacheKey, response.data);
+          await scheduleRepo.set(scheduleCacheKey, scheduleResponse.data);
 
-          return { data: response.data };
+          const noteResponse = await getNote({ config: config });
+
+          await notesRepo.set(noteCacheKey, noteResponse.data);
+
+          return { data: scheduleResponse.data };
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-          const cached = await scheduleRepo.get(cacheKey);
+          const cached = await scheduleRepo.get(scheduleCacheKey);
 
           if (cached) return { data: cached?.data };
 
