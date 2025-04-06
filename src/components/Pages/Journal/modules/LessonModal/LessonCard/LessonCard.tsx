@@ -143,7 +143,11 @@ export const LessonCard = ({
                   {postHomeworkStatusState.isLoading ? (
                     <Loader spinnerSize={24} className={styles['loader']} />
                   ) : (
-                    <Checkbox disabled={userRole === OFFLINE_ROLE} checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />
+                    <Checkbox
+                      disabled={userRole === OFFLINE_ROLE}
+                      checked={homework.isCompleted}
+                      onChange={() => changeLessonHomeworkStatus(homework)}
+                    />
                   )}
                   {userRole >= MODERATOR_ROLE && (
                     <>

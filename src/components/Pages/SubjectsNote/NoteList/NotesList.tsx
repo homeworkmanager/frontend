@@ -16,6 +16,7 @@ import { formatText } from '@/utils/helpers/formatText';
 import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
+import { AnimatePresence } from 'framer-motion';
 
 interface NotesListProps {
   subjectNotes: Note[];
@@ -139,9 +140,11 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
           />
           <div>
             {addNoteOpen && <AddNote subjectId={subjectId} addNote={addNote} />}
-            {currentNote.note_id !== -1 && (
-              <ChangeNote note={currentNote} subjectId={subjectId} changeNote={changeNote} />
-            )}
+            <AnimatePresence>
+              {currentNote.note_id !== -1 && (
+                <ChangeNote note={currentNote} subjectId={subjectId} changeNote={changeNote} />
+              )}
+            </AnimatePresence>
           </div>
         </>
       )}

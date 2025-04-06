@@ -8,6 +8,7 @@ import { Typhography } from '@/components/ui/Typhography';
 import { COOKIE_KEY } from '@/utils/configs/cookie.config';
 import { UNIHELPER_DB_CONFIG } from '@/utils/configs/db.config';
 import { AUTH } from '@/utils/configs/routes.config';
+import { OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
 import IndexedDBService from '@/utils/db/core';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
 import { noteApi } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
@@ -16,7 +17,6 @@ import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/us
 import { useAppDispatch } from '@/utils/redux/store';
 import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
 import { logOut } from '@/utils/redux/storeSlices/userSlice/slice';
-import { OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
 
 export const Profile = () => {
   const dispatch = useAppDispatch();
@@ -36,7 +36,7 @@ export const Profile = () => {
     IndexedDBService.dropDataBase(UNIHELPER_DB_CONFIG);
     deleteCookie(COOKIE_KEY);
 
-    dispatch(scheduleApi.util.invalidateTags(['GetAllSchedule']));
+    dispatch(scheduleApi.util.invalidateTags(['GetAllSchedule', 'GetScheduleHomework']));
     dispatch(noteApi.util.invalidateTags(['GetNote']));
 
     dispatch(logOut());

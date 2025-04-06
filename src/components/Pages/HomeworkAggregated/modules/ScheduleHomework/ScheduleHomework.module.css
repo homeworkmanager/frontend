@@ -1,14 +1,16 @@
 .container {
   width: 100%;
+  margin-bottom: 0.75rem;
+  position: relative;
 }
 
 .content {
   background-color: var(--component-background-color);
   width: 100%;
   height: auto;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   padding: 1rem 0.7rem;
-  margin-top: 16px;
+  margin-top: 0.75rem;
   transition: all 0.2s ease-in-out;
 }
 
@@ -17,6 +19,16 @@
     background-color: var(--component-light-background-color);
     transform: scale(1.015);
   }
+}
+
+.title {
+  display: flex;
+}
+
+.current {
+  padding: 0.35rem 0.6rem;
+  border-radius: 1rem;
+  background-color: var(--border-focus-color);
 }
 
 .number {

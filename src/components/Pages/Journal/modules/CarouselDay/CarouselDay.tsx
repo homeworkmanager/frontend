@@ -48,12 +48,10 @@ export const CarouselDay = ({
           {apiDates.map((apiData, dayIndex) => (
             <SwiperSlide key={dayIndex} virtualIndex={dayIndex} tag="li" className={styles['swiper-layout']}>
               <div className={styles['day-card']}>
+                <IndependentHomework Homeworks={apiData.independentHomeworks} dayCarouselRef={dayCarouselRef} />
                 {apiData.outputClasses.length === 0 && <FreeDay />}
                 {apiData.outputClasses.length > 0 &&
-                  apiData.outputClasses.map((value) => (
-                    <Lesson key={value.class.startTime} apiData={value} Homeworks={value.homework} />
-                  ))}
-                <IndependentHomework Homeworks={apiData.independentHomeworks} dayCarouselRef={dayCarouselRef} />
+                  apiData.outputClasses.map((value) => <Lesson key={value.class.startTime} apiData={value} />)}
               </div>
             </SwiperSlide>
           ))}

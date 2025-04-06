@@ -11,6 +11,7 @@ import {
   DayHomeworkDesktop,
   DayHomeworkMobile,
   Features,
+  HomeworkAggregatedMobile,
   JournalDesktop,
   JournalMobile,
   LessonModal,
@@ -24,6 +25,8 @@ import {
   ADD_HOMEWORK_DESKTOP,
   ADD_HOMEWORK_MOBILE,
   ADMIN,
+  AGGREGATE_HOMEWORK_DESKTOP,
+  AGGREGATE_HOMEWORK_MOBILE,
   AUTH,
   ERROR,
   FEATURES,
@@ -35,12 +38,14 @@ import {
   NOTE
 } from '@/utils/configs/routes.config';
 import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
-import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { AggeragateHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 
 export const Router = () => {
   const userRole = useSelector(getUserRole);
+
   const journalType = JournalChooseMedia;
+  const aggregateHomeworkType = AggeragateHomeworkChooseMedia;
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -68,7 +73,7 @@ export const Router = () => {
           element={
             <Suspense fallback={<Loader />}>
               <AuthGuard>
-                {journalType === '/journal-mobile' ? <JournalMobile /> : <Navigate to={JOURNAL_DESKTOP} />}
+                {journalType === JOURNAL_MOBILE ? <JournalMobile /> : <Navigate to={JOURNAL_DESKTOP} />}
               </AuthGuard>
             </Suspense>
           }
@@ -76,7 +81,7 @@ export const Router = () => {
           <Route
             path={LESSON_MODAL}
             element={
-              <Suspense fallback={<div />}>
+              <Suspense>
                 <LocationGuard>
                   <LessonModal />
                 </LocationGuard>
@@ -90,7 +95,7 @@ export const Router = () => {
           element={
             <Suspense fallback={<Loader />}>
               <AuthGuard>
-                {journalType === '/journal-desktop' ? <JournalDesktop /> : <Navigate to={JOURNAL_MOBILE} />}
+                {journalType === JOURNAL_DESKTOP ? <JournalDesktop /> : <Navigate to={JOURNAL_MOBILE} />}
               </AuthGuard>
             </Suspense>
           }
@@ -148,6 +153,21 @@ export const Router = () => {
         />
 
         <Route
+          path={AGGREGATE_HOMEWORK_MOBILE}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AuthGuard>
+                {aggregateHomeworkType === AGGREGATE_HOMEWORK_MOBILE ? (
+                  <HomeworkAggregatedMobile />
+                ) : (
+                  <Navigate to={AGGREGATE_HOMEWORK_DESKTOP} />
+                )}
+              </AuthGuard>
+            </Suspense>
+          }
+        />
+
+        <Route
           path={NOTE}
           element={
             <Suspense fallback={<Loader />}>
@@ -172,7 +192,7 @@ export const Router = () => {
     )
   );
 
-  React.useEffect(() => { }, []);
+  React.useEffect(() => {}, []);
 
   return <RouterProvider router={router} />;
 };

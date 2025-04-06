@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChangeLessonHomework } from '../ChangeLessonHomework/ChangeLessonHomework';
+import { ChangeScheduleHomework } from '../ChangeScheduleHomework/ChangeScheduleHomework';
 
-import styles from './IndependentHomework.module.css';
+import styles from './ScheduleHomework.module.css';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
@@ -21,14 +21,15 @@ import {
 import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
-import { SwiperRef } from 'swiper/react';
 
-interface IndependentHomeworkProps {
+interface ScheduleHomeworkProps {
   Homeworks: RestructIndependentHomeworkArray;
-  dayCarouselRef: React.RefObject<SwiperRef>;
+  DayDate: string;
 }
 
-export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHomeworkProps) => {
+const weekDay = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+
+export const ScheduleHomework = ({ Homeworks, DayDate }: ScheduleHomeworkProps) => {
   const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
   const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
 
@@ -42,15 +43,8 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
     isCompleted: false
   });
 
-  const updateHeight = () => {
-    if (dayCarouselRef && dayCarouselRef.current) {
-      dayCarouselRef.current.swiper.wrapperEl.style.height = 'auto';
-    }
-  };
-
   const removeCurrentHomework = () => {
     setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false });
-    updateHeight();
   };
 
   const addCurrentHomework = (elem: RestructHomeworkElement) => {
@@ -59,7 +53,6 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
       return;
     }
     setCurrentHomework(elem);
-    updateHeight();
   };
 
   const removeHomework = async (homework: RestructHomeworkElement) => {
@@ -83,7 +76,6 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
         return item;
       })
     ]);
-    updateHeight();
   };
 
   const changeHomeworkStatus = async (homework: RestructHomeworkElement) => {
@@ -103,15 +95,24 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
           return item;
         })
       ]);
-      updateHeight();
     }
   };
+
+  const date = new Date(DayDate);
 
   return (
     <>
       {independentHomeworks.length > 0 && (
         <article className={styles['container']}>
-          <Typhography tag="p" variant="primary" children={`Задания на день`} className={styles['title']} />
+          <div className={styles['title']}>
+            <Typhography
+              tag="p"
+              variant="secondary"
+              children={`${weekDay[date.getDay()]} ${date.toLocaleDateString('ru', { day: '2-digit', month: '2-digit' })}`}
+              className={clsx(new Date().toDateString() === date.toDateString() && styles['current'])}
+            />
+          </div>
+
           <MultiList>
             {independentHomeworks.map((homework) => (
               <React.Fragment key={homework.homeworkID}>
@@ -189,18 +190,18 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                     </MultiList.Column>
                   </MultiList.Row>
                 </div>
+                <AnimatePresence>
+                  {currentHomework.homeworkID === homework.homeworkID && (
+                    <ChangeScheduleHomework
+                      currentHomework={currentHomework}
+                      removeCurrentHomework={removeCurrentHomework}
+                      changeHomework={changeHomework}
+                    />
+                  )}
+                </AnimatePresence>
               </React.Fragment>
             ))}
           </MultiList>
-          <AnimatePresence>
-            {currentHomework.homeworkID !== -1 && (
-              <ChangeLessonHomework
-                currentHomework={currentHomework}
-                removeCurrentHomework={removeCurrentHomework}
-                changeHomework={changeHomework}
-              />
-            )}
-          </AnimatePresence>
         </article>
       )}
     </>
