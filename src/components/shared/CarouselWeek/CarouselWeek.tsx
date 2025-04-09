@@ -14,7 +14,7 @@ import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import { getDaysForOtherCarousels } from '@/utils/helpers/getDaysForOtherCarousels';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 interface carouselWeekProps {
@@ -146,16 +146,27 @@ export const CarouselWeek = ({
       <Swiper
         tag="ul"
         ref={weekCarouselRef}
+        modules={[Navigation, Virtual]}
+        virtual={{
+          slides: daysByWeeks,
+          cache: true,
+          addSlidesAfter: 0,
+          addSlidesBefore: 0,
+          renderExternal: ({ slides }) => {
+            if (slides.length !== daysByWeeks.length) {
+              return { slides: daysByWeeks };
+            }
+            return null;
+          }
+        }}
         onSlideChange={onWeekNodeScroll}
-        lazyPreloadPrevNext={20}
         initialSlide={currentSlide}
-        freeMode={true}
-        modules={[Navigation]}
-        speed={500}
         navigation={{
           nextEl: '.custom-next',
           prevEl: '.custom-prev'
         }}
+        speed={500}
+        resistanceRatio={0.7}
       >
         <AnimatePresence>
           {daysByWeeks.map((week, slideIndex) => (
@@ -168,10 +179,10 @@ export const CarouselWeek = ({
                     onClick={() => setClickedDate(findIndexByDate(values, day))}
                     {...(slideIndex === weekCarouselRef.current?.swiper.realIndex &&
                       dayIndex >= 7 && {
-                      initial: 'hidden',
-                      animate: 'visible',
-                      variants: slideVariants(dayIndex)
-                    })}
+                        initial: 'hidden',
+                        animate: 'visible',
+                        variants: slideVariants(dayIndex)
+                      })}
                   >
                     <motion.p className={styles['day']}>{weekDays[dayIndex]}</motion.p>
                     <motion.div
@@ -179,8 +190,8 @@ export const CarouselWeek = ({
                         styles['date-card'],
                         transitionStatus.current && styles['bg-transition'],
                         Math.floor(initialParams.current.currentSlide) === slideIndex &&
-                        initialParams.current.dayIndexInSlide === dayIndex &&
-                        styles['today'],
+                          initialParams.current.dayIndexInSlide === dayIndex &&
+                          styles['today'],
                         currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
                       )}
                     >
