@@ -123,7 +123,7 @@ export const CarouselWeek = ({
     visible: {
       x: 0,
       opacity: 1,
-      transition: { type: 'tween', duration: 0.375, delay: index * 0.035 }
+      transition: { type: 'tween', duration: 0.35, delay: index * 0.03 }
     }
   });
 
@@ -166,12 +166,12 @@ export const CarouselWeek = ({
                     key={`${day.year} ${day.month} ${day.day}`}
                     className={styles['carousel-date-item']}
                     onClick={() => setClickedDate(findIndexByDate(values, day))}
-                    {...(slideIndex === (weekCarouselRef.current as SwiperRef).swiper.realIndex &&
+                    {...(slideIndex === weekCarouselRef.current?.swiper.realIndex &&
                       dayIndex >= 7 && {
-                        initial: 'hidden',
-                        animate: 'visible',
-                        variants: slideVariants(dayIndex)
-                      })}
+                      initial: 'hidden',
+                      animate: 'visible',
+                      variants: slideVariants(dayIndex)
+                    })}
                   >
                     <motion.p className={styles['day']}>{weekDays[dayIndex]}</motion.p>
                     <motion.div
@@ -179,8 +179,8 @@ export const CarouselWeek = ({
                         styles['date-card'],
                         transitionStatus.current && styles['bg-transition'],
                         Math.floor(initialParams.current.currentSlide) === slideIndex &&
-                          initialParams.current.dayIndexInSlide === dayIndex &&
-                          styles['today'],
+                        initialParams.current.dayIndexInSlide === dayIndex &&
+                        styles['today'],
                         currentSlide === slideIndex && dayIndexInSlide === dayIndex && styles['active']
                       )}
                     >
