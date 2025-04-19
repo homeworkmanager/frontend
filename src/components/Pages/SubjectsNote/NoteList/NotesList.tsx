@@ -13,8 +13,8 @@ import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
 import { formatText } from '@/utils/helpers/formatText';
-import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
-import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/note/noteApi';
+import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 

@@ -50,7 +50,7 @@ export const JournalDesktop = () => {
   };
 
   return (
-    <article className={styles.container}>
+    <article>
       {getScheduleStatus.loading && <Loader />}
       {getScheduleStatus.success && (
         <div className={styles['journal-body']}>

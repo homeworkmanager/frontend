@@ -6,7 +6,7 @@ import { Loader } from '@/components/ui/Loader';
 import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { formatText } from '@/utils/helpers/formatText';
-import { usePatchNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
+import { usePatchNoteMutation } from '@/utils/redux/apiSlices/note/noteApi';
 import { AnimatePresence, motion } from 'framer-motion';
 
 interface ChangeLessonHomeworkProps {

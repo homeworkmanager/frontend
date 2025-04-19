@@ -6,7 +6,7 @@ import { Loader } from '@/components/ui/Loader';
 import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { formatText } from '@/utils/helpers/formatText';
-import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
+import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlices/schedule/scheduleApi';
 
 interface ModeratorBlockProps {
   apiData: OutputClass;

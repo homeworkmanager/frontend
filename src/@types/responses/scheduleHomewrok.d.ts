@@ -12,4 +12,4 @@ type DayHomeworks = {
 
 type ScheduleHomeworkResponse = {
   [date: string]: DayHomeworks;
-} & BaseResponse;
+};

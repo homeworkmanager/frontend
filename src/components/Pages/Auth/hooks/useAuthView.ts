@@ -12,10 +12,10 @@ import {
 import { routerNavigator } from '@/components/modules/Router/Navigator';
 import { checkUserData } from '@/utils/helpers/checkUserData';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
-import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
-import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
+import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/group/groupApi';
+import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/user/userApi';
 import { useAppDispatch } from '@/utils/redux/store';
-import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
+import { logIn } from '@/utils/redux/storeSlices/user/slice';
 import { useFormik } from 'formik';
 
 type Stages = 'login' | 'profile' | 'register';

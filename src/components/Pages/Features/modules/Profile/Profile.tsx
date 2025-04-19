@@ -11,12 +11,12 @@ import { AUTH } from '@/utils/configs/routes.config';
 import { OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
 import IndexedDBService from '@/utils/db/core';
 import { deleteCookie } from '@/utils/helpers/deleteCookie';
-import { noteApi } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
-import { scheduleApi } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
-import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
+import { noteApi } from '@/utils/redux/apiSlices/note/noteApi';
+import { scheduleApi } from '@/utils/redux/apiSlices/schedule/scheduleApi';
+import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/user/userApi';
 import { useAppDispatch } from '@/utils/redux/store';
-import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
-import { logOut } from '@/utils/redux/storeSlices/userSlice/slice';
+import { getUser } from '@/utils/redux/storeSlices/user/selectors';
+import { logOut } from '@/utils/redux/storeSlices/user/slice';
 
 export const Profile = () => {
   const dispatch = useAppDispatch();

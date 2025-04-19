@@ -1,10 +1,10 @@
 import { useDispatch } from 'react-redux';
 
-import { groupApi } from './apiSlices/groupApiSlice/groupApi';
-import { noteApi } from './apiSlices/noteApiSlice/noteApi';
-import { scheduleApi } from './apiSlices/scheduleApiSlice/scheduleApi';
-import { userApi } from './apiSlices/userApiSlice/userApi';
-import { prefix as userPrefix, userReducer } from './storeSlices/userSlice/slice';
+import { groupApi } from './apiSlices/group';
+import { noteApi } from './apiSlices/note';
+import { scheduleApi } from './apiSlices/schedule';
+import { userApi } from './apiSlices/user';
+import { prefix as userPrefix, userReducer } from './storeSlices/user/slice';
 import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({

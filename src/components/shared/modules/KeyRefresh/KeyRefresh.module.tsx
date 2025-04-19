@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { CopyLogo } from '@/components/ui/Icons/Copy';
 import { RefreshLogo } from '@/components/ui/Icons/Refresh';
 import { Input } from '@/components/ui/Input';
-import { usePatchModeratorKeyRegenerateMutation } from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
+import { usePatchModeratorKeyRegenerateMutation } from '@/utils/redux/apiSlices/group/groupApi';
 
 interface KeyRefreshProps {
   currentKey: string;

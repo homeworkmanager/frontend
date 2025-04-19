@@ -18,8 +18,8 @@ import { convertSummary } from '@/utils/helpers/convertSummary';
 import {
   useDeleteModeratorHomeworkMutation,
   usePostHomeworkStatusMutation
-} from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
-import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+} from '@/utils/redux/apiSlices/schedule/scheduleApi';
+import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 

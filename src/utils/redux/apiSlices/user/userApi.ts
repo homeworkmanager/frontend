@@ -1,5 +1,5 @@
-import { patchAdminRole,PatchAdminRoleConfig } from '@/utils/api/requests/admin/role/id';
-import { getAdminUsers,GetAdminUsersConfig } from '@/utils/api/requests/admin/users';
+import { patchAdminRole, PatchAdminRoleConfig } from '@/utils/api/requests/admin/role/id';
+import { getAdminUsers, GetAdminUsersConfig } from '@/utils/api/requests/admin/users';
 import { postUserAuth, PostUserAuthConfig } from '@/utils/api/requests/user/auth';
 import { deleteUserLogout, DeleteUserLogoutConfig } from '@/utils/api/requests/user/logout';
 import { postUserRegister, PostUserRegisterConfig } from '@/utils/api/requests/user/register';

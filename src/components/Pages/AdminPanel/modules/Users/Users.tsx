@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/Input';
 import { Typhography } from '@/components/ui/Typhography';
 import { ADMIN_ROLE, BASE_ROLE, MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
 import { useDropdown } from '@/utils/hooks/useDropdown';
-import { useGetAdminUsersQuery, usePatchAdminRoleMutation } from '@/utils/redux/apiSlices/userApiSlice/userApi';
+import { useGetAdminUsersQuery, usePatchAdminRoleMutation } from '@/utils/redux/apiSlices/user/userApi';
 import clsx from 'clsx';
 
 const roles = [

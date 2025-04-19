@@ -7,10 +7,16 @@ import { FeaturesLogo } from '@/components/ui/Icons/Features';
 import { HomeworkLogo } from '@/components/ui/Icons/Homework';
 import { NoteLogo } from '@/components/ui/Icons/Note';
 import { Typhography } from '@/components/ui/Typhography';
-import { ADD_HOMEWORK_DESKTOP, ADD_HOMEWORK_MOBILE, FEATURES, NOTE } from '@/utils/configs/routes.config';
+import {
+  ADD_HOMEWORK_DESKTOP,
+  ADD_HOMEWORK_MOBILE,
+  AGGREGATE_HOMEWORK,
+  FEATURES,
+  NOTE
+} from '@/utils/configs/routes.config';
 import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
-import { AddHomeworkChooseMedia, AggeragateHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
-import { getUser } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { getUser } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';
 
 export const Header = () => {
@@ -42,7 +48,7 @@ export const Header = () => {
           </Link>
         )}
 
-        <Link to={AggeragateHomeworkChooseMedia}>
+        <Link to={AGGREGATE_HOMEWORK}>
           <HomeworkLogo
             className={clsx(styles['icon'], styles['note'], page.split('/')[1] === 'aggregate' && styles['current'])}
           />

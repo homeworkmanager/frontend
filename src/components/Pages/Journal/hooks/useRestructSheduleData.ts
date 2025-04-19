@@ -2,16 +2,16 @@ import React from 'react';
 
 import { today } from '../constants';
 
-import { SCHEDULE_BEGIN_DATE, START_DATE } from '@/utils/configs/time.config';
+import { SCHEDULE_BEGIN, START_DATE } from '@/utils/configs/time.config';
 import { createDate } from '@/utils/helpers/createDate';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
-import { useGetAllScheduleQuery } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
+import { useGetAllScheduleQuery } from '@/utils/redux/apiSlices/schedule/scheduleApi';
 
 export const useRestructSheduleData = () => {
   const getSchedule = useGetAllScheduleQuery({
     params: {
-      from_time: SCHEDULE_BEGIN_DATE.date,
-      days_count: SCHEDULE_BEGIN_DATE.days
+      from_time: SCHEDULE_BEGIN.date,
+      days_count: SCHEDULE_BEGIN.days
     }
   });
 
@@ -30,7 +30,7 @@ export const useRestructSheduleData = () => {
         currentYear: START_DATE.year,
         currentMonthIndex: START_DATE.month,
         currentDayIndex: START_DATE.day,
-        daysCount: SCHEDULE_BEGIN_DATE.days,
+        daysCount: SCHEDULE_BEGIN.days,
         AllLessons: scheduleLessons
       }),
     [data]

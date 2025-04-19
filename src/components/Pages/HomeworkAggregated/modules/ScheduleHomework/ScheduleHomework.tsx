@@ -17,8 +17,8 @@ import { formatText } from '@/utils/helpers/formatText';
 import {
   useDeleteModeratorHomeworkMutation,
   usePostHomeworkStatusMutation
-} from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
-import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+} from '@/utils/redux/apiSlices/schedule/scheduleApi';
+import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 

@@ -6,8 +6,8 @@ import styles from './SubjectsNote.module.css';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
 import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
-import { useGetNoteQuery } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
-import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { useGetNoteQuery } from '@/utils/redux/apiSlices/note/noteApi';
+import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 
 export const SubjectsNote = () => {
   const getNotes = useGetNoteQuery(undefined);

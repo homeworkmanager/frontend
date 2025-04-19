@@ -6,7 +6,7 @@ import { COOKIE_KEY } from '@/utils/configs/cookie.config';
 import { MAXT_TIME_TO_REFRESH } from '@/utils/configs/maxTimeToRefresh.config';
 import { checkUserData } from '@/utils/helpers/checkUserData';
 import { useAppDispatch } from '@/utils/redux/store';
-import { logIn } from '@/utils/redux/storeSlices/userSlice/slice';
+import { logIn } from '@/utils/redux/storeSlices/user/slice';
 
 function App() {
   const dispatch = useAppDispatch();

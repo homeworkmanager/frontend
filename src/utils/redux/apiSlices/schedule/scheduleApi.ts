@@ -91,7 +91,19 @@ export const scheduleApi = createApi({
     }),
     getScheduleHomework: builder.query<ScheduleHomeworkResponse, GetScheduleHomeworkConfig>({
       queryFn: ({ params, config }: GetScheduleHomeworkConfig) => getScheduleHomework({ params, config }),
-      providesTags: ['GetScheduleHomework']
+      providesTags: ['GetScheduleHomework'],
+
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+
+      merge: (currentCache, newItems) => {
+        return { ...currentCache, ...newItems };
+      },
+
+      forceRefetch: ({ currentArg, previousArg }) => {
+        return currentArg?.params?.from_time !== previousArg?.params?.from_time;
+      }
     }),
     getSubjects: builder.query<GetSubjectsResponse, GetSubjectsConfig>({
       queryFn: (requestConfig: GetSubjectsConfig) => getSubjects(requestConfig),

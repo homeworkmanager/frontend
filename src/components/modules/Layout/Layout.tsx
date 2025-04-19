@@ -10,8 +10,10 @@ export const Layout = () => {
 
   return (
     <main className={styles.layout}>
-      {showHeader && <Header />}
-      <Outlet />
+      <div className={styles.content}>
+        {showHeader && <Header />}
+        <Outlet />
+      </div>
       <NavigationInitializer />
     </main>
   );

@@ -11,7 +11,7 @@ import {
   DayHomeworkDesktop,
   DayHomeworkMobile,
   Features,
-  HomeworkAggregatedMobile,
+  HomeworkAggregated,
   JournalDesktop,
   JournalMobile,
   LessonModal,
@@ -25,8 +25,7 @@ import {
   ADD_HOMEWORK_DESKTOP,
   ADD_HOMEWORK_MOBILE,
   ADMIN,
-  AGGREGATE_HOMEWORK_DESKTOP,
-  AGGREGATE_HOMEWORK_MOBILE,
+  AGGREGATE_HOMEWORK,
   AUTH,
   ERROR,
   FEATURES,
@@ -38,14 +37,13 @@ import {
   NOTE
 } from '@/utils/configs/routes.config';
 import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
-import { AggeragateHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
-import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 
 export const Router = () => {
   const userRole = useSelector(getUserRole);
 
   const journalType = JournalChooseMedia;
-  const aggregateHomeworkType = AggeragateHomeworkChooseMedia;
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -153,15 +151,11 @@ export const Router = () => {
         />
 
         <Route
-          path={AGGREGATE_HOMEWORK_MOBILE}
+          path={AGGREGATE_HOMEWORK}
           element={
             <Suspense fallback={<Loader />}>
               <AuthGuard>
-                {aggregateHomeworkType === AGGREGATE_HOMEWORK_MOBILE ? (
-                  <HomeworkAggregatedMobile />
-                ) : (
-                  <Navigate to={AGGREGATE_HOMEWORK_DESKTOP} />
-                )}
+                <HomeworkAggregated />
               </AuthGuard>
             </Suspense>
           }
@@ -192,7 +186,7 @@ export const Router = () => {
     )
   );
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => { }, []);
 
   return <RouterProvider router={router} />;
 };

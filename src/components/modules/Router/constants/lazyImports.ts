@@ -38,9 +38,9 @@ const DayHomeworkDesktop = lazy(() =>
   }))
 );
 
-const HomeworkAggregatedMobile = lazy(() =>
-  import('@/components/Pages/HomeworkAggregated/Mobile/HomeworkAggregatedMobile').then((module) => ({
-    default: module.HomeworkAggregatedMobile
+const HomeworkAggregated = lazy(() =>
+  import('@/components/Pages/HomeworkAggregated/HomeworkAggregated').then((module) => ({
+    default: module.HomeworkAggregated
   }))
 );
 
@@ -61,7 +61,7 @@ export {
   ModerPanel,
   DayHomeworkMobile,
   DayHomeworkDesktop,
-  HomeworkAggregatedMobile,
+  HomeworkAggregated,
   SubjectsNote,
   Features
 };
