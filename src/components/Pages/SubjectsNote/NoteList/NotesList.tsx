@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { AddNote } from './modules/AddNote/AddNote';
-import { ChangeNote } from './modules/ChangeNote/ChangeNote';
+import { AddNote } from './molecules/AddNote/AddNote';
+import { ChangeNote } from './molecules/ChangeNote/ChangeNote';
 import styles from './NotesList.module.css';
 import { Button } from '@/components/ui/Button';
 import { AddLogo } from '@/components/ui/Icons/Add';

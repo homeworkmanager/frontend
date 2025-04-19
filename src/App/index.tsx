@@ -49,6 +49,7 @@ function App() {
     if (getTimeUpdateSession(COOKIE_KEY) < MAXT_TIME_TO_REFRESH) {
       refreshCookie();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   return <Router />;

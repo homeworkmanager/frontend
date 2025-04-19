@@ -61,6 +61,7 @@ export const DayHomeworkDesktop = () => {
 
   const monthCarouselRef = React.useRef<SwiperRef>(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const activeMonthNode = React.useMemo(() => findIndexByDate(values, homeworkDate), [homeworkDate]);
 
   const sendLessonHomework = async () => {

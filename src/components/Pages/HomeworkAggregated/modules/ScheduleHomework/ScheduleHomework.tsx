@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChangeScheduleHomework } from '../ChangeScheduleHomework/ChangeScheduleHomework';
-
+import { ChangeScheduleHomework } from './molecules/ChangeScheduleHomework/ChangeScheduleHomework';
 import styles from './ScheduleHomework.module.css';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
@@ -25,11 +24,12 @@ import { AnimatePresence } from 'framer-motion';
 interface ScheduleHomeworkProps {
   Homeworks: RestructIndependentHomeworkArray;
   DayDate: string;
+  CurrentDate: string;
 }
 
 const weekDay = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
-export const ScheduleHomework = ({ Homeworks, DayDate }: ScheduleHomeworkProps) => {
+export const ScheduleHomework = ({ Homeworks, DayDate, CurrentDate }: ScheduleHomeworkProps) => {
   const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
   const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
 
@@ -109,7 +109,7 @@ export const ScheduleHomework = ({ Homeworks, DayDate }: ScheduleHomeworkProps) 
               tag="p"
               variant="secondary"
               children={`${weekDay[date.getDay()]} ${date.toLocaleDateString('ru', { day: '2-digit', month: '2-digit' })}`}
-              className={clsx(new Date().toDateString() === date.toDateString() && styles['current'])}
+              className={clsx(DayDate === CurrentDate && styles['current'])}
             />
           </div>
 

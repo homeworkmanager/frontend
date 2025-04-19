@@ -63,6 +63,7 @@ export const DayHomeworkMobile = () => {
 
   const daysCount = React.useRef<DaysCount>(7);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const activeWeekNode = React.useMemo(() => findIndexByDate(values, homeworkDate), [homeworkDate]);
 
   const sendLessonHomework = async () => {

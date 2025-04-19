@@ -186,7 +186,7 @@ export const Router = () => {
     )
   );
 
-  React.useEffect(() => { }, []);
+  React.useEffect(() => {}, []);
 
   return <RouterProvider router={router} />;
 };

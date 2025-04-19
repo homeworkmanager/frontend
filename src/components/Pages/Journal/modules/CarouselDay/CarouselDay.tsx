@@ -3,9 +3,9 @@ import { Outlet } from 'react-router-dom';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselDay.module.css';
-import { FreeDay } from './components/FreeDay/FreeDay';
-import { IndependentHomework } from './components/IndependentHomework/IndependentHomework';
-import { Lesson } from './components/Lesson/Lesson';
+import { FreeDay } from './molecules/FreeDay/FreeDay';
+import { IndependentHomework } from './molecules/IndependentHomework/IndependentHomework';
+import { Lesson } from './molecules/Lesson/Lesson';
 import { Virtual } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 

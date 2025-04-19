@@ -12,12 +12,30 @@ export const HomeworkAggregated = () => {
   const containerRef = React.useRef<HTMLUListElement>(null);
   const targetRef = React.useRef<HTMLLIElement>(null);
 
-  const nextHomeworksResponse = useGetScheduleHomeworkQuery({
+  const getHomeworksResponse = useGetScheduleHomeworkQuery({
     params: {
       from_time: SCHEDULE_BEGIN.date,
       days_count: SCHEDULE_BEGIN.days
     }
   });
+
+  const findBeginDate = (): string => {
+    if (targetRef.current || !getHomeworksResponse.data) return '';
+    if (getHomeworksResponse.data[beginDate]) return beginDate;
+
+    const keys = Object.keys(getHomeworksResponse.data);
+
+    const startDate = keys.find((key) => {
+      if (new Date(key).getTime() > new Date(beginDate).getTime()) return key;
+    });
+
+    if (startDate) return startDate;
+
+    return keys[keys.length - 1];
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const startDate = React.useMemo(() => findBeginDate(), [getHomeworksResponse.isLoading]);
 
   React.useLayoutEffect(() => {
     if (targetRef.current && containerRef.current) {
@@ -27,17 +45,21 @@ export const HomeworkAggregated = () => {
         inline: 'nearest'
       });
     }
-  }, [nextHomeworksResponse.isFetching]);
+  }, [getHomeworksResponse.isLoading]);
 
   return (
     <ul className={styles.container} ref={containerRef}>
-      {nextHomeworksResponse.data &&
-        Object.keys(nextHomeworksResponse.data).map((date) => {
-          if (!nextHomeworksResponse.data) return null;
+      {getHomeworksResponse.data &&
+        Object.keys(getHomeworksResponse.data).map((date) => {
+          if (!getHomeworksResponse.data) return null;
 
           return (
-            <li key={date} ref={date === beginDate ? targetRef : null}>
-              <ScheduleHomework Homeworks={nextHomeworksResponse.data[date].homework} DayDate={date} />
+            <li key={date} ref={date === startDate ? targetRef : null}>
+              <ScheduleHomework
+                Homeworks={getHomeworksResponse.data[date].homework}
+                DayDate={date}
+                CurrentDate={startDate}
+              />
             </li>
           );
         })}

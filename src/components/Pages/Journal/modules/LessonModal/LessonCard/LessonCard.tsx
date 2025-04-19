@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChangeLessonHomework } from '../../CarouselDay/components/ChangeLessonHomework/ChangeLessonHomework';
+import { ChangeLessonHomework } from '../../CarouselDay/molecules/ChangeLessonHomework/ChangeLessonHomework';
 
 import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
 import styles from './LessonCard.module.css';

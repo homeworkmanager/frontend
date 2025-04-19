@@ -2,6 +2,7 @@ import { postModeratorNoteAdd, PostModeratorNoteAddConfig } from '@/utils/api/re
 import { deleteModeratorNote, DeleteModeratorNoteConfig } from '@/utils/api/requests/moderator/note/delete';
 import { patchModeratorNoteUpdate, PatchModeratorNoteUpdateConfig } from '@/utils/api/requests/moderator/note/update';
 import { getNote, GetNoteConfig } from '@/utils/api/requests/note';
+import { STORE_NOTES } from '@/utils/configs/db.config';
 import dbRepositories from '@/utils/db/UniHelper';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -12,7 +13,7 @@ export const noteApi = createApi({
   endpoints: (builder) => ({
     getNote: builder.query<NoteResponse, GetNoteConfig>({
       async queryFn(requestConfig: GetNoteConfig) {
-        const cacheKey = 'notes';
+        const cacheKey = STORE_NOTES;
         const notesRepo = await dbRepositories.notes;
 
         try {

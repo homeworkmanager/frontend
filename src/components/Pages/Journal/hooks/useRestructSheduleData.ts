@@ -19,7 +19,7 @@ export const useRestructSheduleData = () => {
   const success = getSchedule.isSuccess;
 
   const transformData = () => (success ? Object.values(getScheduleResponse as AllScheduleResponse) : []);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const data: DaySchedule[] = React.useMemo(transformData, [getScheduleResponse]);
 
   const scheduleLessons = React.useMemo(() => data.map((item) => item.outputClasses).reverse(), [data]);
@@ -33,6 +33,7 @@ export const useRestructSheduleData = () => {
         daysCount: SCHEDULE_BEGIN.days,
         AllLessons: scheduleLessons
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [data]
   );
 
@@ -43,6 +44,7 @@ export const useRestructSheduleData = () => {
         month: today.getMonth() + 1,
         day: today.getDate()
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
