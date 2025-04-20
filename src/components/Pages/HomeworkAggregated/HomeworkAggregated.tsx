@@ -9,7 +9,6 @@ import { useGetScheduleHomeworkQuery } from '@/utils/redux/apiSlices/schedule';
 const beginDate = `${new Date().getFullYear()}-${pad(new Date().getMonth() + 1)}-${pad(new Date().getDate())}`;
 
 export const HomeworkAggregated = () => {
-  const containerRef = React.useRef<HTMLUListElement>(null);
   const targetRef = React.useRef<HTMLLIElement>(null);
 
   const getHomeworksResponse = useGetScheduleHomeworkQuery({
@@ -38,7 +37,7 @@ export const HomeworkAggregated = () => {
   const startDate = React.useMemo(() => findBeginDate(), [getHomeworksResponse.isLoading]);
 
   React.useLayoutEffect(() => {
-    if (targetRef.current && containerRef.current) {
+    if (targetRef.current) {
       targetRef.current.scrollIntoView({
         behavior: 'auto',
         block: 'start',
@@ -48,13 +47,13 @@ export const HomeworkAggregated = () => {
   }, [getHomeworksResponse.isLoading]);
 
   return (
-    <ul className={styles.container} ref={containerRef}>
+    <ul className={styles.container}>
       {getHomeworksResponse.data &&
         Object.keys(getHomeworksResponse.data).map((date) => {
           if (!getHomeworksResponse.data) return null;
 
           return (
-            <li key={date} ref={date === startDate ? targetRef : null}>
+            <li key={date} {...(date === startDate && { ref: targetRef })}>
               <ScheduleHomework
                 Homeworks={getHomeworksResponse.data[date].homework}
                 DayDate={date}
