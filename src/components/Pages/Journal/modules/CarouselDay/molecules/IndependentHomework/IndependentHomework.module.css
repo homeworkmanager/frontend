@@ -10,8 +10,10 @@
   padding: 1rem 0.7rem;
   margin-top: 16px;
   transition: all 0.2s ease-in-out;
+}
 
-  &:hover {
+@media (hover: hover) {
+  .content:hover {
     background-color: var(--component-light-background-color);
     transform: scale(1.015);
   }

@@ -8,7 +8,6 @@ import clsx from 'clsx';
 
 interface LessonProps {
   apiData: OutputClass;
-  Homeworks: RestructHomeworkArray;
 }
 
 const lessonsNumbers = {
@@ -39,7 +38,7 @@ const getTeacher = (rawDescrciption: string) => {
   return `${stageB[0]} ${stageB[1]?.substring(0, 1)}. ${stageB[2]?.substring(0, 1)}.`;
 };
 
-export const Lesson = ({ apiData, Homeworks }: LessonProps) => {
+export const Lesson = ({ apiData }: LessonProps) => {
   const para = apiData.class;
 
   const paraBegin = convertDateToTime(para.startTime);
@@ -53,7 +52,7 @@ export const Lesson = ({ apiData, Homeworks }: LessonProps) => {
         pathname: 'lesson',
         search: `?time=${encodeURIComponent(apiData.class.startTime)}`
       },
-      { state: { apiData, Homeworks } }
+      { state: apiData }
     );
   };
 
@@ -65,10 +64,10 @@ export const Lesson = ({ apiData, Homeworks }: LessonProps) => {
           {para.category}
         </p>
       </header>
-      {Homeworks.length > 0 && (
+      {apiData.homework.length > 0 && (
         <ol className={styles['homework-info']}>
           <h4>Задание</h4>
-          {Homeworks.map((homework, index) => (
+          {apiData.homework.map((homework, index) => (
             <li key={homework.homeworkID} className={styles['task']}>
               <div className={styles['task-text']}>
                 <p>{`${index + 1}. `}</p>

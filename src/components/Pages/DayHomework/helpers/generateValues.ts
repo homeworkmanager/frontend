@@ -1,4 +1,4 @@
-import { SCHEDULE_BEGIN_DATE, START_DATE } from '@/utils/configs/time.config';
+import { SCHEDULE_BEGIN, START_DATE } from '@/utils/configs/time.config';
 import { createDate } from '@/utils/helpers/createDate';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 
@@ -9,7 +9,7 @@ export const generateValues = () => {
     currentYear: START_DATE.year,
     currentMonthIndex: START_DATE.month,
     currentDayIndex: START_DATE.day,
-    daysCount: SCHEDULE_BEGIN_DATE.days
+    daysCount: SCHEDULE_BEGIN.days
   });
 
   const currentDateIndex = findIndexByDate(values, {

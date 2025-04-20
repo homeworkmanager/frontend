@@ -17,7 +17,7 @@ import { pad } from '@/utils/helpers/pad';
 import {
   useGetSubjectsQuery,
   usePostModeratorAddHomeworkDateMutation
-} from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
+} from '@/utils/redux/apiSlices/schedule/scheduleApi';
 import clsx from 'clsx';
 import { Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
@@ -61,6 +61,7 @@ export const DayHomeworkDesktop = () => {
 
   const monthCarouselRef = React.useRef<SwiperRef>(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const activeMonthNode = React.useMemo(() => findIndexByDate(values, homeworkDate), [homeworkDate]);
 
   const sendLessonHomework = async () => {
@@ -111,7 +112,7 @@ export const DayHomeworkDesktop = () => {
   };
 
   return (
-    <article className={styles['layout']}>
+    <article>
       <div className={styles['content']}>
         <CarouselMonth
           currentDate={currentDate}

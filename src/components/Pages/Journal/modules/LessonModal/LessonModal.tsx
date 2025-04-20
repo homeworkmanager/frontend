@@ -10,9 +10,9 @@ import { formatText } from '@/utils/helpers/formatText';
 export const LessonModal = () => {
   const [showInfo, setShowInfo] = React.useState(true);
   const location = useLocation();
-  const { apiData, Homeworks } = location.state;
+  const apiData = location.state;
 
-  const [homeworks, setHomeworks] = React.useState<RestructHomeworkArray>(Homeworks);
+  const [homeworks, setHomeworks] = React.useState<RestructHomeworkArray>(apiData.homework);
 
   const addLessonHomework = (homework: RestructHomeworkElement) => {
     setHomeworks((prev) => [...prev, { ...homework, homeworkText: formatText(homework.homeworkText) }]);

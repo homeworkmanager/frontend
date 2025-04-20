@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { AddNote } from './modules/AddNote/AddNote';
-import { ChangeNote } from './modules/ChangeNote/ChangeNote';
+import { AddNote } from './molecules/AddNote/AddNote';
+import { ChangeNote } from './molecules/ChangeNote/ChangeNote';
 import styles from './NotesList.module.css';
 import { Button } from '@/components/ui/Button';
 import { AddLogo } from '@/components/ui/Icons/Add';
@@ -13,9 +13,10 @@ import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
 import { formatText } from '@/utils/helpers/formatText';
-import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/noteApiSlice/noteApi';
-import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/note/noteApi';
+import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';
+import { AnimatePresence } from 'framer-motion';
 
 interface NotesListProps {
   subjectNotes: Note[];
@@ -139,9 +140,11 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
           />
           <div>
             {addNoteOpen && <AddNote subjectId={subjectId} addNote={addNote} />}
-            {currentNote.note_id !== -1 && (
-              <ChangeNote note={currentNote} subjectId={subjectId} changeNote={changeNote} />
-            )}
+            <AnimatePresence>
+              {currentNote.note_id !== -1 && (
+                <ChangeNote note={currentNote} subjectId={subjectId} changeNote={changeNote} />
+              )}
+            </AnimatePresence>
           </div>
         </>
       )}
