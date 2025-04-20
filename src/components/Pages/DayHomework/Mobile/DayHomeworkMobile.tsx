@@ -17,7 +17,7 @@ import { pad } from '@/utils/helpers/pad';
 import {
   useGetSubjectsQuery,
   usePostModeratorAddHomeworkDateMutation
-} from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
+} from '@/utils/redux/apiSlices/schedule/scheduleApi';
 import clsx from 'clsx';
 import { Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
@@ -63,6 +63,7 @@ export const DayHomeworkMobile = () => {
 
   const daysCount = React.useRef<DaysCount>(7);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const activeWeekNode = React.useMemo(() => findIndexByDate(values, homeworkDate), [homeworkDate]);
 
   const sendLessonHomework = async () => {

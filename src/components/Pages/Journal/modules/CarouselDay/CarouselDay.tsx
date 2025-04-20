@@ -3,9 +3,9 @@ import { Outlet } from 'react-router-dom';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselDay.module.css';
-import { FreeDay } from './components/FreeDay/FreeDay';
-import { IndependentHomework } from './components/IndependentHomework/IndependentHomework';
-import { Lesson } from './components/Lesson/Lesson';
+import { FreeDay } from './molecules/FreeDay/FreeDay';
+import { IndependentHomework } from './molecules/IndependentHomework/IndependentHomework';
+import { Lesson } from './molecules/Lesson/Lesson';
 import { Virtual } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
@@ -48,12 +48,10 @@ export const CarouselDay = ({
           {apiDates.map((apiData, dayIndex) => (
             <SwiperSlide key={dayIndex} virtualIndex={dayIndex} tag="li" className={styles['swiper-layout']}>
               <div className={styles['day-card']}>
+                <IndependentHomework Homeworks={apiData.independentHomeworks} dayCarouselRef={dayCarouselRef} />
                 {apiData.outputClasses.length === 0 && <FreeDay />}
                 {apiData.outputClasses.length > 0 &&
-                  apiData.outputClasses.map((value) => (
-                    <Lesson key={value.class.startTime} apiData={value} Homeworks={value.homework} />
-                  ))}
-                <IndependentHomework Homeworks={apiData.independentHomeworks} dayCarouselRef={dayCarouselRef} />
+                  apiData.outputClasses.map((value) => <Lesson key={value.class.startTime} apiData={value} />)}
               </div>
             </SwiperSlide>
           ))}

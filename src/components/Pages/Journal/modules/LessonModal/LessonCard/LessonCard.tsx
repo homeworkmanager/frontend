@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ChangeLessonHomework } from '../../CarouselDay/components/ChangeLessonHomework/ChangeLessonHomework';
+import { ChangeLessonHomework } from '../../CarouselDay/molecules/ChangeLessonHomework/ChangeLessonHomework';
 
 import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
 import styles from './LessonCard.module.css';
@@ -18,8 +18,8 @@ import { convertSummary } from '@/utils/helpers/convertSummary';
 import {
   useDeleteModeratorHomeworkMutation,
   usePostHomeworkStatusMutation
-} from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
-import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+} from '@/utils/redux/apiSlices/schedule/scheduleApi';
+import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -143,7 +143,11 @@ export const LessonCard = ({
                   {postHomeworkStatusState.isLoading ? (
                     <Loader spinnerSize={24} className={styles['loader']} />
                   ) : (
-                    <Checkbox disabled={userRole === OFFLINE_ROLE} checked={homework.isCompleted} onChange={() => changeLessonHomeworkStatus(homework)} />
+                    <Checkbox
+                      disabled={userRole === OFFLINE_ROLE}
+                      checked={homework.isCompleted}
+                      onChange={() => changeLessonHomeworkStatus(homework)}
+                    />
                   )}
                   {userRole >= MODERATOR_ROLE && (
                     <>

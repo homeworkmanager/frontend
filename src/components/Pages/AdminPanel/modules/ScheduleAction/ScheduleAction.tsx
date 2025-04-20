@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Modal } from '@/components/ui/Modal';
 import { Typhography } from '@/components/ui/Typhography';
-import { usePatchAdminRefreshAllDataMutation } from '@/utils/redux/apiSlices/adminApiSlice/adminApi';
-import { usePatchAdminUpdateClassesMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
+import {
+  usePatchAdminRefreshAllDataMutation,
+  usePatchAdminUpdateClassesMutation
+} from '@/utils/redux/apiSlices/schedule/scheduleApi';
 import { motion } from 'framer-motion';
 
 export const ScheduleAction = () => {

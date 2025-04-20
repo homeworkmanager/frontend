@@ -1,12 +1,12 @@
 import React from 'react';
 
-import styles from './ChangeLessonHomework.module.css';
+import styles from './ChangeScheduleHomework.module.css';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { formatText } from '@/utils/helpers/formatText';
-import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/scheduleApiSlice/scheduleApi';
+import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/schedule/scheduleApi';
 import { motion } from 'framer-motion';
 
 interface ChangeLessonHomeworkProps {
@@ -15,7 +15,7 @@ interface ChangeLessonHomeworkProps {
   changeHomework: (homework: RestructHomeworkElement) => void;
 }
 
-export const ChangeLessonHomework = ({
+export const ChangeScheduleHomework = ({
   changeHomework,
   currentHomework,
   removeCurrentHomework

@@ -3,10 +3,7 @@ import { KeyRefresh } from '@/components/shared/modules/KeyRefresh/KeyRefresh.mo
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
-import {
-  useGetAdminGroupsQuery,
-  usePatchAdminKeysRegenerateMutation
-} from '@/utils/redux/apiSlices/groupApiSlice/groupApi';
+import { useGetAdminGroupsQuery, usePatchAdminKeysRegenerateMutation } from '@/utils/redux/apiSlices/group/groupApi';
 
 export const GroupsKeys = () => {
   const getAdminGroupsResponse = useGetAdminGroupsQuery(undefined);

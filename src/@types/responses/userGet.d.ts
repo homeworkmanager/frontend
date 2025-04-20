@@ -1,1 +1,1 @@
-type GetUserResponse = UserOrigin & BaseResponse;
+type UserResponse = UserOrigin & BaseResponse;

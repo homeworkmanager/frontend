@@ -7,6 +7,7 @@ const JOURNAL_DESKTOP = MAIN + 'journal-desktop';
 const LESSON_MODAL = 'lesson';
 const ADD_HOMEWORK_MOBILE = MAIN + 'add/homework-mobile';
 const ADD_HOMEWORK_DESKTOP = MAIN + 'add/homework-desktop';
+const AGGREGATE_HOMEWORK = MAIN + 'aggregate/homework';
 const NOTE = MAIN + 'note';
 const FEATURES = MAIN + 'features';
 const ADMIN = MAIN + 'admin';
@@ -21,6 +22,7 @@ export {
   LESSON_MODAL,
   ADD_HOMEWORK_MOBILE,
   ADD_HOMEWORK_DESKTOP,
+  AGGREGATE_HOMEWORK,
   NOTE,
   FEATURES,
   ADMIN,

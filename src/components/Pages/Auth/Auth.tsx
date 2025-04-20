@@ -35,7 +35,7 @@ export const Auth = () => {
 
   return (
     <article className={styles.container}>
-      <UniHelperLogo />
+      <UniHelperLogo className={styles.logo} />
       <form onSubmit={form.handleSubmit} className={styles.form}>
         {(stage === 'profile' || stage === 'register') && (
           <>

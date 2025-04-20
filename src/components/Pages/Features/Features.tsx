@@ -14,7 +14,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Typhography } from '@/components/ui/Typhography';
 import { ADMIN, MODER } from '@/utils/configs/routes.config';
 import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
-import { getUserRole } from '@/utils/redux/storeSlices/userSlice/selectors';
+import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 
 type ModuleVariants = 'profile' | 'theme' | 'none';
 

@@ -14,7 +14,7 @@ import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import { getDaysForOtherCarousels } from '@/utils/helpers/getDaysForOtherCarousels';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Virtual } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 interface carouselWeekProps {
@@ -109,33 +109,23 @@ export const CarouselWeek = ({
 
   React.useLayoutEffect(() => {
     if (transitionStatus.current === false) transitionStatus.current = true;
-
     if (daysCount.current === 14) return;
 
     const targetSlideIndex = currentDate.day / 7;
     weekCarouselRef.current?.swiper.slideTo(targetSlideIndex, 0);
   }, [daysCount.current]);
 
-  // const slideVariants = {
-  //   hidden: (daysCount: number) => ({
-  //     y: daysCount === 14 ? -100 : 100,
-  //     opacity: 0,
-  //   }),
-  //   visible: {
-  //     y: 0,
-  //     opacity: 1,
-  //     transition: { type: 'spring', stiffness: 100, damping: 20 },
-  //   },
-  // };
-
-  // const contentVariants = {
-  //   hidden: { opacity: 0, y: 20 },
-  //   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  // };
-
-  // const getTransition = (index: number) => ({
-  //   delay: index * 0.1,
-  // });
+  const slideVariants = (index: number) => ({
+    hidden: {
+      x: 300,
+      opacity: 0
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { type: 'tween', duration: 0.35, delay: index * 0.03 }
+    }
+  });
 
   return (
     <section className={styles['carousel-week']}>
@@ -156,38 +146,43 @@ export const CarouselWeek = ({
       <Swiper
         tag="ul"
         ref={weekCarouselRef}
+        modules={[Navigation, Virtual]}
+        virtual={{
+          slides: daysByWeeks,
+          cache: true,
+          addSlidesAfter: 0,
+          addSlidesBefore: 0,
+          renderExternal: ({ slides }) => {
+            if (slides.length !== daysByWeeks.length) {
+              return { slides: daysByWeeks };
+            }
+            return null;
+          }
+        }}
         onSlideChange={onWeekNodeScroll}
-        lazyPreloadPrevNext={20}
         initialSlide={currentSlide}
-        freeMode={true}
-        modules={[Navigation]}
-        speed={500}
         navigation={{
           nextEl: '.custom-next',
           prevEl: '.custom-prev'
         }}
+        speed={500}
+        resistanceRatio={0.7}
       >
         <AnimatePresence>
           {daysByWeeks.map((week, slideIndex) => (
             <SwiperSlide key={slideIndex} tag="li">
-              <motion.ul
-                key={`${slideIndex}-${daysCount.current}`}
-                className={styles['carousel-week-slide']}
-
-                // {...(slideIndex === currentSlide && {
-                //   initial: 'hidden',
-                //   animate: 'visible',
-                //   exit: 'exit',
-                //   variants: slideVariants,
-                //   custom: daysCount.current,
-                //   transition: getTransition(slideIndex),
-                // })}
-              >
+              <motion.ul key={`${slideIndex}-${daysCount.current}`} className={styles['carousel-week-slide']}>
                 {week.map((day, dayIndex) => (
                   <motion.li
                     key={`${day.year} ${day.month} ${day.day}`}
                     className={styles['carousel-date-item']}
                     onClick={() => setClickedDate(findIndexByDate(values, day))}
+                    {...(slideIndex === weekCarouselRef.current?.swiper.realIndex &&
+                      dayIndex >= 7 && {
+                        initial: 'hidden',
+                        animate: 'visible',
+                        variants: slideVariants(dayIndex)
+                      })}
                   >
                     <motion.p className={styles['day']}>{weekDays[dayIndex]}</motion.p>
                     <motion.div

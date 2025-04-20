@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /moderator
+Disallow: /add/homework-mobile
+Disallow: /add/homework-desktop
