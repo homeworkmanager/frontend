@@ -20,11 +20,6 @@
       "eslint --no-error-on-unmatched-pattern --fix"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
     "axios": "^1.7.7",
