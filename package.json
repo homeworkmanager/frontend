@@ -13,11 +13,13 @@
   },
   "lint-staged": {
     "*.{js,css}": [
-      "prettier --write"
+      "prettier --write",
+      "git add"
     ],
     "*.{ts,tsx}": [
       "prettier --write",
-      "eslint --no-error-on-unmatched-pattern --fix"
+      "eslint --no-error-on-unmatched-pattern --fix",
+      "git add"
     ]
   },
   "dependencies": {

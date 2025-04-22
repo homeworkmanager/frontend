@@ -24,12 +24,7 @@ export const SubjectsNote = () => {
               {(role >= MODERATOR_ROLE || note.notes.length > 0) && (
                 <li className={styles['item']}>
                   <div className={styles['subject-wrapper']}>
-                    <Typhography
-                      tag="h3"
-                      variant="thirdy"
-                      className={styles['subject']}
-                      children={`${note.subject.subject_name}`}
-                    />
+                    <Typhography tag="h3" variant="thirdy" children={`${note.subject.subject_name}`} />
                   </div>
                   <NotesList subjectId={note.subject.subject_id} subjectNotes={note.notes} />
                 </li>
