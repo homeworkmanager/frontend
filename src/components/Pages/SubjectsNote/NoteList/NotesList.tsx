@@ -139,7 +139,11 @@ export const NotesList = ({ subjectNotes, subjectId }: NotesListProps) => {
             children={<AddLogo className={clsx(styles['add-icon'], addNoteOpen && styles['active'])} />}
           />
           <div>
-            {addNoteOpen && <AddNote subjectId={subjectId} addNote={addNote} />}
+            {addNoteOpen && (
+              <div>
+                <AddNote subjectId={subjectId} addNote={addNote} />
+              </div>
+            )}
             <AnimatePresence>
               {currentNote.note_id !== -1 && (
                 <ChangeNote note={currentNote} subjectId={subjectId} changeNote={changeNote} />

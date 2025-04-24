@@ -6,6 +6,8 @@
   --today-color: #bd9edc;
   --border-base-color: gray;
   --border-focus-color: #8a6bcc;
+
+  --header-background-color: #000;
   --header-hover-color: #c9b3ff;
 
   --button-accept-color: #ae8bff;
@@ -17,6 +19,7 @@
   --component-light-background-color: #444a56;
   --component-underline-color: #8793ab;
 
+  --lesson-modal-background-color: #1f1f1f;
   --lect-background-color: #5b40fd;
   --pract-background-color: #e48cd1;
   --lab-background-color: #ff0016;
@@ -29,6 +32,18 @@
 
   font-family: 'Inter', sans-serif;
   font-variant-numeric: tabular-nums;
+}
+
+[data-theme='light'] {
+  --main-background-color: #fcf3f3;
+
+  --text-invert-color: #17171c;
+  --header-background-color: #e2dddd;
+
+  --component-background-color: #e5e8ef;
+  --component-light-background-color: #f4e7f7;
+
+  --lesson-modal-background-color: #e7e3e3;
 }
 
 body {

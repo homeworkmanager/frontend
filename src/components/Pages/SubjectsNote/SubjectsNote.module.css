@@ -20,11 +20,15 @@
   position: relative;
   background-color: var(--component-light-background-color);
   border-radius: 0.25rem;
-  max-height: 400px;
+  max-height: 410px;
 
   @media (min-width: 1050px) {
-    max-height: 500px;
+    max-height: 510px;
   }
+}
+
+.add {
+  height: 510px;
 }
 
 .subject-wrapper {

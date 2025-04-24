@@ -38,4 +38,5 @@
 
 .active {
   border-color: var(--border-focus-color) !important;
+  background-color: var(--border-focus-color);
 }

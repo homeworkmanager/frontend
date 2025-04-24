@@ -68,14 +68,15 @@
   align-items: center;
   justify-content: center;
   transition: scale 0.15s ease-in-out;
+  color: var(--text-invert-color);
 
   &:active {
-    scale: 0.8;
+    scale: 0.45;
   }
 
   &:disabled {
     scale: 1 !important;
-    opacity: 0.4;
+    opacity: 1;
   }
 }
 

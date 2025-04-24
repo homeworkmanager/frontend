@@ -2,7 +2,7 @@ export const HomeworkLogo = ({ ...props }: React.ComponentProps<'svg'>) => {
   return (
     <svg
       stroke="none"
-      fill="white"
+      fill="currentColor"
       strokeWidth="0"
       viewBox="0 0 448 512"
       height="36px"

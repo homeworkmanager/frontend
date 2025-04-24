@@ -2,7 +2,7 @@ export const ThemeLogo = ({ ...props }: React.ComponentProps<'svg'>) => {
   return (
     <svg
       stroke="none"
-      fill="white"
+      fill="currentColor"
       strokeWidth="0"
       viewBox="0 0 512 512"
       height="28px"
