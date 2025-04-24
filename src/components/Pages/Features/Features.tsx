@@ -22,7 +22,7 @@ export const ProfileSettings = () => {
   const role = useSelector(getUserRole);
   const [moduleShow, setModuleShow] = React.useState<ModuleVariants>('none');
 
-  const onShowTheme = () => setModuleShow((prev) => (prev === 'none' ? 'theme' : 'none'));
+  const onShowTheme = () => setModuleShow('none');
 
   return (
     <article className={styles.container}>
