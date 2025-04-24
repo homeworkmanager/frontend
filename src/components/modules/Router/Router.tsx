@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 
-import { Layout } from '../Layout/Layout';
+import { Root } from '../Root/Root';
 
 import {
   AdminPanel,
@@ -47,7 +47,7 @@ export const Router = () => {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route element={<Layout />}>
+      <Route element={<Root />}>
         <Route
           path={MAIN}
           element={

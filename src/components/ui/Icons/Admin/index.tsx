@@ -1,8 +1,8 @@
 export const AdminLogo = ({ ...props }: React.ComponentProps<'svg'>) => {
   return (
     <svg
-      stroke="white"
-      fill="white"
+      stroke="currentColor"
+      fill="currentColor"
       strokeWidth="0"
       viewBox="0 0 24 24"
       height="28px"

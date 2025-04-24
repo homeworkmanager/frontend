@@ -1,7 +1,7 @@
 export const NoteLogo = ({ ...props }: React.ComponentProps<'svg'>) => {
   return (
     <svg
-      stroke="white"
+      stroke="currentColor"
       fill="none"
       strokeWidth="2"
       viewBox="0 0 24 24"
