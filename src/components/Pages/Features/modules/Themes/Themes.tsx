@@ -39,6 +39,7 @@ export const Themes = ({ onClose }: ThemeProps) => {
           className={clsx(theme === 'light' && styles['active'])}
           children="Светлая"
         />
+        <Button disabled={true} variant="attention" className={styles['temp']} children="Скоро" />
       </div>
     </motion.section>
   );
