@@ -1,5 +1,7 @@
 export const Slide = ({ ...props }: React.ComponentProps<'svg'>) => (
   <svg
+    stroke="none"
+    fill="currentColor"
     version="1.0"
     xmlns="http://www.w3.org/2000/svg"
     width="20px"
@@ -8,7 +10,7 @@ export const Slide = ({ ...props }: React.ComponentProps<'svg'>) => (
     preserveAspectRatio="xMidYMid meet"
     {...props}
   >
-    <g transform="translate(0, 900) scale(0.1, -0.1)" fill="#ffffff" stroke="none">
+    <g transform="translate(0, 900) scale(0.1, -0.1)">
       <path
         d="M3429 7239 c-101 -16 -198 -91 -242 -188 -34 -72 -31 -189 6 -262 24
 -46 234 -261 1253 -1280 l1224 -1224 -1229 -1230 c-1004 -1005 -1232 -1239

@@ -1,4 +1,5 @@
 .layout {
+  overflow-y: auto;
   background-color: var(--main-background-color);
 }
 

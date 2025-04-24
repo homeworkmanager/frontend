@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './Features.module.css';
 import { Profile } from './modules/Profile/Profile';
-import { Theme } from './modules/Theme/Theme';
+import { Themes } from './modules/Themes/Themes';
 import { routerNavigator } from '@/components/modules/Router/Navigator';
 import { Button } from '@/components/ui/Button';
 import { AdminLogo } from '@/components/ui/Icons/Admin';
@@ -22,7 +22,7 @@ export const ProfileSettings = () => {
   const role = useSelector(getUserRole);
   const [moduleShow, setModuleShow] = React.useState<ModuleVariants>('none');
 
-  const onShowTheme = () => setModuleShow((prev) => (prev === 'none' ? 'theme' : 'none'));
+  const onShowTheme = () => setModuleShow('none');
 
   return (
     <article className={styles.container}>
@@ -71,7 +71,7 @@ export const ProfileSettings = () => {
         />
       </div>
       <Modal showInfo={moduleShow === 'theme'} showDetails={onShowTheme}>
-        <Theme onClose={onShowTheme} />
+        <Themes onClose={onShowTheme} />
       </Modal>
     </article>
   );
