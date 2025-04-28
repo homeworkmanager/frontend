@@ -14,6 +14,9 @@
   --button-question-color: #8793a6;
   --button-attention-color: #ea0000;
   --button-helper-color: gray;
+  --button-cancel-color: #f0f0f0;
+  --border-focus-cancel-color: #d0d0d0;
+  --button-cancel-text-color: #333;
 
   --component-background-color: #373d48;
   --component-light-background-color: #444a56;

@@ -3,14 +3,18 @@ import { useSelector } from 'react-redux';
 
 import { ChangeLessonHomework } from '../../CarouselDay/molecules/ChangeLessonHomework/ChangeLessonHomework';
 
+import { AddLessonFile } from './AddLessonFile/AddLessonFile';
 import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
 import styles from './LessonCard.module.css';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
+import { DownloadFile } from '@/components/ui/Icons/DownloadFile';
 import { Slide } from '@/components/ui/Icons/Slide';
+import { UploadFile } from '@/components/ui/Icons/UploadFile';
 import { Loader } from '@/components/ui/Loader';
+import { Modal } from '@/components/ui/Modal';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { MODERATOR_ROLE, OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
@@ -61,6 +65,8 @@ export const LessonCard = ({
     homeworkID: -1,
     isCompleted: false
   });
+
+  const [showFileModal, getShowFileModal] = React.useState(-1);
 
   const removeCurrentHomework = () => {
     setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false });
@@ -124,64 +130,83 @@ export const LessonCard = ({
           {homeworks.length === 0 && <Typhography tag="h3" variant="thirdy" children={'Отсутствует'} />}
           <MultiList>
             {homeworks.map((homework, index) => (
-              <MultiList.Row key={homework.homeworkID}>
-                <MultiList.Column icons={userRole >= MODERATOR_ROLE ? 3 : 1}>
-                  <Typhography
-                    tag="p"
-                    variant="thirdy"
-                    className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
-                    children={`${index + 1}.`}
-                  />
-                  <Typhography
-                    tag="p"
-                    variant="thirdy"
-                    className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
-                    children={homework.homeworkText}
-                  />
-                </MultiList.Column>
-                <MultiList.Column>
-                  {postHomeworkStatusState.isLoading ? (
-                    <Loader spinnerSize={24} className={styles['loader']} />
-                  ) : (
-                    <Checkbox
-                      disabled={userRole === OFFLINE_ROLE}
-                      checked={homework.isCompleted}
-                      onChange={() => changeLessonHomeworkStatus(homework)}
+              <React.Fragment key={homework.homeworkID}>
+                <MultiList.Row>
+                  <MultiList.Column icons={userRole >= MODERATOR_ROLE ? 3 : 1}>
+                    <Typhography
+                      tag="p"
+                      variant="thirdy"
+                      className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
+                      children={`${index + 1}.`}
                     />
-                  )}
-                  {userRole >= MODERATOR_ROLE && (
-                    <>
-                      {currentHomework?.homeworkID === -1 || currentHomework?.homeworkID === homework.homeworkID ? (
+                    <Typhography
+                      tag="p"
+                      variant="thirdy"
+                      className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
+                      children={homework.homeworkText}
+                    />
+                  </MultiList.Column>
+                  <MultiList.Column>
+                    {postHomeworkStatusState.isLoading ? (
+                      <Loader spinnerSize={24} className={styles['loader']} />
+                    ) : (
+                      <Checkbox
+                        disabled={userRole === OFFLINE_ROLE}
+                        checked={homework.isCompleted}
+                        onChange={() => changeLessonHomeworkStatus(homework)}
+                      />
+                    )}
+                    {userRole >= MODERATOR_ROLE && (
+                      <>
+                        {currentHomework?.homeworkID === -1 || currentHomework?.homeworkID === homework.homeworkID ? (
+                          <Button
+                            variant="logo"
+                            onClick={() => addCurrentHomework(homework)}
+                            children={
+                              <ChangeLogo
+                                className={clsx(
+                                  styles['icon'],
+                                  currentHomework.homeworkID === homework.homeworkID && styles['active']
+                                )}
+                              />
+                            }
+                          />
+                        ) : (
+                          <div style={{ width: '24px', height: '24px', marginLeft: '6px' }} />
+                        )}
                         <Button
                           variant="logo"
-                          onClick={() => addCurrentHomework(homework)}
+                          onClick={() => deleteLessonHomework(homework)}
                           children={
-                            <ChangeLogo
-                              className={clsx(
-                                styles['icon'],
-                                currentHomework.homeworkID === homework.homeworkID && styles['active']
-                              )}
-                            />
+                            deleteHomeworkState.isLoading ? (
+                              <Loader spinnerSize={28} className={styles['loader']} />
+                            ) : (
+                              <DeleteLogo className={styles['delete-icon']} />
+                            )
                           }
                         />
-                      ) : (
-                        <div style={{ width: '24px', height: '24px', marginLeft: '6px' }} />
+                      </>
+                    )}
+                  </MultiList.Column>
+                </MultiList.Row>
+                <MultiList.Row>
+                  <MultiList.Column>
+                    <div className={styles['files']}>
+                      <Button variant="logo">
+                        <DownloadFile />
+                      </Button>
+                      {userRole >= MODERATOR_ROLE && (
+                        <Button variant="logo" onClick={() => getShowFileModal(homework.homeworkID)}>
+                          <UploadFile />
+                        </Button>
                       )}
-                      <Button
-                        variant="logo"
-                        onClick={() => deleteLessonHomework(homework)}
-                        children={
-                          deleteHomeworkState.isLoading ? (
-                            <Loader spinnerSize={28} className={styles['loader']} />
-                          ) : (
-                            <DeleteLogo className={styles['delete-icon']} />
-                          )
-                        }
-                      />
-                    </>
-                  )}
-                </MultiList.Column>
-              </MultiList.Row>
+                      <Modal showInfo={showFileModal === homework.homeworkID} showDetails={() => getShowFileModal(-1)}>
+                        <AddLessonFile homeworkId={homework.homeworkID} onClose={() => getShowFileModal(-1)} />
+                      </Modal>
+                    </div>
+                  </MultiList.Column>
+                </MultiList.Row>
+              </React.Fragment>
             ))}
           </MultiList>
           <AnimatePresence>

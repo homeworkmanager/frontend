@@ -10,7 +10,7 @@ interface MultiListRowProps extends React.ComponentProps<'li'> {
   children: React.ReactNode;
 }
 
-interface MultiListColumnProps {
+interface MultiListColumnProps extends React.ComponentProps<'div'> {
   children: React.ReactNode;
   icons?: number;
 }
@@ -33,14 +33,14 @@ MultiList.Row = ({ children, className }: MultiListRowProps) => {
   );
 };
 
-MultiList.Column = ({ children, icons }: MultiListColumnProps) => {
+MultiList.Column = ({ children, className, icons }: MultiListColumnProps) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className={styles['column']}
+      className={clsx(styles['column'], className)}
       {...(icons !== undefined && { style: { maxWidth: `calc(100% - ${30 + icons * 35}px)` } })}
     >
       {children}

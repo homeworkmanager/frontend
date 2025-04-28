@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
+import { DownloadFile } from '@/components/ui/Icons/DownloadFile';
+import { UploadFile } from '@/components/ui/Icons/UploadFile';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
@@ -114,82 +116,94 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
           <Typhography tag="p" variant="primary" children={`Задания на день`} className={styles['title']} />
           <MultiList>
             {independentHomeworks.map((homework) => (
-              <React.Fragment key={homework.homeworkID}>
-                <div className={styles['content']}>
-                  <MultiList.Row>
-                    <MultiList.Column>
-                      <Typhography
-                        tag="p"
-                        variant="small"
-                        style={{ marginBottom: '.5rem', color: 'var(--time-color)' }}
-                        children={`До ${convertDateToTime(homework.dueDate)}`}
+              <div className={styles['content']} key={homework.homeworkID}>
+                <MultiList.Row>
+                  <MultiList.Column>
+                    <Typhography
+                      tag="p"
+                      variant="small"
+                      style={{ marginBottom: '.5rem', color: 'var(--time-color)' }}
+                      children={`До ${convertDateToTime(homework.dueDate)}`}
+                    />
+                  </MultiList.Column>
+                </MultiList.Row>
+                <MultiList.Row>
+                  <MultiList.Column>
+                    <Typhography
+                      tag="p"
+                      variant="thirdy"
+                      style={{ marginBottom: '.35rem' }}
+                      children={`${homework.subjectName}`}
+                    />
+                  </MultiList.Column>
+                </MultiList.Row>
+                <MultiList.Row>
+                  <MultiList.Column icons={userRole >= MODERATOR_ROLE ? 3 : 1}>
+                    <Typhography
+                      tag="p"
+                      variant="thirdy"
+                      className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
+                      children={homework.homeworkText}
+                    />
+                  </MultiList.Column>
+                  <MultiList.Column>
+                    {postHomeworkStatusState.isLoading ? (
+                      <Loader spinnerSize={24} className={styles['loader']} />
+                    ) : (
+                      <Checkbox
+                        disabled={userRole === OFFLINE_ROLE}
+                        checked={homework.isCompleted}
+                        onChange={() => changeHomeworkStatus(homework)}
                       />
-                    </MultiList.Column>
-                  </MultiList.Row>
-                  <MultiList.Row>
-                    <MultiList.Column>
-                      <Typhography
-                        tag="p"
-                        variant="thirdy"
-                        style={{ marginBottom: '.35rem' }}
-                        children={`${homework.subjectName}`}
-                      />
-                    </MultiList.Column>
-                  </MultiList.Row>
-                  <MultiList.Row>
-                    <MultiList.Column icons={userRole >= MODERATOR_ROLE ? 3 : 1}>
-                      <Typhography
-                        tag="p"
-                        variant="thirdy"
-                        className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
-                        children={homework.homeworkText}
-                      />
-                    </MultiList.Column>
-                    <MultiList.Column>
-                      {postHomeworkStatusState.isLoading ? (
-                        <Loader spinnerSize={24} className={styles['loader']} />
-                      ) : (
-                        <Checkbox
-                          disabled={userRole === OFFLINE_ROLE}
-                          checked={homework.isCompleted}
-                          onChange={() => changeHomeworkStatus(homework)}
-                        />
-                      )}
-                      {userRole >= MODERATOR_ROLE && (
-                        <>
-                          {currentHomework.homeworkID === -1 || currentHomework.homeworkID === homework.homeworkID ? (
-                            <Button
-                              variant="logo"
-                              onClick={() => addCurrentHomework(homework)}
-                              children={
-                                <ChangeLogo
-                                  className={clsx(
-                                    styles['icon'],
-                                    currentHomework.homeworkID === homework.homeworkID && styles['active']
-                                  )}
-                                />
-                              }
-                            />
-                          ) : (
-                            <div style={{ width: '24px', height: '24px', marginLeft: '6px' }} />
-                          )}
+                    )}
+                    {userRole >= MODERATOR_ROLE && (
+                      <>
+                        {currentHomework.homeworkID === -1 || currentHomework.homeworkID === homework.homeworkID ? (
                           <Button
                             variant="logo"
-                            onClick={() => removeHomework(homework)}
+                            onClick={() => addCurrentHomework(homework)}
                             children={
-                              deleteHomeworkState.isLoading && currentHomework.homeworkID === homework.homeworkID ? (
-                                <Loader spinnerSize={28} className={styles['loader']} />
-                              ) : (
-                                <DeleteLogo className={styles['delete-icon']} />
-                              )
+                              <ChangeLogo
+                                className={clsx(
+                                  styles['icon'],
+                                  currentHomework.homeworkID === homework.homeworkID && styles['active']
+                                )}
+                              />
                             }
                           />
-                        </>
+                        ) : (
+                          <div style={{ width: '24px', height: '24px', marginLeft: '6px' }} />
+                        )}
+                        <Button
+                          variant="logo"
+                          onClick={() => removeHomework(homework)}
+                          children={
+                            deleteHomeworkState.isLoading && currentHomework.homeworkID === homework.homeworkID ? (
+                              <Loader spinnerSize={28} className={styles['loader']} />
+                            ) : (
+                              <DeleteLogo className={styles['delete-icon']} />
+                            )
+                          }
+                        />
+                      </>
+                    )}
+                  </MultiList.Column>
+                </MultiList.Row>
+                <MultiList.Row>
+                  <MultiList.Column>
+                    <div className={styles['files']}>
+                      <Button variant="logo">
+                        <DownloadFile />
+                      </Button>
+                      {userRole >= MODERATOR_ROLE && (
+                        <Button variant="logo">
+                          <UploadFile />
+                        </Button>
                       )}
-                    </MultiList.Column>
-                  </MultiList.Row>
-                </div>
-              </React.Fragment>
+                    </div>
+                  </MultiList.Column>
+                </MultiList.Row>
+              </div>
             ))}
           </MultiList>
           <AnimatePresence>
