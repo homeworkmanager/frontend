@@ -33,7 +33,7 @@
   border-radius: 12px;
   padding: 0.5rem;
   transition: all 0.15s ease-in-out;
-  color: white;
+  color: var(--text-invert-color);
 
   &:active {
     border-color: var(--border-focus-cancel-color);

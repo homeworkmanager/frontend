@@ -1,33 +1,30 @@
 import React from 'react';
 
-import styles from './IndependentHomework.module.css';
+import styles from './ScheduleHomework.module.css';
 import { Homework } from '@/components/shared/modules/Homework/Homework';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
 import { convertDateToTime } from '@/utils/helpers/convertDateToTime';
 import { formatText } from '@/utils/helpers/formatText';
-import { SwiperRef } from 'swiper/react';
+import clsx from 'clsx';
 
-interface IndependentHomeworkProps {
+interface ScheduleHomeworkProps {
   Homeworks: RestructIndependentHomeworkArray;
-  dayCarouselRef: React.RefObject<SwiperRef>;
+  DayDate: string;
+  CurrentDate: string;
 }
 
-export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHomeworkProps) => {
-  const [independentHomeworks, setIndependentHomeworks] = React.useState<RestructIndependentHomeworkArray>(Homeworks);
+const weekDay = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
-  const updateHeight = () => {
-    if (dayCarouselRef && dayCarouselRef.current) {
-      dayCarouselRef.current.swiper.wrapperEl.style.height = 'auto';
-    }
-  };
+export const ScheduleHomework = ({ Homeworks, DayDate, CurrentDate }: ScheduleHomeworkProps) => {
+  const [homeworks, setHomeworks] = React.useState<RestructIndependentHomeworkArray>(Homeworks);
 
   const deleteHomework = async (homework: RestructHomeworkElement) => {
-    setIndependentHomeworks((prev) => prev.filter((item) => item.homeworkID !== homework.homeworkID));
+    setHomeworks((prev) => prev.filter((item) => item.homeworkID !== homework.homeworkID));
   };
 
   const changeHomework = (homework: RestructHomeworkElement) => {
-    setIndependentHomeworks((prev) => [
+    setHomeworks((prev) => [
       ...prev.map((item) => {
         if (item.homeworkID === homework.homeworkID) {
           return {
@@ -39,11 +36,10 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
         return item;
       })
     ]);
-    updateHeight();
   };
 
   const changeHomeworkStatus = async (homework: RestructHomeworkElement) => {
-    setIndependentHomeworks((prev) => [
+    setHomeworks((prev) => [
       ...prev.map((item) => {
         if (item.homeworkID === homework.homeworkID) {
           return {
@@ -54,17 +50,26 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
         return item;
       })
     ]);
-    updateHeight();
   };
+
+  const date = new Date(DayDate);
 
   return (
     <>
-      {independentHomeworks.length > 0 && (
+      {homeworks.length > 0 && (
         <article className={styles['container']}>
-          <Typhography tag="p" variant="primary" children={`Задания на день`} className={styles['title']} />
+          <div className={styles['title']}>
+            <Typhography
+              tag="p"
+              variant="secondary"
+              children={`${weekDay[date.getDay()]} ${date.toLocaleDateString('ru', { day: '2-digit', month: '2-digit' })}`}
+              className={clsx(DayDate === CurrentDate && styles['current'])}
+            />
+          </div>
+
           <MultiList>
-            {independentHomeworks.map((homework, index) => (
-              <div className={styles['content']} key={homework.homeworkID}>
+            {homeworks.map((homework, index) => (
+              <div key={index} className={styles['content']}>
                 <MultiList.Row>
                   <MultiList.Column>
                     <Typhography
@@ -88,7 +93,6 @@ export const IndependentHomework = ({ Homeworks, dayCarouselRef }: IndependentHo
                 <Homework
                   homework={homework}
                   index={index}
-                  updateHeight={updateHeight}
                   deleteHomework={deleteHomework}
                   changeHomework={changeHomework}
                   changeHomeworkStatus={changeHomeworkStatus}

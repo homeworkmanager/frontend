@@ -1,6 +1,7 @@
 import { patchAdminRefreshAllData, PatchAdminRefreshAllDataConfig } from '@/utils/api/requests/admin/refreshAllData';
 import { PatchAdminUpdateClasses, patchAdminUpdateClasses } from '@/utils/api/requests/admin/updateClasses';
 import { postHomeworkStatus, PostHomeworkStatusConfig } from '@/utils/api/requests/homework/status/homework_id';
+import { postModeratorAddFile, PostModeratorAddFileConfig } from '@/utils/api/requests/moderator/addFile/homeworkId';
 import {
   postModeratorAddHomeworkClass,
   PostModeratorAddHomeworkClassConfig
@@ -103,6 +104,10 @@ export const scheduleApi = createApi({
       queryFn: ({ params, config }: PostHomeworkStatusConfig) => postHomeworkStatus({ params, config }),
       invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
     }),
+    postModeratorHomeworkFile: builder.mutation({
+      queryFn: ({ params, config }: PostModeratorAddFileConfig) => postModeratorAddFile({ params, config }),
+      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+    }),
     getScheduleHomework: builder.query<ScheduleHomeworkResponse, GetScheduleHomeworkConfig>({
       async queryFn({ params, config }: GetScheduleHomeworkConfig) {
         const homeworkCacheKey = STORE_HOMEWORK;
@@ -142,6 +147,7 @@ export const {
   usePatchAdminRefreshAllDataMutation,
   usePostModeratorAddHomeworkClassMutation,
   usePostModeratorAddHomeworkDateMutation,
+  usePostModeratorHomeworkFileMutation,
   useDeleteModeratorHomeworkMutation,
   usePatchModeratorHomeworkMutation,
   usePostHomeworkStatusMutation,

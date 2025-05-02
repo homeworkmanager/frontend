@@ -1,8 +1,16 @@
+type FileElem = {
+  FileID: number;
+  FileName: string;
+  FileURL: string;
+  CreatedAt: string;
+};
+
 type HomeworkElement = {
   homeworkID: number;
   isCompleted: boolean;
   subjectId: number;
   homeworkText: string;
+  files: FileElem[];
   dueDate: string;
 };
 

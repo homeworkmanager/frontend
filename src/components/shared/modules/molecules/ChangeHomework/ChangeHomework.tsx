@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './ChangeScheduleHomework.module.css';
+import styles from './ChangeHomework.module.css';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Textarea } from '@/components/ui/Textarea';
@@ -9,17 +9,13 @@ import { formatText } from '@/utils/helpers/formatText';
 import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/schedule/scheduleApi';
 import { motion } from 'framer-motion';
 
-interface ChangeLessonHomeworkProps {
+interface ChangeHomeworkProps {
   currentHomework: RestructHomeworkElement;
   removeCurrentHomework: () => void;
   changeHomework: (homework: RestructHomeworkElement) => void;
 }
 
-export const ChangeScheduleHomework = ({
-  changeHomework,
-  currentHomework,
-  removeCurrentHomework
-}: ChangeLessonHomeworkProps) => {
+export const ChangeHomework = ({ changeHomework, currentHomework, removeCurrentHomework }: ChangeHomeworkProps) => {
   const [patchModeratorHomeworkMutation, patchHomeworkState] = usePatchModeratorHomeworkMutation();
   const [homeworkText, setHomeworkText] = React.useState(currentHomework.homeworkText);
 
@@ -39,7 +35,7 @@ export const ChangeScheduleHomework = ({
   };
 
   return (
-    <motion.aside
+    <motion.section
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -52,7 +48,11 @@ export const ChangeScheduleHomework = ({
         label="Изменить задание"
         name={`${6}`}
       />
-      <Button variant="accept" disabled={patchHomeworkState.isLoading || !homeworkText} onClick={changeLessonHomework}>
+      <Button
+        variant="accept"
+        disabled={patchHomeworkState.isLoading || !homeworkText || homeworkText === currentHomework.homeworkText}
+        onClick={changeLessonHomework}
+      >
         {patchHomeworkState.isLoading ? <Loader /> : 'Изменить'}
       </Button>
       {patchHomeworkState.isError && (
@@ -60,6 +60,6 @@ export const ChangeScheduleHomework = ({
           Ошибка
         </Typhography>
       )}
-    </motion.aside>
+    </motion.section>
   );
 };

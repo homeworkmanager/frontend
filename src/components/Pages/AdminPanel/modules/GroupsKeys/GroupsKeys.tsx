@@ -1,5 +1,5 @@
 import styles from './GroupsKeys.module.css';
-import { KeyRefresh } from '@/components/shared/modules/KeyRefresh/KeyRefresh.module';
+import { KeyRefresh } from '@/components/shared/modules/molecules/KeyRefresh/KeyRefresh.module';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';

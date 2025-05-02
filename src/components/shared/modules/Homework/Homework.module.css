@@ -1,42 +1,26 @@
 .container {
-  width: 100%;
+  position: relative;
 }
-
-.content {
-  background-color: var(--component-background-color);
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-  padding: 1rem 0.7rem;
-  margin-top: 16px;
-  transition: all 0.2s ease-in-out;
-}
-
-/* @media (hover: hover) {
-  .content:hover {
-    background-color: var(--component-light-background-color);
-    transform: scale(1.015);
-  }
-} */
 
 .number {
   white-space: pre;
+}
+
+.number-complete {
+  color: gray;
 }
 
 .text {
   max-width: 100%;
   overflow-wrap: break-word;
   white-space: pre-line;
+  margin-bottom: 0.5rem;
 }
 
 .files {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
-}
-
-.number-complete {
-  color: gray;
 }
 
 .complete {
@@ -64,6 +48,6 @@
   color: var(--button-accept-color);
 }
 
-.active {
-  scale: 1.1;
+.moderator {
+  border: none;
 }

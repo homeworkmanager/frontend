@@ -2,7 +2,7 @@ import styles from './MultiList.module.css';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 
-interface MultiListProps {
+interface MultiListProps extends React.ComponentProps<'ul'> {
   children: React.ReactNode;
 }
 
@@ -15,8 +15,12 @@ interface MultiListColumnProps extends React.ComponentProps<'div'> {
   icons?: number;
 }
 
-export const MultiList = ({ children }: MultiListProps) => {
-  return <ul className={styles['homework-list']}>{children}</ul>;
+export const MultiList = ({ children, className, ...props }: MultiListProps) => {
+  return (
+    <ul className={clsx(styles['homework-list'], className)} {...props}>
+      {children}
+    </ul>
+  );
 };
 
 MultiList.Row = ({ children, className }: MultiListRowProps) => {

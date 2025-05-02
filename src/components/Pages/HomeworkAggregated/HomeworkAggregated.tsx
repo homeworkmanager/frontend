@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './HomeworkAggregated.module.css';
-import { ScheduleHomework } from './modules/ScheduleHomework/ScheduleHomework';
+import { ScheduleHomework } from './ScheduleHomework/ScheduleHomework';
 import { SCHEDULE_BEGIN } from '@/utils/configs/time.config';
 import { pad } from '@/utils/helpers/pad';
 import { useGetScheduleHomeworkQuery } from '@/utils/redux/apiSlices/schedule';
