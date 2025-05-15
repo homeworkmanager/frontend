@@ -17,7 +17,11 @@ import { Typhography } from '@/components/ui/Typhography';
 import { MODERATOR_ROLE, OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
 import { addDataAttr } from '@/utils/helpers/addDataAttr';
 import { useDropdown } from '@/utils/hooks/useDropdown';
-import { useDeleteModeratorHomeworkMutation, usePostHomeworkStatusMutation } from '@/utils/redux/apiSlices/schedule';
+import {
+  useDeleteModeratorHomeworkMutation,
+  usePostHomeworkStatusMutation,
+  usePostModeratorHomeworkFileMutation
+} from '@/utils/redux/apiSlices/schedule';
 import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
@@ -43,10 +47,13 @@ export const Homework = ({
 
   const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
   const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
+  const [postModeratorHomeworkFile, postModeratorHomeworkFileState] = usePostModeratorHomeworkFileMutation();
 
   const { menuRef, isOpen, action, preventDropdown } = useDropdown();
 
   const [showFileModal, getShowFileModal] = React.useState(false);
+
+  const [files, setFiles] = React.useState(homework.files);
 
   const showChangeSection = () => {
     action.toggle();
@@ -74,6 +81,14 @@ export const Homework = ({
 
     if (!response.error) {
       changeHomeworkStatus(homework);
+    }
+  };
+
+  const addHomeworkFile = async (files: File[]) => {
+    const response = await postModeratorHomeworkFile({ params: { homeworkId: homework.homeworkID, files } });
+
+    if (!response.error) {
+      setFiles(response.data.files);
     }
   };
 
@@ -130,16 +145,22 @@ export const Homework = ({
       <MultiList.Row>
         <MultiList.Column>
           <div className={styles['files']}>
-            <Button variant="logo">
-              <DownloadFile />
-            </Button>
+            {!!files && !!files.length && (
+              <Button variant="logo">
+                <DownloadFile />
+              </Button>
+            )}
             {userRole >= MODERATOR_ROLE && (
               <Button variant="logo" onClick={() => getShowFileModal(true)}>
                 <UploadFile />
               </Button>
             )}
             <Modal showInfo={showFileModal} showDetails={() => getShowFileModal(false)}>
-              <AddHomeworkFile homework={homework} onClose={() => getShowFileModal(false)} />
+              <AddHomeworkFile
+                fileUploadState={postModeratorHomeworkFileState}
+                addHomeworkFile={addHomeworkFile}
+                onClose={() => getShowFileModal(false)}
+              />
             </Modal>
           </div>
         </MultiList.Column>

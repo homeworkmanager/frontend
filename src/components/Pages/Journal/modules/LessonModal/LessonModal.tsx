@@ -12,10 +12,12 @@ export const LessonModal = () => {
   React.useEffect(() => {
     if (!showInfo) {
       const timer = setTimeout(() => {
-        routerNavigator.to(JournalChooseMedia, { replace: true });
+        routerNavigator.to(JournalChooseMedia, { replace: true, state: null });
       }, 150);
 
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [showInfo]);
 

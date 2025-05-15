@@ -26,7 +26,11 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
 
   const [postModeratorAddHomeworkClassMutation, postAddHomeworkStatusState] =
     usePostModeratorAddHomeworkClassMutation();
+
   const [homeworkText, setHomeworkText] = React.useState('');
+  const [files, setFiles] = React.useState<File[]>([]);
+
+  const pushFiles = (newFiles: File[]) => setFiles(newFiles);
 
   const sendLessonHomework = async () => {
     const postModeratorAddHomeworkClassResponse = await postModeratorAddHomeworkClassMutation({
@@ -35,7 +39,8 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         subjectId: apiData.class.subjectId,
         Category: apiData.class.category,
         homeworkText: formatText(homeworkText),
-        dueDate: apiData.class.startTime
+        dueDate: apiData.class.startTime,
+        files: files
       }
     });
 
@@ -43,7 +48,8 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
       addHomework({
         homeworkText: homeworkText,
         homeworkID: postModeratorAddHomeworkClassResponse.data.homework_id,
-        isCompleted: false
+        isCompleted: false,
+        files: postModeratorAddHomeworkClassResponse.data.files
       });
       setHomeworkText('');
     }
@@ -65,13 +71,15 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         >
           {postAddHomeworkStatusState.isLoading ? <Loader /> : 'Добавить'}
         </Button>
+
         {userRole >= MODERATOR_ROLE && (
           <Button variant="logo" onClick={() => getShowFileModal(true)}>
             <UploadFile />
           </Button>
         )}
+
         <Modal showInfo={showFileModal} showDetails={() => getShowFileModal(false)}>
-          <AddHomeworkFile onClose={() => getShowFileModal(false)} />
+          <AddHomeworkFile addHomeworkFile={pushFiles} onClose={() => getShowFileModal(false)} />
         </Modal>
       </div>
       {postAddHomeworkStatusState.isError && (

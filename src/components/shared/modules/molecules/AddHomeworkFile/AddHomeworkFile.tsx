@@ -4,12 +4,18 @@ import styles from './AddHomeworkFile.module.css';
 import { Button } from '@/components/ui/Button';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { QuitLogo } from '@/components/ui/Icons/Quit';
+import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { usePostModeratorHomeworkFileMutation } from '@/utils/redux/apiSlices/schedule';
+
+type FileUploadStateType = {
+  isLoading: boolean;
+  isError: boolean;
+};
 
 interface AddLessonFileProps {
-  homework: RestructHomeworkElement;
+  fileUploadState?: FileUploadStateType;
+  addHomeworkFile: (files: File[]) => Promise<void> | void;
   onClose: () => void;
 }
 
@@ -18,9 +24,8 @@ const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
   e.stopPropagation();
 };
 
-export const AddHomeworkFile = ({ homework, onClose }: AddLessonFileProps) => {
+export const AddHomeworkFile = ({ fileUploadState, addHomeworkFile, onClose }: AddLessonFileProps) => {
   const [files, setFiles] = React.useState<File[]>([]);
-  const [postModeratorHomeworkFile] = usePostModeratorHomeworkFileMutation();
 
   const deleteFile = (currentFile: File) => {
     setFiles((prev) => [...prev.filter((file) => file.name !== currentFile.name)]);
@@ -50,15 +55,6 @@ export const AddHomeworkFile = ({ homework, onClose }: AddLessonFileProps) => {
       ...prev.filter((prevFile) => !newFiles.some((newFile) => newFile.name === prevFile.name)),
       ...newFiles
     ]);
-  };
-
-  const addHomeworkFile = async () => {
-    const response = await postModeratorHomeworkFile({ params: { homeworkId: homework.homeworkID, files } });
-
-    if (!response.error) {
-      // eslint-disable-next-line no-console
-      console.log(response.data);
-    }
   };
 
   return (
@@ -118,7 +114,13 @@ export const AddHomeworkFile = ({ homework, onClose }: AddLessonFileProps) => {
 
         <div className={styles['footer']}>
           <Button variant="cancel" children={'Отмена'} onClick={onClose} />
-          <Button variant="accept" disabled={files.length === 0} onClick={addHomeworkFile} children={'Добавить'} />
+          <Button
+            variant="accept"
+            disabled={files.length === 0 || fileUploadState?.isLoading}
+            onClick={() => addHomeworkFile(files)}
+            children={!fileUploadState?.isLoading ? 'Добавить' : <Loader />}
+          />
+          {fileUploadState?.isError && <Typhography tag="p" variant="small" children={'Ошибка загрузки'} />}
         </div>
       </div>
     </div>

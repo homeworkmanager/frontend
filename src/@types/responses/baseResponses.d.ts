@@ -3,6 +3,13 @@ interface BaseResponse {
   error?: string;
 }
 
+type FileElem = {
+  FileID: number;
+  FileName: string;
+  FileURL: string;
+  CreatedAt: string;
+};
+
 type FileSResponse = {
   filesErrMap: {
     [string]: number;
@@ -10,6 +17,7 @@ type FileSResponse = {
   filesIdMap: {
     [string]: number;
   };
+  files: FileElem[];
 };
 
 type UserOrigin = {

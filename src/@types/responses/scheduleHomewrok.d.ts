@@ -4,6 +4,7 @@ type ScheduleHomeworkElement = {
   subjectName: string;
   homeworkText: string;
   dueDate: string;
+  files: FileElem[];
 };
 
 type DayHomeworks = {

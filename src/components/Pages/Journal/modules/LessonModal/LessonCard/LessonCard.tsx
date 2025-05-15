@@ -28,7 +28,7 @@ const RestructDescription = (description: string) => {
 
 export const LessonCard = ({ showDetails }: LessonInfoProps) => {
   const location = useLocation();
-  const apiData = location.state;
+  const apiData: OutputClass = location.state;
 
   const userRole = useSelector(getUserRole);
 
