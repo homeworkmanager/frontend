@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import styles from './Homework.module.css';
-import { AddHomeworkFile } from '@/components/shared/modules/molecules/AddHomeworkFile/AddHomeworkFile';
+import { AddFiles } from '@/components/shared/modules/molecules/AddHomeworkFile/AddFiles';
 import { ChangeHomework } from '@/components/shared/modules/molecules/ChangeHomework/ChangeHomework';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
@@ -51,7 +51,7 @@ export const Homework = ({
 
   const { menuRef, isOpen, action, preventDropdown } = useDropdown();
 
-  const [showFileModal, getShowFileModal] = React.useState(false);
+  const [addFileModal, getAddFileModal] = React.useState(false);
 
   const [files, setFiles] = React.useState(homework.files);
 
@@ -88,7 +88,19 @@ export const Homework = ({
     const response = await postModeratorHomeworkFile({ params: { homeworkId: homework.homeworkID, files } });
 
     if (!response.error) {
-      setFiles(response.data.files);
+      const serverData = response.data;
+      setFiles(
+        Object.keys(serverData.filesIdMap).map((fileName) => {
+          const fileId = serverData.filesIdMap[fileName];
+          return {
+            FileID: fileId,
+            FileName: fileName,
+            FileURL: serverData.filesURLMap[fileId],
+            CreatedAt: new Date().toISOString()
+          };
+        })
+      );
+      getAddFileModal(false);
     }
   };
 
@@ -151,15 +163,15 @@ export const Homework = ({
               </Button>
             )}
             {userRole >= MODERATOR_ROLE && (
-              <Button variant="logo" onClick={() => getShowFileModal(true)}>
+              <Button variant="logo" onClick={() => getAddFileModal(true)}>
                 <UploadFile />
               </Button>
             )}
-            <Modal showInfo={showFileModal} showDetails={() => getShowFileModal(false)}>
-              <AddHomeworkFile
+            <Modal showInfo={addFileModal} showDetails={() => getAddFileModal(false)}>
+              <AddFiles
                 fileUploadState={postModeratorHomeworkFileState}
                 addHomeworkFile={addHomeworkFile}
-                onClose={() => getShowFileModal(false)}
+                onClose={() => getAddFileModal(false)}
               />
             </Modal>
           </div>

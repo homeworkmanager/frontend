@@ -1,9 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { AddHomeworkFile } from '../../../../../../shared/modules/molecules/AddHomeworkFile/AddHomeworkFile';
-
 import styles from './AddLessonHomework.module.css';
+import { AddFiles } from '@/components/shared/modules/molecules/AddHomeworkFile/AddFiles';
 import { Button } from '@/components/ui/Button';
 import { UploadFile } from '@/components/ui/Icons/UploadFile';
 import { Loader } from '@/components/ui/Loader';
@@ -22,7 +21,7 @@ interface ModeratorBlockProps {
 
 export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps) => {
   const userRole = useSelector(getUserRole);
-  const [showFileModal, getShowFileModal] = React.useState(false);
+  const [addFileModal, getAddFileModal] = React.useState(false);
 
   const [postModeratorAddHomeworkClassMutation, postAddHomeworkStatusState] =
     usePostModeratorAddHomeworkClassMutation();
@@ -30,7 +29,10 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
   const [homeworkText, setHomeworkText] = React.useState('');
   const [files, setFiles] = React.useState<File[]>([]);
 
-  const pushFiles = (newFiles: File[]) => setFiles(newFiles);
+  const pushFiles = (newFiles: File[]) => {
+    setFiles(newFiles);
+    getAddFileModal(false);
+  };
 
   const sendLessonHomework = async () => {
     const postModeratorAddHomeworkClassResponse = await postModeratorAddHomeworkClassMutation({
@@ -45,11 +47,20 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
     });
 
     if (!postModeratorAddHomeworkClassResponse.error) {
+      const serverData = postModeratorAddHomeworkClassResponse.data;
       addHomework({
         homeworkText: homeworkText,
-        homeworkID: postModeratorAddHomeworkClassResponse.data.homework_id,
+        homeworkID: serverData.homework_id,
         isCompleted: false,
-        files: postModeratorAddHomeworkClassResponse.data.files
+        files: Object.keys(serverData.filesIdMap).map((fileName) => {
+          const fileId = serverData.filesIdMap[fileName];
+          return {
+            FileID: fileId,
+            FileName: fileName,
+            FileURL: serverData.filesURLMap[fileId],
+            CreatedAt: new Date().toISOString()
+          };
+        })
       });
       setHomeworkText('');
     }
@@ -73,13 +84,13 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         </Button>
 
         {userRole >= MODERATOR_ROLE && (
-          <Button variant="logo" onClick={() => getShowFileModal(true)}>
+          <Button variant="logo" onClick={() => getAddFileModal(true)}>
             <UploadFile />
           </Button>
         )}
 
-        <Modal showInfo={showFileModal} showDetails={() => getShowFileModal(false)}>
-          <AddHomeworkFile addHomeworkFile={pushFiles} onClose={() => getShowFileModal(false)} />
+        <Modal showInfo={addFileModal} showDetails={() => getAddFileModal(false)}>
+          <AddFiles addHomeworkFile={pushFiles} onClose={() => getAddFileModal(false)} />
         </Modal>
       </div>
       {postAddHomeworkStatusState.isError && (

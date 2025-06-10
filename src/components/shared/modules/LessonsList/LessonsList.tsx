@@ -6,6 +6,7 @@ interface LessonsListProps {
 }
 
 const lessonColor = {
+  '': 'unknown',
   ЛК: 'lect',
   ПР: 'pract',
   Лаб: 'lab',

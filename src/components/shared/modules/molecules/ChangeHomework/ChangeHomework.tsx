@@ -28,7 +28,8 @@ export const ChangeHomework = ({ changeHomework, currentHomework, removeCurrentH
       changeHomework({
         homeworkID: currentHomework.homeworkID,
         homeworkText: formatText(homeworkText),
-        isCompleted: false
+        isCompleted: false,
+        files: currentHomework.files
       });
       removeCurrentHomework();
     }

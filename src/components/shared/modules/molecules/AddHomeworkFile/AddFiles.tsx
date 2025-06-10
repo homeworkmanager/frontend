@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 
-import styles from './AddHomeworkFile.module.css';
+import styles from './AddFiles.module.css';
 import { Button } from '@/components/ui/Button';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { QuitLogo } from '@/components/ui/Icons/Quit';
@@ -24,7 +24,7 @@ const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
   e.stopPropagation();
 };
 
-export const AddHomeworkFile = ({ fileUploadState, addHomeworkFile, onClose }: AddLessonFileProps) => {
+export const AddFiles = ({ fileUploadState, addHomeworkFile, onClose }: AddLessonFileProps) => {
   const [files, setFiles] = React.useState<File[]>([]);
 
   const deleteFile = (currentFile: File) => {
@@ -33,7 +33,6 @@ export const AddHomeworkFile = ({ fileUploadState, addHomeworkFile, onClose }: A
 
   const uploadFiles = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-
     if (files.length === 10) return;
 
     const newFile = Array.from(e.target.files)[0];

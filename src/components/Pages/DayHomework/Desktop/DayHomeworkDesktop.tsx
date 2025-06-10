@@ -7,8 +7,11 @@ import { SendHomework } from '../modules/SendHomework/SendHomework';
 import 'swiper/swiper-bundle.css';
 import styles from './DayHomeworkDesktop.module.css';
 import { CarouselMonth } from '@/components/shared/CarouselMonth/CarouselMonth';
+import { AddFiles } from '@/components/shared/modules/molecules/AddHomeworkFile/AddFiles';
 import { Button } from '@/components/ui/Button';
+import { UploadFile } from '@/components/ui/Icons/UploadFile';
 import { Loader } from '@/components/ui/Loader';
+import { Modal } from '@/components/ui/Modal';
 import { Textarea } from '@/components/ui/Textarea';
 import { Typhography } from '@/components/ui/Typhography';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
@@ -55,6 +58,9 @@ export const DayHomeworkDesktop = () => {
     hours: '00'
   }));
 
+  const [addFileModal, getAddFileModal] = React.useState(false);
+  const [files, setFiles] = React.useState<File[]>();
+
   const subjectRef = React.useRef<SwiperRef>(null);
   const hoursRef = React.useRef<SwiperRef>(null);
   const minutesRef = React.useRef<SwiperRef>(null);
@@ -78,7 +84,8 @@ export const DayHomeworkDesktop = () => {
       params: {
         subjectId: homeworkId,
         homeworkText: formatText(homeworkText),
-        dueDate: isoDate
+        dueDate: isoDate,
+        files
       }
     });
 
@@ -109,6 +116,11 @@ export const DayHomeworkDesktop = () => {
 
   const onElemClick = (currentRef: React.RefObject<SwiperRef>, index: number) => {
     currentRef.current?.swiper.slideToLoop(index);
+  };
+
+  const addHomeworkFile = (newFiles: File[]) => {
+    setFiles(() => [...newFiles]);
+    getAddFileModal(false);
   };
 
   return (
@@ -208,14 +220,24 @@ export const DayHomeworkDesktop = () => {
               </Swiper>
             </div>
           </div>
-          <Button
-            variant="accept"
-            className={styles['submit']}
-            disabled={postModeratorAddHomeworkDateState.isLoading || !homeworkText}
-            onClick={sendLessonHomework}
-          >
-            {postModeratorAddHomeworkDateState.isLoading ? <Loader /> : 'Добавить'}
-          </Button>
+          <div className={styles['accept']}>
+            <Button
+              variant="accept"
+              className={styles['submit']}
+              disabled={postModeratorAddHomeworkDateState.isLoading || !homeworkText}
+              onClick={sendLessonHomework}
+            >
+              {postModeratorAddHomeworkDateState.isLoading ? <Loader /> : 'Добавить'}
+            </Button>
+            <div className={styles['add-file']}>
+              <Button variant="logo" onClick={() => getAddFileModal(true)}>
+                <UploadFile />
+              </Button>
+            </div>
+            <Modal showInfo={addFileModal} showDetails={() => getAddFileModal(false)}>
+              <AddFiles addHomeworkFile={addHomeworkFile} onClose={() => getAddFileModal(false)} />
+            </Modal>
+          </div>
           {(postModeratorAddHomeworkDateState.isSuccess || postModeratorAddHomeworkDateState.isError) && (
             <SendHomework type="desktop" responseState={postModeratorAddHomeworkDateState} />
           )}

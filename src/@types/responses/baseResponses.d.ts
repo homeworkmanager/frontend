@@ -12,12 +12,14 @@ type FileElem = {
 
 type FileSResponse = {
   filesErrMap: {
-    [string]: number;
+    [name: string]: number;
   };
   filesIdMap: {
-    [string]: number;
+    [name: string]: number;
   };
-  files: FileElem[];
+  filesURLMap: {
+    [id: string]: string;
+  };
 };
 
 type UserOrigin = {
