@@ -1,19 +1,21 @@
 import React, { ChangeEvent } from 'react';
 
-import styles from './AddFiles.module.css';
+import styles from './UploadFiles.module.css';
 import { Button } from '@/components/ui/Button';
 import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { QuitLogo } from '@/components/ui/Icons/Quit';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
+import clsx from 'clsx';
 
 type FileUploadStateType = {
   isLoading: boolean;
   isError: boolean;
 };
 
-interface AddLessonFileProps {
+interface UploadFilesProps {
+  currentFilesCount?: number;
   fileUploadState?: FileUploadStateType;
   addHomeworkFile: (files: File[]) => Promise<void> | void;
   onClose: () => void;
@@ -24,7 +26,7 @@ const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
   e.stopPropagation();
 };
 
-export const AddFiles = ({ fileUploadState, addHomeworkFile, onClose }: AddLessonFileProps) => {
+export const UploadFiles = ({ currentFilesCount, fileUploadState, addHomeworkFile, onClose }: UploadFilesProps) => {
   const [files, setFiles] = React.useState<File[]>([]);
 
   const deleteFile = (currentFile: File) => {
@@ -33,7 +35,7 @@ export const AddFiles = ({ fileUploadState, addHomeworkFile, onClose }: AddLesso
 
   const uploadFiles = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-    if (files.length === 10) return;
+    if (files.length + (currentFilesCount ?? 0) === 10) return;
 
     const newFile = Array.from(e.target.files)[0];
 
@@ -48,7 +50,7 @@ export const AddFiles = ({ fileUploadState, addHomeworkFile, onClose }: AddLesso
 
     const newFiles = Array.from(e.dataTransfer.files);
 
-    if (files.length + newFiles.length > 10) return;
+    if (files.length + newFiles.length + (currentFilesCount ?? 0) > 10) return;
 
     setFiles((prev) => [
       ...prev.filter((prevFile) => !newFiles.some((newFile) => newFile.name === prevFile.name)),
@@ -57,17 +59,20 @@ export const AddFiles = ({ fileUploadState, addHomeworkFile, onClose }: AddLesso
   };
 
   return (
-    <div className={styles['container']}>
-      <div className={styles['modal-container']}>
+    <div className={styles['env']}>
+      <div className={styles['container']}>
         <div className={styles['header']}>
-          <Typhography tag="h2" variant="secondary" children="Добавить файл" />
+          <Typhography tag="h2" variant="secondary" children="Добавить файлы" />
           <Button variant="logo" children={<QuitLogo />} onClick={onClose} />
         </div>
         <div className={styles['body']}>
           <label
             htmlFor="file-upload"
             typeof="file"
-            className={styles['file-upload-label']}
+            className={clsx(
+              styles['file-upload-label'],
+              files.length + (currentFilesCount ?? 0) >= 10 && styles['disabled']
+            )}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
@@ -101,13 +106,15 @@ export const AddFiles = ({ fileUploadState, addHomeworkFile, onClose }: AddLesso
                 ))}
               </MultiList>
             )}
-            <input
-              multiple={true}
-              id="file-upload"
-              type="file"
-              className={styles['file-input']}
-              onChange={uploadFiles}
-            />
+            {files.length + (currentFilesCount ?? 0) < 10 && (
+              <input
+                multiple={true}
+                id="file-upload"
+                type="file"
+                className={styles['file-input']}
+                onChange={uploadFiles}
+              />
+            )}
           </label>
         </div>
 
@@ -117,7 +124,7 @@ export const AddFiles = ({ fileUploadState, addHomeworkFile, onClose }: AddLesso
             variant="accept"
             disabled={files.length === 0 || fileUploadState?.isLoading}
             onClick={() => addHomeworkFile(files)}
-            children={!fileUploadState?.isLoading ? 'Добавить' : <Loader />}
+            children={!fileUploadState?.isLoading ? 'Добавить' : <Loader spinnerSize={18} />}
           />
           {fileUploadState?.isError && <Typhography tag="p" variant="small" children={'Ошибка загрузки'} />}
         </div>

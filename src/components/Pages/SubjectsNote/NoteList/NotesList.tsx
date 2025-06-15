@@ -11,7 +11,7 @@ import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
+import { MODERATOR_ROLE } from '@/utils/constants/userRoles';
 import { formatText } from '@/utils/helpers/formatText';
 import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/note/noteApi';
 import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';

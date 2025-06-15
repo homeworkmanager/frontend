@@ -16,11 +16,11 @@ interface ChangeHomeworkProps {
 }
 
 export const ChangeHomework = ({ changeHomework, currentHomework, removeCurrentHomework }: ChangeHomeworkProps) => {
-  const [patchModeratorHomeworkMutation, patchHomeworkState] = usePatchModeratorHomeworkMutation();
+  const [patchModeratorHomework, patchHomeworkState] = usePatchModeratorHomeworkMutation();
   const [homeworkText, setHomeworkText] = React.useState(currentHomework.homeworkText);
 
   const changeLessonHomework = async () => {
-    const response = await patchModeratorHomeworkMutation({
+    const response = await patchModeratorHomework({
       params: { homeworkID: currentHomework.homeworkID, homeworkText: homeworkText }
     });
 

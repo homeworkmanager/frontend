@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { INITIAL_THEME } from '@/utils/configs/initialTheme.config';
+import { INITIAL_THEME } from '@/utils/constants/initialTheme';
 
 interface ThemeContextParams {
   theme: Theme;

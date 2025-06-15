@@ -1,8 +1,8 @@
 import { api } from '@/utils/api/instance';
 
-type deleteModeratorHomeworkParams = { homeworkID: number };
+type DeleteModeratorHomeworkParams = { homeworkID: number };
 
-export type DeleteModeratorHomeworkConfig = AxiosRequestConfig<deleteModeratorHomeworkParams>;
+export type DeleteModeratorHomeworkConfig = AxiosRequestConfig<DeleteModeratorHomeworkParams>;
 
 export const deleteModeratorHomework = async ({ params, config }: DeleteModeratorHomeworkConfig) =>
-  api.delete<ModeratorDeleteResponse>(`/moderator/delete?homeworkId=${params.homeworkID}`, config);
+  api.delete<ModeratorDeleteHomeworkResponse>(`/moderator/delete?homeworkId=${params.homeworkID}`, config);

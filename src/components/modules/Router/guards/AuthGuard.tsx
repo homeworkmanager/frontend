@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 
-import { COOKIE_KEY } from '@/utils/configs/cookie.config';
-import { AUTH } from '@/utils/configs/routes.config';
+import { COOKIE_KEY } from '@/utils/constants/cookie';
+import { AUTH } from '@/utils/constants/routes';
 
 interface LocationGuardProps {
   children: React.ReactNode;

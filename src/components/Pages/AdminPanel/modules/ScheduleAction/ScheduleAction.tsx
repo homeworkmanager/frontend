@@ -12,20 +12,17 @@ import {
 import { motion } from 'framer-motion';
 
 export const ScheduleAction = () => {
-  const [patchAdminUpdateClassesMutation, { isLoading: updateIsLoading, isError: updateIsError }] =
-    usePatchAdminUpdateClassesMutation();
-
-  const [patchAdminRefreshAllDataMutation, { isLoading: refreshIsLoading, isError: refreshIsError }] =
-    usePatchAdminRefreshAllDataMutation();
+  const [patchAdminUpdateClasses, patchAdminUpdateClassesState] = usePatchAdminUpdateClassesMutation();
+  const [patchAdminRefreshAllData, patchAdminRefreshAllDataState] = usePatchAdminRefreshAllDataMutation();
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const updateSchedule = async () => {
-    await patchAdminUpdateClassesMutation({});
+    await patchAdminUpdateClasses({});
   };
 
   const refreshData = async () => {
-    await patchAdminRefreshAllDataMutation({});
+    await patchAdminRefreshAllData({});
   };
 
   const onRefreshClick = () => setIsModalOpen((prev) => !prev);
@@ -37,11 +34,11 @@ export const ScheduleAction = () => {
         <Button
           variant="accept"
           type="submit"
-          disabled={updateIsLoading}
-          children={updateIsLoading ? <Loader /> : 'Обновить расписание'}
+          disabled={patchAdminUpdateClassesState.isLoading}
+          children={patchAdminUpdateClassesState.isLoading ? <Loader /> : 'Обновить расписание'}
           onClick={updateSchedule}
         />
-        {updateIsError && <p className={styles['error']}>Произошла ошибка</p>}
+        {patchAdminUpdateClassesState.isError && <p className={styles['error']}>Произошла ошибка</p>}
       </div>
       <div className={styles['schedule-item']}>
         <Button variant="accept" type="submit" children={'Стереть данные'} onClick={onRefreshClick} />
@@ -58,11 +55,11 @@ export const ScheduleAction = () => {
           <Button
             variant="accept"
             type="submit"
-            disabled={refreshIsLoading}
-            children={refreshIsLoading ? <Loader /> : 'Стереть'}
+            disabled={patchAdminRefreshAllDataState.isLoading}
+            children={patchAdminRefreshAllDataState.isLoading ? <Loader /> : 'Стереть'}
             onClick={refreshData}
           />
-          {refreshIsError && <p className={styles['error']}>Произошла ошибка</p>}
+          {patchAdminRefreshAllDataState.isError && <p className={styles['error']}>Произошла ошибка</p>}
         </motion.section>
       </Modal>
     </div>

@@ -1,9 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import { DownloadFiles } from '../molecules/DownloadFiles/DownloadFiles';
+
 import styles from './Homework.module.css';
-import { AddFiles } from '@/components/shared/modules/molecules/AddHomeworkFile/AddFiles';
 import { ChangeHomework } from '@/components/shared/modules/molecules/ChangeHomework/ChangeHomework';
+import { UploadFiles } from '@/components/shared/modules/molecules/UploadFiles/UploadFiles';
 import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { ChangeLogo } from '@/components/ui/Icons/Change';
@@ -14,13 +16,13 @@ import { Loader } from '@/components/ui/Loader';
 import { Modal } from '@/components/ui/Modal';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { MODERATOR_ROLE, OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
+import { MODERATOR_ROLE, OFFLINE_ROLE } from '@/utils/constants/userRoles';
 import { addDataAttr } from '@/utils/helpers/addDataAttr';
 import { useDropdown } from '@/utils/hooks/useDropdown';
 import {
   useDeleteModeratorHomeworkMutation,
   usePostHomeworkStatusMutation,
-  usePostModeratorHomeworkFileMutation
+  usePostModeratorAddFileMutation
 } from '@/utils/redux/apiSlices/schedule';
 import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';
@@ -45,13 +47,14 @@ export const Homework = ({
 }: HomeworkProps) => {
   const userRole = useSelector(getUserRole);
 
-  const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
-  const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
-  const [postModeratorHomeworkFile, postModeratorHomeworkFileState] = usePostModeratorHomeworkFileMutation();
+  const [deleteModeratorHomework, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
+  const [postHomeworkStatus, postHomeworkStatusState] = usePostHomeworkStatusMutation();
+  const [postModeratorAddFile, postModeratorAddFileState] = usePostModeratorAddFileMutation();
 
   const { menuRef, isOpen, action, preventDropdown } = useDropdown();
 
   const [addFileModal, getAddFileModal] = React.useState(false);
+  const [showFileModal, getShowFileModal] = React.useState(false);
 
   const [files, setFiles] = React.useState(homework.files);
 
@@ -62,11 +65,10 @@ export const Homework = ({
 
   const hideChangeSection = () => {
     action.close();
-    if (updateHeight !== undefined) updateHeight();
   };
 
   const deleteLessonHomework = async (homework: RestructHomeworkElement) => {
-    const response = await deleteModeratorHomeworkMutation({ params: { homeworkID: homework.homeworkID } });
+    const response = await deleteModeratorHomework({ params: { homeworkID: homework.homeworkID } });
 
     if (!response.error) {
       deleteHomework(homework);
@@ -75,7 +77,7 @@ export const Homework = ({
   };
 
   const changeLessonHomeworkStatus = async (homework: RestructHomeworkElement) => {
-    const response = await postHomeworkStatusMutation({
+    const response = await postHomeworkStatus({
       params: { homeworkID: homework.homeworkID, status: !homework.isCompleted }
     });
 
@@ -85,12 +87,13 @@ export const Homework = ({
   };
 
   const addHomeworkFile = async (files: File[]) => {
-    const response = await postModeratorHomeworkFile({ params: { homeworkId: homework.homeworkID, files } });
+    const response = await postModeratorAddFile({ params: { homeworkId: homework.homeworkID, files } });
 
     if (!response.error) {
       const serverData = response.data;
-      setFiles(
-        Object.keys(serverData.filesIdMap).map((fileName) => {
+      setFiles((prev) => [
+        ...prev,
+        ...Object.keys(serverData.filesIdMap).map((fileName) => {
           const fileId = serverData.filesIdMap[fileName];
           return {
             FileID: fileId,
@@ -99,13 +102,19 @@ export const Homework = ({
             CreatedAt: new Date().toISOString()
           };
         })
-      );
+      ]);
       getAddFileModal(false);
     }
   };
 
+  const deleteHomeworkFile = (currFile: FileElem) => {
+    setFiles((prev) => prev.filter((file) => file.FileID !== currFile.FileID));
+
+    if (files.length === 1) getShowFileModal(false); //при длине в 1 т.к сеттер - асинхронный
+  };
+
   return (
-    <>
+    <div className={styles['container']}>
       <MultiList.Row>
         <MultiList.Column icons={userRole >= MODERATOR_ROLE ? 3 : 1}>
           <Typhography
@@ -158,18 +167,26 @@ export const Homework = ({
         <MultiList.Column>
           <div className={styles['files']}>
             {!!files && !!files.length && (
-              <Button variant="logo">
+              <Button variant="logo" onClick={() => getShowFileModal(true)}>
                 <DownloadFile />
               </Button>
             )}
-            {userRole >= MODERATOR_ROLE && (
+            <Modal showInfo={showFileModal} showDetails={() => getShowFileModal(false)}>
+              <DownloadFiles
+                files={files}
+                deleteHomeworkFile={deleteHomeworkFile}
+                onClose={() => getShowFileModal(false)}
+              />
+            </Modal>
+            {userRole >= MODERATOR_ROLE && files.length < 10 && (
               <Button variant="logo" onClick={() => getAddFileModal(true)}>
                 <UploadFile />
               </Button>
             )}
             <Modal showInfo={addFileModal} showDetails={() => getAddFileModal(false)}>
-              <AddFiles
-                fileUploadState={postModeratorHomeworkFileState}
+              <UploadFiles
+                currentFilesCount={files.length}
+                fileUploadState={postModeratorAddFileState}
                 addHomeworkFile={addHomeworkFile}
                 onClose={() => getAddFileModal(false)}
               />
@@ -177,7 +194,7 @@ export const Homework = ({
           </div>
         </MultiList.Column>
       </MultiList.Row>
-      <AnimatePresence>
+      <AnimatePresence {...(updateHeight !== undefined && { onExitComplete: updateHeight })}>
         {isOpen && (
           <div ref={menuRef}>
             <ChangeHomework
@@ -188,6 +205,6 @@ export const Homework = ({
           </div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 };

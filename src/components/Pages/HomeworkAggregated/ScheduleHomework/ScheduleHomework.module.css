@@ -19,3 +19,13 @@
     transform: scale(1.015);
   }
 }
+
+.title {
+  display: flex;
+}
+
+.current {
+  padding: 0.35rem 0.6rem;
+  border-radius: 1rem;
+  background-color: var(--border-focus-color);
+}

@@ -1,6 +1,6 @@
 import { getUserData } from '../api/requests/user/get';
 import { STORE_USER } from '../configs/db.config';
-import { OFFLINE_ROLE } from '../configs/userRoles.config';
+import { OFFLINE_ROLE } from '../constants/userRoles';
 import dbRepositories from '../db/UniHelper';
 
 export const checkUserData = async () => {

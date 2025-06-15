@@ -35,8 +35,8 @@ import {
   MAIN,
   MODER,
   NOTE
-} from '@/utils/configs/routes.config';
-import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
+} from '@/utils/constants/routes';
+import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/constants/userRoles';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 

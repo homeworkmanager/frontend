@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Slide } from '@/components/ui/Icons/Slide';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
+import { MODERATOR_ROLE } from '@/utils/constants/userRoles';
 import { convertSummary } from '@/utils/helpers/convertSummary';
 import { formatText } from '@/utils/helpers/formatText';
 import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';

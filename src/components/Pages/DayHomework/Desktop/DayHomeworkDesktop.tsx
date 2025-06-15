@@ -7,7 +7,7 @@ import { SendHomework } from '../modules/SendHomework/SendHomework';
 import 'swiper/swiper-bundle.css';
 import styles from './DayHomeworkDesktop.module.css';
 import { CarouselMonth } from '@/components/shared/CarouselMonth/CarouselMonth';
-import { AddFiles } from '@/components/shared/modules/molecules/AddHomeworkFile/AddFiles';
+import { UploadFiles } from '@/components/shared/modules/molecules/UploadFiles/UploadFiles';
 import { Button } from '@/components/ui/Button';
 import { UploadFile } from '@/components/ui/Icons/UploadFile';
 import { Loader } from '@/components/ui/Loader';
@@ -235,7 +235,7 @@ export const DayHomeworkDesktop = () => {
               </Button>
             </div>
             <Modal showInfo={addFileModal} showDetails={() => getAddFileModal(false)}>
-              <AddFiles addHomeworkFile={addHomeworkFile} onClose={() => getAddFileModal(false)} />
+              <UploadFiles addHomeworkFile={addHomeworkFile} onClose={() => getAddFileModal(false)} />
             </Modal>
           </div>
           {(postModeratorAddHomeworkDateState.isSuccess || postModeratorAddHomeworkDateState.isError) && (

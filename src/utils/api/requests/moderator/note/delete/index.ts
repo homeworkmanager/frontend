@@ -7,4 +7,4 @@ type DeleteModeratorNoteParams = {
 export type DeleteModeratorNoteConfig = AxiosRequestConfig<DeleteModeratorNoteParams>;
 
 export const deleteModeratorNote = async ({ params, config }: DeleteModeratorNoteConfig) =>
-  api.delete<ModeratorDeleteResponse>(`/moderator/note/delete/${params.noteId}`, config);
+  api.delete<ModeratorDeleteHomeworkResponse>(`/moderator/note/delete/${params.noteId}`, config);
