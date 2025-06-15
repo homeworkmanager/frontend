@@ -2,7 +2,7 @@ import React from 'react';
 
 import { today } from '../constants';
 
-import { SCHEDULE_BEGIN, START_DATE } from '@/utils/configs/time.config';
+import { SCHEDULE_BEGIN, START_DATE } from '@/utils/constants/time';
 import { createDate } from '@/utils/helpers/createDate';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import { useGetAllScheduleQuery } from '@/utils/redux/apiSlices/schedule/scheduleApi';

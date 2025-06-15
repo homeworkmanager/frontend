@@ -3,6 +3,7 @@ type HomeworkElement = {
   isCompleted: boolean;
   subjectId: number;
   homeworkText: string;
+  files: FileElem[];
   dueDate: string;
 };
 

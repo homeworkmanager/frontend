@@ -8,6 +8,10 @@
   background: white;
 }
 
+.checkbox:hover {
+  cursor: pointer;
+}
+
 .checkbox:checked {
   background: var(--time-color);
   border-color: var(--time-color);

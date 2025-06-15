@@ -12,13 +12,32 @@
 
   &:active {
     border-color: var(--border-focus-color);
-    scale: 0.95;
+    scale: 0.95 !important;
   }
 
   @media (min-width: 1050px) {
     &:hover {
       scale: 1.05;
     }
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    scale: none;
+    cursor: auto;
+  }
+}
+
+.cancel {
+  border: 1px solid var(--button-cancel-color);
+  border-radius: 12px;
+  padding: 0.5rem;
+  transition: all 0.15s ease-in-out;
+  color: var(--text-invert-color);
+
+  &:active {
+    border-color: var(--border-focus-cancel-color);
+    scale: 0.95;
   }
 
   &:disabled {
@@ -71,7 +90,7 @@
   color: var(--text-invert-color);
 
   &:active {
-    scale: 0.45;
+    scale: 0.65;
   }
 
   &:disabled {

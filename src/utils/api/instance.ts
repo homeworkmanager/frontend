@@ -1,6 +1,6 @@
-import { COOKIE_KEY } from '../configs/cookie.config';
 import { UNIHELPER_DB_CONFIG } from '../configs/db.config';
-import { AUTH } from '../configs/routes.config';
+import { COOKIE_KEY } from '../constants/cookie';
+import { AUTH } from '../constants/routes';
 import IndexedDBService from '../db/core';
 import { deleteCookie } from '../helpers/deleteCookie';
 
@@ -10,6 +10,7 @@ import axios, { AxiosError } from 'axios';
 export const api = axios.create({
   withCredentials: true,
   baseURL: '/api',
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json'
   }

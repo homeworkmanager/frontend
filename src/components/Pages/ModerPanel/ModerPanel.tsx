@@ -1,5 +1,5 @@
 import styles from './ModerPanel.module.css';
-import { KeyRefresh } from '@/components/shared/modules/KeyRefresh/KeyRefresh.module';
+import { KeyRefresh } from '@/components/shared/modules/molecules/KeyRefresh/KeyRefresh.module';
 import { useGetModeratorKeyQuery } from '@/utils/redux/apiSlices/group/groupApi';
 
 export const ModerPanel = () => {

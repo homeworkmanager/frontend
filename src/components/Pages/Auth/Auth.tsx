@@ -153,7 +153,14 @@ export const Auth = () => {
           </form>
         </Modal>
 
-        {state.isError && <Typhography tag="h1" variant="secondary" children={'Ошибка, повторите попытку позже!'} />}
+        {state.isError && (
+          <Typhography
+            tag="h1"
+            variant="secondary"
+            className={styles['error']}
+            children={'Ошибка, повторите попытку позже!'}
+          />
+        )}
         {stage !== 'register' && (
           <Button
             type="submit"

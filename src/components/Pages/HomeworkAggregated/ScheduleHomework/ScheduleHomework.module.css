@@ -1,17 +1,16 @@
 .container {
   width: 100%;
   margin-bottom: 0.75rem;
-  position: relative;
 }
 
 .content {
   background-color: var(--component-background-color);
   width: 100%;
-  height: auto;
   border-radius: 0.25rem;
   padding: 1rem 0.7rem;
   margin-top: 0.75rem;
   transition: all 0.2s ease-in-out;
+  position: relative;
 }
 
 @media (hover: hover) {
@@ -29,47 +28,4 @@
   padding: 0.35rem 0.6rem;
   border-radius: 1rem;
   background-color: var(--border-focus-color);
-}
-
-.number {
-  white-space: pre;
-}
-
-.text {
-  max-width: 100%;
-  overflow-wrap: break-word;
-  white-space: pre-line;
-}
-
-.number-complete {
-  color: gray;
-}
-
-.complete {
-  text-decoration: line-through;
-  color: gray;
-}
-
-.loader {
-  margin: auto 10px;
-}
-
-.icon {
-  margin-left: 6px;
-  width: 24px;
-  height: 24px;
-}
-
-.delete-icon {
-  margin-left: 8px;
-  width: 28px;
-  height: 28px;
-}
-
-.active {
-  color: var(--button-accept-color);
-}
-
-.active {
-  scale: 1.1;
 }

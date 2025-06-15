@@ -1,1 +1,1 @@
-type ModeratorAddHomeworkClassResponse = { homework_id: number } & BaseResponse;
+type ModeratorAddHomeworkClassResponse = { homework_id: number } & BaseResponse & FileSResponse;

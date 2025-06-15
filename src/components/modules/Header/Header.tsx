@@ -13,8 +13,8 @@ import {
   AGGREGATE_HOMEWORK,
   FEATURES,
   NOTE
-} from '@/utils/configs/routes.config';
-import { MODERATOR_ROLE } from '@/utils/configs/userRoles.config';
+} from '@/utils/constants/routes';
+import { MODERATOR_ROLE } from '@/utils/constants/userRoles';
 import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUser } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';

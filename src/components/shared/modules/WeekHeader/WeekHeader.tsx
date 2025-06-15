@@ -2,7 +2,7 @@ import { calculateWeek } from '../../../../utils/helpers/calculateWeek';
 import { monthData } from '../../../Pages/Journal/constants';
 
 import { Typhography } from '@/components/ui/Typhography';
-import { SEM_START } from '@/utils/configs/time.config';
+import { SEM_START } from '@/utils/constants/time';
 
 type WeekHeaderVariant = 'mobile' | 'desktop';
 

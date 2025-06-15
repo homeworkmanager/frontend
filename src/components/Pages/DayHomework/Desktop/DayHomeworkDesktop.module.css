@@ -63,6 +63,19 @@
   }
 }
 
+.accept {
+  display: flex;
+  position: relative;
+}
+
 .submit {
-  margin: 0 auto;
+  margin: auto;
+}
+
+.add-file {
+  height: 26px;
+  position: absolute;
+  right: 30%;
+  top: 50%;
+  transform: translateY(-50%);
 }
