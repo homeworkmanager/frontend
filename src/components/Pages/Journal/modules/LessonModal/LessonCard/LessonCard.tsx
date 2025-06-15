@@ -1,36 +1,22 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-
-import { ChangeLessonHomework } from '../../CarouselDay/molecules/ChangeLessonHomework/ChangeLessonHomework';
+import { useLocation } from 'react-router-dom';
 
 import { AddLessonHomework } from './AddLessonHomework/AddLessonHomework';
 import styles from './LessonCard.module.css';
+import { Homework } from '@/components/shared/modules/Homework/Homework';
 import { Button } from '@/components/ui/Button';
-import { Checkbox } from '@/components/ui/Checkbox';
-import { ChangeLogo } from '@/components/ui/Icons/Change';
-import { DeleteLogo } from '@/components/ui/Icons/Delete';
 import { Slide } from '@/components/ui/Icons/Slide';
-import { Loader } from '@/components/ui/Loader';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
 import { Typhography } from '@/components/ui/Typhography';
-import { MODERATOR_ROLE, OFFLINE_ROLE } from '@/utils/configs/userRoles.config';
+import { MODERATOR_ROLE } from '@/utils/constants/userRoles';
 import { convertSummary } from '@/utils/helpers/convertSummary';
-import {
-  useDeleteModeratorHomeworkMutation,
-  usePostHomeworkStatusMutation
-} from '@/utils/redux/apiSlices/schedule/scheduleApi';
+import { formatText } from '@/utils/helpers/formatText';
 import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
-import clsx from 'clsx';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface LessonInfoProps {
-  apiData: OutputClass;
-  homeworks: RestructHomeworkArray;
   showDetails: () => void;
-  addHomework: (homework: RestructHomeworkElement) => void;
-  deleteHomework: (homework: RestructHomeworkElement) => void;
-  changeHomework: (homework: RestructHomeworkElement) => void;
-  changeHomeworkStatus: (homework: RestructHomeworkElement) => void;
 }
 
 const RestructDescription = (description: string) => {
@@ -40,57 +26,51 @@ const RestructDescription = (description: string) => {
   return [stageA[0].split(' ').splice(1).join(' ')];
 };
 
-export const LessonCard = ({
-  apiData,
-  homeworks,
-  showDetails,
-  addHomework,
-  deleteHomework,
-  changeHomework,
-  changeHomeworkStatus
-}: LessonInfoProps) => {
+export const LessonCard = ({ showDetails }: LessonInfoProps) => {
+  const location = useLocation();
+  const apiData: OutputClass = location.state;
+
   const userRole = useSelector(getUserRole);
+
+  const [homeworks, setHomeworks] = React.useState<RestructHomeworkArray>(apiData.homework);
 
   const description = RestructDescription(apiData.class.description);
 
-  const [deleteModeratorHomeworkMutation, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
-  const [postHomeworkStatusMutation, postHomeworkStatusState] = usePostHomeworkStatusMutation();
-
-  const [currentHomework, setCurrentHomework] = React.useState<RestructHomeworkElement>({
-    homeworkText: '',
-    homeworkID: -1,
-    isCompleted: false
-  });
-
-  const removeCurrentHomework = () => {
-    setCurrentHomework({ homeworkText: '', homeworkID: -1, isCompleted: false });
+  const addHomework = (homework: RestructHomeworkElement) => {
+    setHomeworks((prev) => [...prev, { ...homework, homeworkText: formatText(homework.homeworkText) }]);
   };
 
-  const addCurrentHomework = (elem: RestructHomeworkElement) => {
-    if (currentHomework.homeworkID !== -1) {
-      removeCurrentHomework();
-      return;
-    }
-    setCurrentHomework(elem);
+  const deleteHomework = (homework: RestructHomeworkElement) => {
+    setHomeworks((prev) => prev.filter((item) => item.homeworkID !== homework.homeworkID));
   };
 
-  const deleteLessonHomework = async (homework: RestructHomeworkElement) => {
-    const response = await deleteModeratorHomeworkMutation({ params: { homeworkID: homework.homeworkID } });
-
-    if (!response.error) {
-      deleteHomework(homework);
-      if (currentHomework?.homeworkID === homework.homeworkID) removeCurrentHomework();
-    }
+  const changeHomework = (homework: RestructHomeworkElement) => {
+    setHomeworks((prev) => [
+      ...prev.map((item) => {
+        if (item.homeworkID === homework.homeworkID) {
+          return {
+            ...item,
+            homeworkText: formatText(homework.homeworkText),
+            isCompleted: false
+          };
+        }
+        return item;
+      })
+    ]);
   };
 
-  const changeLessonHomeworkStatus = async (homework: RestructHomeworkElement) => {
-    const response = await postHomeworkStatusMutation({
-      params: { homeworkID: homework.homeworkID, status: !homework.isCompleted }
-    });
-
-    if (!response.error) {
-      changeHomeworkStatus(homework);
-    }
+  const changeHomeworkStatus = (homework: RestructHomeworkElement) => {
+    setHomeworks((prev) => [
+      ...prev.map((item) => {
+        if (item.homeworkID === homework.homeworkID) {
+          return {
+            ...item,
+            isCompleted: !homework.isCompleted
+          };
+        }
+        return item;
+      })
+    ]);
   };
 
   return (
@@ -124,75 +104,17 @@ export const LessonCard = ({
           {homeworks.length === 0 && <Typhography tag="h3" variant="thirdy" children={'Отсутствует'} />}
           <MultiList>
             {homeworks.map((homework, index) => (
-              <MultiList.Row key={homework.homeworkID}>
-                <MultiList.Column icons={userRole >= MODERATOR_ROLE ? 3 : 1}>
-                  <Typhography
-                    tag="p"
-                    variant="thirdy"
-                    className={clsx(styles['number'], homework.isCompleted && styles['number-complete'])}
-                    children={`${index + 1}.`}
-                  />
-                  <Typhography
-                    tag="p"
-                    variant="thirdy"
-                    className={clsx(styles['text'], homework.isCompleted && styles['complete'])}
-                    children={homework.homeworkText}
-                  />
-                </MultiList.Column>
-                <MultiList.Column>
-                  {postHomeworkStatusState.isLoading ? (
-                    <Loader spinnerSize={24} className={styles['loader']} />
-                  ) : (
-                    <Checkbox
-                      disabled={userRole === OFFLINE_ROLE}
-                      checked={homework.isCompleted}
-                      onChange={() => changeLessonHomeworkStatus(homework)}
-                    />
-                  )}
-                  {userRole >= MODERATOR_ROLE && (
-                    <>
-                      {currentHomework?.homeworkID === -1 || currentHomework?.homeworkID === homework.homeworkID ? (
-                        <Button
-                          variant="logo"
-                          onClick={() => addCurrentHomework(homework)}
-                          children={
-                            <ChangeLogo
-                              className={clsx(
-                                styles['icon'],
-                                currentHomework.homeworkID === homework.homeworkID && styles['active']
-                              )}
-                            />
-                          }
-                        />
-                      ) : (
-                        <div style={{ width: '24px', height: '24px', marginLeft: '6px' }} />
-                      )}
-                      <Button
-                        variant="logo"
-                        onClick={() => deleteLessonHomework(homework)}
-                        children={
-                          deleteHomeworkState.isLoading ? (
-                            <Loader spinnerSize={28} className={styles['loader']} />
-                          ) : (
-                            <DeleteLogo className={styles['delete-icon']} />
-                          )
-                        }
-                      />
-                    </>
-                  )}
-                </MultiList.Column>
-              </MultiList.Row>
+              <React.Fragment key={homework.homeworkID}>
+                <Homework
+                  homework={homework}
+                  index={index}
+                  deleteHomework={deleteHomework}
+                  changeHomework={changeHomework}
+                  changeHomeworkStatus={changeHomeworkStatus}
+                />
+              </React.Fragment>
             ))}
           </MultiList>
-          <AnimatePresence>
-            {currentHomework.homeworkID !== -1 && (
-              <ChangeLessonHomework
-                currentHomework={currentHomework}
-                removeCurrentHomework={removeCurrentHomework}
-                changeHomework={changeHomework}
-              />
-            )}
-          </AnimatePresence>
         </article>
         <article className={styles['section']}>
           <Typhography tag="h3" variant="additional" className={styles['info']} children={'Место'} />

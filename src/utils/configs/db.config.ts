@@ -1,7 +1,4 @@
-const STORE_USER = 'user';
-const STORE_SCHEDULE = 'schedule';
-const STORE_HOMEWORK = 'homework';
-const STORE_NOTES = 'notes';
+import { STORE_HOMEWORK, STORE_NOTES, STORE_SCHEDULE, STORE_USER } from '../constants/dbStores';
 
 const UNIHELPER_DB_CONFIG: DBConfig = {
   name: 'UniHelperDB',

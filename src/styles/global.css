@@ -14,6 +14,9 @@
   --button-question-color: #8793a6;
   --button-attention-color: #ea0000;
   --button-helper-color: gray;
+  --button-cancel-color: #f0f0f0;
+  --border-focus-cancel-color: #d0d0d0;
+  --button-cancel-text-color: #333;
 
   --component-background-color: #373d48;
   --component-light-background-color: #444a56;
@@ -27,6 +30,8 @@
   --zach-background-color: #e7bd84;
   --exam-background-color: #fb6a6a;
 
+  --unknown-color: #ff2d2d;
+
   --max-width-mobile: 547px;
   --max-width-desktop: 1000px;
 
@@ -39,6 +44,8 @@
 
   --text-invert-color: #17171c;
   --header-background-color: #e2dddd;
+
+  --button-cancel-color: #0f0f0f;
 
   --component-background-color: #e5e8ef;
   --component-light-background-color: #dbdeee;

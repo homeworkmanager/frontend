@@ -59,6 +59,20 @@
   }
 }
 
+.accept {
+  display: flex;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
 .submit {
-  margin: 0 auto 24px;
+  margin: 0 auto;
+}
+
+.add-file {
+  height: 26px;
+  position: absolute;
+  right: 27%;
+  top: 50%;
+  transform: translateY(-50%);
 }

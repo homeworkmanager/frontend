@@ -1,1 +1,1 @@
-type ModeratorDeleteResponse = BaseResponse;
+type ModeratorDeleteHomeworkResponse = BaseResponse;

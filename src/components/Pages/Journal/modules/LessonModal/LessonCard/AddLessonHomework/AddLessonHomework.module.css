@@ -9,6 +9,11 @@
   text-transform: uppercase;
 }
 
+.footer {
+  display: flex;
+  gap: 1rem;
+}
+
 .error {
   color: orange;
   margin-top: 12px;

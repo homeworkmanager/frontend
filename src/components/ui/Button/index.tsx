@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './Button.module.css';
 import clsx from 'clsx';
 
-type ButtonVariant = 'accept' | 'question' | 'attention' | 'menu-item' | 'logo';
+type ButtonVariant = 'accept' | 'cancel' | 'question' | 'attention' | 'menu-item' | 'logo';
 
 type ColorTypes = 'warn' | 'current';
 

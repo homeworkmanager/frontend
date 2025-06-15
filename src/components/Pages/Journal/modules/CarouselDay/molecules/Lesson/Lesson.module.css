@@ -93,7 +93,8 @@
 
 .homework {
   width: 75%;
-  white-space: pre-line;
+  /* возможно оно было неспроста, но для чего хз*/
+  /* white-space: pre-line; */
   overflow: hidden;
   text-overflow: ellipsis;
 }

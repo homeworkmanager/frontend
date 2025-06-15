@@ -19,7 +19,6 @@ const routerNavigator: RouterNavigatorType = {
 
 const NavigationInitializer = () => {
   routerNavigator.navigate = useNavigate();
-
   return null;
 };
 

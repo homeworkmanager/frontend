@@ -6,6 +6,10 @@
   gap: 0.05rem;
 }
 
+.unknown {
+  color: var(--unknown-color);
+}
+
 .lect {
   color: var(--lect-background-color);
 }

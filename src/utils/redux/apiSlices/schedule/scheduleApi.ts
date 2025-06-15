@@ -1,6 +1,7 @@
 import { patchAdminRefreshAllData, PatchAdminRefreshAllDataConfig } from '@/utils/api/requests/admin/refreshAllData';
 import { PatchAdminUpdateClasses, patchAdminUpdateClasses } from '@/utils/api/requests/admin/updateClasses';
 import { postHomeworkStatus, PostHomeworkStatusConfig } from '@/utils/api/requests/homework/status/homework_id';
+import { postModeratorAddFile, PostModeratorAddFileConfig } from '@/utils/api/requests/moderator/addFile/homeworkId';
 import {
   postModeratorAddHomeworkClass,
   PostModeratorAddHomeworkClassConfig
@@ -13,13 +14,14 @@ import {
   deleteModeratorHomework,
   DeleteModeratorHomeworkConfig
 } from '@/utils/api/requests/moderator/delete/homeworkID';
+import { deleteModearatorFile, DeleteModeratorFileConfig } from '@/utils/api/requests/moderator/file/fileID';
 import { patchModeratorHomework, PatchModeratorHomeworkConfig } from '@/utils/api/requests/moderator/update';
 import { getNote } from '@/utils/api/requests/note';
 import { getAllSchedule, GetAllScheduleConfig } from '@/utils/api/requests/schedule/get';
 import { getScheduleHomework, GetScheduleHomeworkConfig } from '@/utils/api/requests/schedule/homeworks';
 import { getSubjects, GetSubjectsConfig } from '@/utils/api/requests/subjects';
 import { STORE_HOMEWORK, STORE_NOTES, STORE_SCHEDULE } from '@/utils/configs/db.config';
-import { SCHEDULE_BEGIN } from '@/utils/configs/time.config';
+import { SCHEDULE_BEGIN } from '@/utils/constants/time';
 import dbRepositories from '@/utils/db/UniHelper';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -103,6 +105,14 @@ export const scheduleApi = createApi({
       queryFn: ({ params, config }: PostHomeworkStatusConfig) => postHomeworkStatus({ params, config }),
       invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
     }),
+    postModeratorAddFile: builder.mutation({
+      queryFn: ({ params, config }: PostModeratorAddFileConfig) => postModeratorAddFile({ params, config }),
+      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+    }),
+    deleteModeratorFile: builder.mutation({
+      queryFn: ({ params, config }: DeleteModeratorFileConfig) => deleteModearatorFile({ params, config }),
+      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+    }),
     getScheduleHomework: builder.query<ScheduleHomeworkResponse, GetScheduleHomeworkConfig>({
       async queryFn({ params, config }: GetScheduleHomeworkConfig) {
         const homeworkCacheKey = STORE_HOMEWORK;
@@ -142,6 +152,8 @@ export const {
   usePatchAdminRefreshAllDataMutation,
   usePostModeratorAddHomeworkClassMutation,
   usePostModeratorAddHomeworkDateMutation,
+  usePostModeratorAddFileMutation,
+  useDeleteModeratorFileMutation,
   useDeleteModeratorHomeworkMutation,
   usePatchModeratorHomeworkMutation,
   usePostHomeworkStatusMutation,
