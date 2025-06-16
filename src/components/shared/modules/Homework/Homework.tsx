@@ -89,8 +89,9 @@ export const Homework = ({
   const addHomeworkFile = async (files: File[]) => {
     const response = await postModeratorAddFile({ params: { homeworkId: homework.homeworkID, files } });
 
-    if (!response.error) {
-      const serverData = response.data;
+    const serverData = response.data;
+
+    if (!response.error && serverData?.data) {
       setFiles((prev) => [
         ...prev,
         ...Object.keys(serverData.filesIdMap).map((fileName) => {

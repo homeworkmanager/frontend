@@ -1,7 +1,9 @@
 import { getUserData } from '../api/requests/user/get';
-import { STORE_USER } from '../configs/db.config';
+import { STORE_USER } from '../constants/dbStores';
 import { OFFLINE_ROLE } from '../constants/userRoles';
 import dbRepositories from '../db/UniHelper';
+
+import { AxiosError } from 'axios';
 
 export const checkUserData = async () => {
   const cacheKey = STORE_USER;
@@ -12,17 +14,17 @@ export const checkUserData = async () => {
 
     await userRepo.set(cacheKey, { ...response.data, role: OFFLINE_ROLE });
     return { data: response.data };
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error) {
     const cached = await userRepo.get(cacheKey);
 
     if (cached) return { data: cached?.data };
 
+    const err = error as AxiosError;
+
     return {
       error: {
-        status: error.response?.status,
-        data: error.response.data || error.message
+        status: err.response?.status,
+        data: err.response?.data || err.message
       },
       data: { role: OFFLINE_ROLE, name: '', surname: '', email: '', group_name: '' }
     };

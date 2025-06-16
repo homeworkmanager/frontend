@@ -10,6 +10,7 @@ import { logIn } from '@/utils/redux/storeSlices/user/slice';
 
 function App() {
   const dispatch = useAppDispatch();
+
   const refreshCookie = async () => {
     try {
       await getUserRefresh();

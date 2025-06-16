@@ -46,8 +46,9 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
       }
     });
 
-    if (!postModeratorAddHomeworkClassResponse.error) {
-      const serverData = postModeratorAddHomeworkClassResponse.data;
+    const serverData = postModeratorAddHomeworkClassResponse.data;
+
+    if (!postModeratorAddHomeworkClassResponse.error && serverData?.data) {
       addHomework({
         homeworkText: homeworkText,
         homeworkID: serverData.homework_id,

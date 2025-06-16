@@ -25,7 +25,7 @@ export const AddNote = ({ subjectId, addNote }: AddNoteProps) => {
       }
     });
 
-    if (!postAddNoteResponse.error) {
+    if (!postAddNoteResponse.error && postAddNoteResponse.data) {
       addNote({
         note_text: noteText,
         subject_id: subjectId,
