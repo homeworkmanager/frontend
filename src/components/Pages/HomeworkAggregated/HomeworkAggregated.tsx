@@ -2,7 +2,8 @@ import React from 'react';
 
 import styles from './HomeworkAggregated.module.css';
 import { ScheduleHomework } from './ScheduleHomework/ScheduleHomework';
-import { SCHEDULE_BEGIN } from '@/utils/constants/time';
+import { SCHEDULE_BEGIN } from '@/utils/constants/dates';
+import { TIME_TO_HOMEWORKS_REFRESH } from '@/utils/constants/time';
 import { pad } from '@/utils/helpers/pad';
 import { useGetScheduleHomeworkQuery } from '@/utils/redux/apiSlices/schedule';
 
@@ -11,12 +12,15 @@ const beginDate = `${new Date().getFullYear()}-${pad(new Date().getMonth() + 1)}
 export const HomeworkAggregated = () => {
   const targetRef = React.useRef<HTMLLIElement>(null);
 
-  const getHomeworksResponse = useGetScheduleHomeworkQuery({
-    params: {
-      from_time: SCHEDULE_BEGIN.date,
-      days_count: SCHEDULE_BEGIN.days
-    }
-  });
+  const getHomeworksResponse = useGetScheduleHomeworkQuery(
+    {
+      params: {
+        from_time: SCHEDULE_BEGIN.date,
+        days_count: SCHEDULE_BEGIN.days
+      }
+    },
+    { pollingInterval: TIME_TO_HOMEWORKS_REFRESH }
+  );
 
   const findBeginDate = (): string => {
     if (targetRef.current || !getHomeworksResponse.data) return '';

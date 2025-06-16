@@ -1,3 +1,5 @@
+import { axiosBaseQuery } from '../axiosBaseQuery';
+
 import { postAdminAddGroup, PostAdminAddGroupConfig } from '@/utils/api/requests/admin/addGroup';
 import { GetAdminGroups, GetAdminGroupsConfig } from '@/utils/api/requests/admin/groups';
 import { patchAdminKeysRegenerate, PatchAdminKeysRegenerateConfig } from '@/utils/api/requests/admin/keys/regenerate';
@@ -7,12 +9,12 @@ import {
   patchModeratorKeyRegenerate,
   PatchModeratorKeyRegenerateConfig
 } from '@/utils/api/requests/moderator/key/regenerate';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 
 export const groupApi = createApi({
   reducerPath: 'groupApi',
-  baseQuery: fetchBaseQuery(),
-  tagTypes: ['GetAllGroupsConfig', 'GetModeratorKey', 'Groups'],
+  baseQuery: axiosBaseQuery(),
+  tagTypes: ['GetAllGroupsConfig', 'GetModeratorKey', 'GetAdminGroups'],
   endpoints: (builder) => ({
     getAllGroups: builder.query<CurrentGroup[], GetAllGroupsConfig>({
       queryFn: (requestConfig?: GetAllGroupsConfig) => getAllGroups(requestConfig),
@@ -29,21 +31,21 @@ export const groupApi = createApi({
     }),
     getAdminGroups: builder.query<AdminGroupsResponse, GetAdminGroupsConfig>({
       queryFn: (requestConfig?: GetAdminGroupsConfig) => GetAdminGroups(requestConfig),
-      providesTags: ['Groups']
+      providesTags: ['GetAdminGroups']
     }),
     postAdminAddGroup: builder.mutation({
       queryFn: ({ params, config }: PostAdminAddGroupConfig) => postAdminAddGroup({ params, config }),
-      invalidatesTags: ['Groups']
+      invalidatesTags: ['GetAdminGroups']
     }),
     patchAdminKeysRegenerate: builder.mutation<AdminKeysRegenerateResponse, PatchAdminKeysRegenerateConfig>({
       queryFn: (requestConfig?: PatchAdminKeysRegenerateConfig) => patchAdminKeysRegenerate(requestConfig),
-      invalidatesTags: ['Groups']
+      invalidatesTags: ['GetAdminGroups']
     })
   })
 });
 
 export const {
-  useGetAllGroupsQuery,
+  useLazyGetAllGroupsQuery,
   useGetModeratorKeyQuery,
   usePatchModeratorKeyRegenerateMutation,
   useGetAdminGroupsQuery,

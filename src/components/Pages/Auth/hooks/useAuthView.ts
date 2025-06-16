@@ -10,12 +10,10 @@ import {
 } from '../schemas';
 
 import { routerNavigator } from '@/components/modules/Router/Navigator';
-import { checkUserData } from '@/utils/helpers/checkUserData';
+import { TIME_TO_GROUPS_REFRESH } from '@/utils/constants/time';
 import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
-import { useGetAllGroupsQuery } from '@/utils/redux/apiSlices/group/groupApi';
+import { useLazyGetAllGroupsQuery } from '@/utils/redux/apiSlices/group/groupApi';
 import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/user/userApi';
-import { useAppDispatch } from '@/utils/redux/store';
-import { logIn } from '@/utils/redux/storeSlices/user/slice';
 import { useFormik } from 'formik';
 
 type Stages = 'login' | 'profile' | 'register';
@@ -37,9 +35,8 @@ const authInitValues = {
 
 export const useAuthView = () => {
   const [stage, setStage] = React.useState<Stages>('login');
-  const dispatch = useAppDispatch();
 
-  const getAllGroups = useGetAllGroupsQuery(undefined);
+  const [getAllGroupsTrigger, getAllGroups] = useLazyGetAllGroupsQuery({ pollingInterval: TIME_TO_GROUPS_REFRESH });
 
   const getAllGroupsResponse = getAllGroups?.data;
 
@@ -63,25 +60,6 @@ export const useAuthView = () => {
     login: postAuthState
   };
 
-  const getUserAfterAuth = async () => {
-    try {
-      const { data } = await checkUserData();
-      dispatch(
-        logIn({
-          role: data.role,
-          name: data.name,
-          surname: data.surname,
-          email: data.email,
-          group_name: data.group_name
-        })
-      );
-      routerNavigator.to(JournalChooseMedia, { replace: true });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  };
-
   const setSubmit = async (values: RegisterSchemaType & LogInSchemaType & ProfileSchemaType) => {
     if (stage === 'login') {
       const postAuthResponse = await postAuth({
@@ -92,7 +70,7 @@ export const useAuthView = () => {
       });
 
       if (!postAuthResponse.error) {
-        await getUserAfterAuth();
+        routerNavigator.to(JournalChooseMedia, { replace: true });
         return;
       }
     }
@@ -142,7 +120,7 @@ export const useAuthView = () => {
     form,
     stage,
     groups: getAllGroupsResponse,
-    func: { changeStage },
+    func: { changeStage, getAllGroupsTrigger },
     state: stateByStage[stage]
   };
 };

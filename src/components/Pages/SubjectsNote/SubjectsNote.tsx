@@ -5,13 +5,14 @@ import { NotesList } from './NoteList/NotesList';
 import styles from './SubjectsNote.module.css';
 import { Loader } from '@/components/ui/Loader';
 import { Typhography } from '@/components/ui/Typhography';
+import { TIME_TO_NOTES_REFRESH } from '@/utils/constants/time';
 import { BASE_ROLE, MODERATOR_ROLE } from '@/utils/constants/userRoles';
 import { useGetNoteQuery } from '@/utils/redux/apiSlices/note/noteApi';
 import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 import clsx from 'clsx';
 
 export const SubjectsNote = () => {
-  const getNotes = useGetNoteQuery(undefined);
+  const getNotes = useGetNoteQuery(undefined, { pollingInterval: TIME_TO_NOTES_REFRESH });
 
   const role = useSelector(getUserRole);
 

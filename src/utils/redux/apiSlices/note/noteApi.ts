@@ -1,14 +1,17 @@
+import { axiosBaseQuery } from '../axiosBaseQuery';
+
 import { postModeratorNoteAdd, PostModeratorNoteAddConfig } from '@/utils/api/requests/moderator/note/add';
 import { deleteModeratorNote, DeleteModeratorNoteConfig } from '@/utils/api/requests/moderator/note/delete';
 import { patchModeratorNoteUpdate, PatchModeratorNoteUpdateConfig } from '@/utils/api/requests/moderator/note/update';
 import { getNote, GetNoteConfig } from '@/utils/api/requests/note';
-import { STORE_NOTES } from '@/utils/configs/db.config';
+import { STORE_NOTES } from '@/utils/constants/dbStores';
 import dbRepositories from '@/utils/db/UniHelper';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { AxiosError } from 'axios';
 
 export const noteApi = createApi({
   reducerPath: 'noteApi',
-  baseQuery: fetchBaseQuery(),
+  baseQuery: axiosBaseQuery(),
   tagTypes: ['GetNote'],
   endpoints: (builder) => ({
     getNote: builder.query<NoteResponse, GetNoteConfig>({
@@ -22,16 +25,16 @@ export const noteApi = createApi({
           await notesRepo.set(cacheKey, response.data);
 
           return { data: response.data };
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
+        } catch (error) {
           const cached = await notesRepo.get(cacheKey);
 
           if (cached) return { data: cached?.data };
 
+          const err = error as AxiosError;
           return {
             error: {
-              status: error.response?.status,
-              data: error.response?.data || error.message
+              status: err.response?.status,
+              data: err.response?.data || err.message
             }
           };
         }

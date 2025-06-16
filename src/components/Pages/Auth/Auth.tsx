@@ -30,6 +30,7 @@ export const Auth = () => {
   };
 
   const getGroups = () => {
+    func.getAllGroupsTrigger(undefined, true);
     action.toggle();
   };
 

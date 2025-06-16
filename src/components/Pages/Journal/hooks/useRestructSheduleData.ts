@@ -2,18 +2,22 @@ import React from 'react';
 
 import { today } from '../constants';
 
-import { SCHEDULE_BEGIN, START_DATE } from '@/utils/constants/time';
+import { SCHEDULE_BEGIN, START_DATE } from '@/utils/constants/dates';
+import { TIME_TO_SCHEDULE_REFRESH } from '@/utils/constants/time';
 import { createDate } from '@/utils/helpers/createDate';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 import { useGetAllScheduleQuery } from '@/utils/redux/apiSlices/schedule/scheduleApi';
 
 export const useRestructSheduleData = () => {
-  const getSchedule = useGetAllScheduleQuery({
-    params: {
-      from_time: SCHEDULE_BEGIN.date,
-      days_count: SCHEDULE_BEGIN.days
-    }
-  });
+  const getSchedule = useGetAllScheduleQuery(
+    {
+      params: {
+        from_time: SCHEDULE_BEGIN.date,
+        days_count: SCHEDULE_BEGIN.days
+      }
+    },
+    { pollingInterval: TIME_TO_SCHEDULE_REFRESH }
+  );
 
   const getScheduleResponse = getSchedule?.data;
   const success = getSchedule.isSuccess;

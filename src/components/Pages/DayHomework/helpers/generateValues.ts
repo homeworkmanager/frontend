@@ -1,4 +1,4 @@
-import { SCHEDULE_BEGIN, START_DATE } from '@/utils/constants/time';
+import { SCHEDULE_BEGIN, START_DATE } from '@/utils/constants/dates';
 import { createDate } from '@/utils/helpers/createDate';
 import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
 
