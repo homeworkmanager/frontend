@@ -6,12 +6,12 @@ import { WeekHeader } from '../modules/WeekHeader/WeekHeader';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselMonth.module.css';
-import { firstSessionDay, monthsNumbers, weekDays } from '@/components/Pages/Journal/constants';
+import { firstSessionDay, monthsNumbers, weekDays } from '@/components/pages/Journal/constants';
 import { Button } from '@/components/ui/Button';
 import { Slide } from '@/components/ui/Icons/Slide';
-import { findDayIndex } from '@/utils/helpers/findDayIndex';
-import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
-import { getDaysForOtherCarousels } from '@/utils/helpers/getDaysForOtherCarousels';
+import { scheduleDaysFindIndex } from '@/utils/services/scheduleDays/findIndex';
+import { scheduleMatrixFindIndexes } from '@/utils/services/scheduleMatrix/findIndexes';
+import { scheduleMatrixCreate } from '@/utils/services/scheduleMatrix/generate';
 import clsx from 'clsx';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
@@ -31,10 +31,10 @@ export const CarouselMonth = ({
   currentDate,
   setClickedDate
 }: carouselWeekProps) => {
-  const daysByMonth = React.useMemo(() => getDaysForOtherCarousels(values, 35), []);
+  const daysByMonth = React.useMemo(() => scheduleMatrixCreate(values, 35), []);
 
   const [currentSlide, dayIndexInSlide] = React.useMemo(
-    () => findDayIndex(values[activeMonthNode], daysByMonth),
+    () => scheduleMatrixFindIndexes(values[activeMonthNode], daysByMonth),
     [activeMonthNode, daysByMonth]
   );
 
@@ -127,7 +127,7 @@ export const CarouselMonth = ({
                 <li
                   key={dayIndex}
                   className={styles['month-container']}
-                  onClick={() => onScrollClick(findIndexByDate(values, day))}
+                  onClick={() => onScrollClick(scheduleDaysFindIndex(values, day))}
                 >
                   <div
                     className={clsx(

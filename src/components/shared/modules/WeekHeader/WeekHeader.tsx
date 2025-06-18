@@ -1,5 +1,5 @@
 import { calculateWeek } from '../../../../utils/helpers/calculateWeek';
-import { monthData } from '../../../Pages/Journal/constants';
+import { monthData } from '../../../pages/Journal/constants';
 
 import { Typhography } from '@/components/ui/Typhography';
 import { SEM_START } from '@/utils/constants/dates';

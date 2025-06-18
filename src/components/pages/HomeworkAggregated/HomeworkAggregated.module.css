@@ -1,0 +1,7 @@
+.container {
+  padding: 0 10px;
+  margin: 0;
+  max-height: 87%;
+  overflow-y: auto;
+  position: relative;
+}

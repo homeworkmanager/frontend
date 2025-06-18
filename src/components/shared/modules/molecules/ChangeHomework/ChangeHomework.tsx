@@ -4,18 +4,18 @@ import styles from './ChangeHomework.module.css';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
 import { Textarea } from '@/components/ui/Textarea';
-import { Typhography } from '@/components/ui/Typhography';
+import { Toast } from '@/components/ui/Toast';
 import { formatText } from '@/utils/helpers/formatText';
 import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/schedule/scheduleApi';
 import { motion } from 'framer-motion';
 
 interface ChangeHomeworkProps {
   currentHomework: RestructHomeworkElement;
-  removeCurrentHomework: () => void;
+  onClose: () => void;
   changeHomework: (homework: RestructHomeworkElement) => void;
 }
 
-export const ChangeHomework = ({ changeHomework, currentHomework, removeCurrentHomework }: ChangeHomeworkProps) => {
+export const ChangeHomework = ({ changeHomework, currentHomework, onClose }: ChangeHomeworkProps) => {
   const [patchModeratorHomework, patchHomeworkState] = usePatchModeratorHomeworkMutation();
   const [homeworkText, setHomeworkText] = React.useState(currentHomework.homeworkText);
 
@@ -31,7 +31,7 @@ export const ChangeHomework = ({ changeHomework, currentHomework, removeCurrentH
         isCompleted: false,
         files: currentHomework.files
       });
-      removeCurrentHomework();
+      onClose();
     }
   };
 
@@ -56,11 +56,7 @@ export const ChangeHomework = ({ changeHomework, currentHomework, removeCurrentH
       >
         {patchHomeworkState.isLoading ? <Loader /> : 'Изменить'}
       </Button>
-      {patchHomeworkState.isError && (
-        <Typhography tag="p" variant="thirdy" className={styles['error']}>
-          Ошибка
-        </Typhography>
-      )}
+      {patchHomeworkState.isError && <Toast type="mobile" text="Ошибка обновления задания" />}
     </motion.section>
   );
 };

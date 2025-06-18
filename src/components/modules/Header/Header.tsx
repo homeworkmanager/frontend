@@ -15,8 +15,8 @@ import {
   NOTE
 } from '@/utils/constants/routes';
 import { MODERATOR_ROLE } from '@/utils/constants/userRoles';
-import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUser } from '@/utils/redux/storeSlices/user/selectors';
+import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/services/chooseMedia';
 import clsx from 'clsx';
 
 export const Header = () => {

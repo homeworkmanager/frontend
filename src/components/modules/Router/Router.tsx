@@ -37,8 +37,8 @@ import {
   NOTE
 } from '@/utils/constants/routes';
 import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/constants/userRoles';
-import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
+import { JournalChooseMedia } from '@/utils/services/chooseMedia';
 
 export const Router = () => {
   const userRole = useSelector(getUserRole);

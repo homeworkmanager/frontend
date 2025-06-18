@@ -6,12 +6,12 @@ import { WeekHeader } from '../modules/WeekHeader/WeekHeader';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselWeek.module.css';
-import { firstSessionDay, monthsNumbers, weekDays } from '@/components/Pages/Journal/constants';
+import { firstSessionDay, monthsNumbers, weekDays } from '@/components/pages/Journal/constants';
 import { Button } from '@/components/ui/Button';
 import { Slide } from '@/components/ui/Icons/Slide';
-import { findDayIndex } from '@/utils/helpers/findDayIndex';
-import { findIndexByDate } from '@/utils/helpers/findIndexByDate';
-import { getDaysForOtherCarousels } from '@/utils/helpers/getDaysForOtherCarousels';
+import { scheduleDaysFindIndex } from '@/utils/services/scheduleDays/findIndex';
+import { scheduleMatrixFindIndexes } from '@/utils/services/scheduleMatrix/findIndexes';
+import { scheduleMatrixCreate } from '@/utils/services/scheduleMatrix/generate';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Navigation, Virtual } from 'swiper/modules';
@@ -36,10 +36,10 @@ export const CarouselWeek = ({
   weekCarouselRef,
   setClickedDate
 }: carouselWeekProps) => {
-  const [daysByWeeks, setDaysByWeeks] = React.useState(() => getDaysForOtherCarousels(values, daysCount.current));
+  const [daysByWeeks, setDaysByWeeks] = React.useState(() => scheduleMatrixCreate(values, daysCount.current));
 
   const [currentSlide, dayIndexInSlide] = React.useMemo(
-    () => findDayIndex(values[activeWeekNode], daysByWeeks),
+    () => scheduleMatrixFindIndexes(values[activeWeekNode], daysByWeeks),
     [activeWeekNode, daysByWeeks]
   );
 
@@ -97,7 +97,7 @@ export const CarouselWeek = ({
 
     updateInitialParams(newDaysCount);
 
-    setDaysByWeeks(() => getDaysForOtherCarousels(values, newDaysCount));
+    setDaysByWeeks(() => scheduleMatrixCreate(values, newDaysCount));
 
     daysCount.current = newDaysCount;
 
@@ -176,7 +176,7 @@ export const CarouselWeek = ({
                   <motion.li
                     key={`${day.year} ${day.month} ${day.day}`}
                     className={styles['carousel-date-item']}
-                    onClick={() => setClickedDate(findIndexByDate(values, day))}
+                    onClick={() => setClickedDate(scheduleDaysFindIndex(values, day))}
                     {...(slideIndex === weekCarouselRef.current?.swiper.realIndex &&
                       dayIndex >= 7 && {
                         initial: 'hidden',
