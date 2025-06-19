@@ -6,6 +6,7 @@ import { AddHomeworkLogo } from '@/components/ui/Icons/AddHomework';
 import { FeaturesLogo } from '@/components/ui/Icons/Features';
 import { HomeworkLogo } from '@/components/ui/Icons/Homework';
 import { NoteLogo } from '@/components/ui/Icons/Note';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { Typhography } from '@/components/ui/Typhography';
 import {
   ADD_HOMEWORK_DESKTOP,
@@ -18,22 +19,44 @@ import { MODERATOR_ROLE } from '@/utils/constants/userRoles';
 import { getUser } from '@/utils/redux/storeSlices/user/selectors';
 import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/services/chooseMedia';
 import clsx from 'clsx';
+import { motion } from 'framer-motion';
 
 export const Header = () => {
-  const { role, group_name } = useSelector(getUser);
+  const { role, group_name, name } = useSelector(getUser);
 
   const page = useLocation().pathname;
 
   return (
     <header className={styles.header}>
-      <Link to={JournalChooseMedia} replace>
-        <Typhography
-          tag="h1"
-          variant="header"
-          className={clsx(styles['journal'], page.split('-')[0] === '/journal' && styles['current'])} //для всех страниц journal (в том числе вложенных)
-          children={group_name}
+      {!name && (
+        <Skeleton
+          height="1.75rem"
+          width="9.25rem"
+          radius="1rem"
+          className={clsx(styles['journal'], page.split('-')[0] === '/journal' && styles['current'])}
         />
-      </Link>
+      )}
+      {!!name && (
+        <Link to={JournalChooseMedia} replace>
+          <Typhography
+            tag="h1"
+            variant="header"
+            className={clsx(styles['journal'], page.split('-')[0] === '/journal' && styles['current'])} //для всех страниц journal (в том числе вложенных)
+            children={
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 0.25,
+                  ease: 'easeInOut'
+                }}
+              >
+                {group_name}
+              </motion.span>
+            }
+          />
+        </Link>
+      )}
 
       <nav className={styles.container}>
         {role >= MODERATOR_ROLE && (

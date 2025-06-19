@@ -4,8 +4,8 @@ import { useRestructSheduleData } from '../hooks/useRestructSheduleData';
 import { CarouselDay } from '../modules/CarouselDay/CarouselDay';
 
 import styles from './JournalMobile.module.css';
+import { JournalMobileLoading } from './JournalMobileLoading';
 import { CarouselWeek } from '@/components/shared/CarouselWeek/CarouselWeek';
-import { Loader } from '@/components/ui/Loader';
 import { SwiperRef } from 'swiper/react';
 
 export const JournalMobile = () => {
@@ -56,8 +56,8 @@ export const JournalMobile = () => {
   };
 
   return (
-    <article className={styles.container}>
-      {getScheduleStatus.loading && <Loader />}
+    <article className={styles['container']}>
+      {getScheduleStatus.loading && <JournalMobileLoading />}
       {getScheduleStatus.success && (
         <>
           <CarouselWeek

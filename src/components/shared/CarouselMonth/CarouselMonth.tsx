@@ -6,7 +6,7 @@ import { WeekHeader } from '../modules/WeekHeader/WeekHeader';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselMonth.module.css';
-import { firstSessionDay, monthsNumbers, weekDays } from '@/components/pages/Journal/constants';
+import { firstSessionDay, weekDays } from '@/components/pages/Journal/constants';
 import { Button } from '@/components/ui/Button';
 import { Slide } from '@/components/ui/Icons/Slide';
 import { scheduleDaysFindIndex } from '@/utils/services/scheduleDays/findIndex';
@@ -94,12 +94,7 @@ export const CarouselMonth = ({
           <Button className={clsx(styles['custom-prev'], 'prev')} variant="logo" rotate={true}>
             <Slide />
           </Button>
-          <WeekHeader
-            currentDate={values[currentDate.day]}
-            firstSessionDay={firstSessionDay}
-            monthsNumbers={monthsNumbers}
-            variant="desktop"
-          />
+          <WeekHeader currentDate={values[currentDate.day]} firstSessionDay={firstSessionDay} variant="desktop" />
           <Button className={clsx(styles['custom-next'], 'next')} variant="logo">
             <Slide />
           </Button>

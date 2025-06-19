@@ -9,7 +9,6 @@ type WeekHeaderVariant = 'mobile' | 'desktop';
 interface WeekHeaderProps {
   currentDate: { year: number; month: number; day: number };
   firstSessionDay: { year: number; month: number; day: number };
-  monthsNumbers: number[];
   variant: WeekHeaderVariant;
 }
 

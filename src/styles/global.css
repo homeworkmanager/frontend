@@ -10,6 +10,8 @@
   --header-background-color: #000;
   --header-hover-color: #c9b3ff;
 
+  --skeleton-background-color: #17171c;
+
   --button-accept-color: #ae8bff;
   --button-question-color: #8793a6;
   --button-attention-color: #ea0000;
@@ -44,6 +46,8 @@
 
   --text-invert-color: #17171c;
   --header-background-color: #e2dddd;
+
+  --skeleton-background-color: #8793a6;
 
   --button-cancel-color: #0f0f0f;
 

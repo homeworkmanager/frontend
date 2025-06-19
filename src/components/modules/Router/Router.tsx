@@ -20,6 +20,8 @@ import {
 } from './constants/lazyImports';
 import { AuthGuard } from './guards/AuthGuard';
 import { LocationGuard } from './guards/LocationGuard';
+import { JournalDesktopLoading } from '@/components/pages/Journal/Desktop/JournalDesktopLoading';
+import { JournalMobileLoading } from '@/components/pages/Journal/Mobile/JournalMobileLoading';
 import { Loader } from '@/components/ui/Loader';
 import {
   ADD_HOMEWORK_DESKTOP,
@@ -69,7 +71,7 @@ export const Router = () => {
         <Route
           path={JOURNAL_MOBILE}
           element={
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<JournalMobileLoading />}>
               <AuthGuard>
                 {journalType === JOURNAL_MOBILE ? <JournalMobile /> : <Navigate to={JOURNAL_DESKTOP} />}
               </AuthGuard>
@@ -91,7 +93,7 @@ export const Router = () => {
         <Route
           path={JOURNAL_DESKTOP}
           element={
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<JournalDesktopLoading />}>
               <AuthGuard>
                 {journalType === JOURNAL_DESKTOP ? <JournalDesktop /> : <Navigate to={JOURNAL_MOBILE} />}
               </AuthGuard>

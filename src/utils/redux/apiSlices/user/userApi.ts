@@ -28,9 +28,7 @@ export const userApi = createApi({
 
         try {
           await postUserAuth({ params, config });
-
           const userResponse = await getUserData({ config });
-
           await userRepo.set(cacheKey, { ...userResponse.data, role: OFFLINE_ROLE });
 
           return { data: userResponse.data };

@@ -17,7 +17,6 @@ const weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
 const today = new Date();
 
-const monthsNumbers = [2, 3, 4, 5];
 const firstSessionDay: CustomDate = { year: 2025, month: 6, day: 2 };
 
-export { monthData, weekDays, today, monthsNumbers, firstSessionDay };
+export { monthData, weekDays, today, firstSessionDay };

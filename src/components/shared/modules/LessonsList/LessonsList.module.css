@@ -35,7 +35,7 @@
 }
 
 .item::before {
-  border: 0.2em solid;
+  border: 0.5rem solid;
   border-radius: 50%;
   content: '';
   display: inline-block;
@@ -44,5 +44,15 @@
 @media (min-width: 547px) {
   .item::before {
     border: 0.25em solid;
+  }
+}
+
+.skeleton-item {
+  aspect-ratio: 1;
+  display: inline-block;
+
+  @media (max-width: 547px) {
+    height: 0.4rem;
+    width: 0.4rem;
   }
 }

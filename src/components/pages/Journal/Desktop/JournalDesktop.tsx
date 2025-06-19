@@ -4,8 +4,8 @@ import { useRestructSheduleData } from '../hooks/useRestructSheduleData';
 import { CarouselDay } from '../modules/CarouselDay/CarouselDay';
 
 import styles from './JournalDesktop.module.css';
+import { JournalDesktopLoading } from './JournalDesktopLoading';
 import { CarouselMonth } from '@/components/shared/CarouselMonth/CarouselMonth';
-import { Loader } from '@/components/ui/Loader';
 import { SwiperRef } from 'swiper/react';
 
 export const JournalDesktop = () => {
@@ -51,7 +51,7 @@ export const JournalDesktop = () => {
 
   return (
     <article>
-      {getScheduleStatus.loading && <Loader />}
+      {getScheduleStatus.loading && <JournalDesktopLoading />}
       {getScheduleStatus.success && (
         <div className={styles['journal-body']}>
           <CarouselMonth

@@ -21,7 +21,6 @@ export const noteApi = createApi({
 
         try {
           const response = await getNote(requestConfig);
-
           await notesRepo.set(cacheKey, response.data);
 
           return { data: response.data };

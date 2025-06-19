@@ -57,8 +57,8 @@ export const Lesson = ({ apiData }: LessonProps) => {
   };
 
   return (
-    <section className={styles.container} onClick={showDetails}>
-      <header className={styles.header}>
+    <section className={styles['container']} onClick={showDetails}>
+      <header className={styles['header']}>
         <h3 className={styles['subject']}>{convertSummary(para.summary)}</h3>
         <p className={clsx(styles['type'], styles[lessonColor[para.category as keyof typeof lessonColor]])}>
           {para.category}

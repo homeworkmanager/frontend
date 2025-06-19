@@ -6,9 +6,13 @@ import { UniHelperLogo } from '@/components/ui/Icons/UniHelper';
 import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
 import { Modal } from '@/components/ui/Modal';
-import { Typhography } from '@/components/ui/Typhography';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { Toast } from '@/components/ui/Toast';
 import { useDropdown } from '@/utils/hooks/useDropdown';
+import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+
+const loadingArray = [0, 1, 2, 3];
 
 export const Auth = () => {
   const { form, stage, groups, func, state } = useAuthView();
@@ -89,17 +93,25 @@ export const Auth = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.25, ease: 'easeInOut' }}
-                    className={styles['group-list']}
+                    className={clsx(styles['group-list'], state.groups.isError && styles['error'])}
                   >
-                    {groups?.map((group) => (
-                      <li className={styles['group-name']} key={group.group_id} onClick={() => chooseGroup(group)}>
-                        {group.name}
-                      </li>
-                    ))}
+                    {state.groups.isSuccess &&
+                      groups?.map((group) => (
+                        <li className={styles['group-name']} key={group.group_id} onClick={() => chooseGroup(group)}>
+                          {group.name}
+                        </li>
+                      ))}
+                    {state.groups.isLoading &&
+                      loadingArray.map((value) => (
+                        <li className={styles['group-name']} key={value}>
+                          <Skeleton key={value} height={'1.25rem'} radius={'0.5rem'} />
+                        </li>
+                      ))}
                   </motion.ul>
                 )}
               </AnimatePresence>
             </div>
+            {state.groups.isError && state.groups.isInitialized && <Toast type="mobile" text="Ошибка загрузки групп" />}
           </>
         )}
 
@@ -148,27 +160,20 @@ export const Auth = () => {
               type="submit"
               variant="accept"
               className={styles['submit']}
-              disabled={state.isLoading}
-              children={state.isLoading ? <Loader /> : acceptButtonText[stage]}
+              disabled={state.action.isLoading}
+              children={state.action.isLoading ? <Loader /> : acceptButtonText[stage]}
             />
           </form>
         </Modal>
 
-        {state.isError && (
-          <Typhography
-            tag="h1"
-            variant="secondary"
-            className={styles['error']}
-            children={'Ошибка, повторите попытку позже!'}
-          />
-        )}
+        {state.action.isError && <Toast type="mobile" text="Ошибка авторизации" />}
         {stage !== 'register' && (
           <Button
             type="submit"
             variant="accept"
             className={styles['submit']}
-            disabled={state.isLoading}
-            children={state.isLoading ? <Loader /> : acceptButtonText[stage]}
+            disabled={state.action.isLoading}
+            children={state.action.isLoading ? <Loader /> : acceptButtonText[stage]}
           />
         )}
         <Button

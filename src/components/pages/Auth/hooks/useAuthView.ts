@@ -54,10 +54,17 @@ export const useAuthView = () => {
   const [postRegister, postRegisterState] = usePostRegisterMutation();
   const [postAuth, postAuthState] = usePostAuthMutation();
 
-  const stateByStage: Record<Stages, State> = {
+  const actionState: Record<Stages, State> = {
     register: postRegisterState,
     profile: postRegisterState,
     login: postAuthState
+  };
+
+  const groupsState = {
+    isInitialized: !getAllGroups.isUninitialized,
+    isLoading: getAllGroups.isLoading,
+    isError: getAllGroups.isError,
+    isSuccess: getAllGroups.isSuccess
   };
 
   const setSubmit = async (values: RegisterSchemaType & LogInSchemaType & ProfileSchemaType) => {
@@ -121,6 +128,6 @@ export const useAuthView = () => {
     stage,
     groups: getAllGroupsResponse,
     func: { changeStage, getAllGroupsTrigger },
-    state: stateByStage[stage]
+    state: { action: actionState[stage], groups: groupsState }
   };
 };

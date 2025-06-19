@@ -39,7 +39,7 @@
 .type {
   height: fit-content;
   padding: 0.1rem 0.6rem;
-  border-radius: 16px;
+  border-radius: 1rem;
   color: var(--text-invert-color);
   background-color: var(--time-color);
   font-size: 0.9rem;

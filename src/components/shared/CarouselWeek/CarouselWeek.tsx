@@ -6,7 +6,7 @@ import { WeekHeader } from '../modules/WeekHeader/WeekHeader';
 
 import 'swiper/swiper-bundle.css';
 import styles from './CarouselWeek.module.css';
-import { firstSessionDay, monthsNumbers, weekDays } from '@/components/pages/Journal/constants';
+import { firstSessionDay, weekDays } from '@/components/pages/Journal/constants';
 import { Button } from '@/components/ui/Button';
 import { Slide } from '@/components/ui/Icons/Slide';
 import { scheduleDaysFindIndex } from '@/utils/services/scheduleDays/findIndex';
@@ -133,12 +133,7 @@ export const CarouselWeek = ({
         <Button className="custom-prev" variant="logo" rotate>
           <Slide />
         </Button>
-        <WeekHeader
-          currentDate={values[currentDate.day]}
-          firstSessionDay={firstSessionDay}
-          monthsNumbers={monthsNumbers}
-          variant="mobile"
-        />
+        <WeekHeader currentDate={values[currentDate.day]} firstSessionDay={firstSessionDay} variant="mobile" />
         <Button className="custom-next" variant="logo">
           <Slide />
         </Button>
