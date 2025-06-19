@@ -133,7 +133,7 @@ export const CarouselMonth = ({
                   >
                     <p>{day.day}</p>
                   </div>
-                  {day.lessons.length > 0 && <LessonsList lessons={day.lessons} />}
+                  {<LessonsList lessons={day.lessons} />}
                 </li>
               ))}
             </ul>

@@ -28,7 +28,7 @@ export const LessonModal = () => {
         clearTimeout(timer);
       };
     }
-  }, [showInfo]);
+  }, [dayCarouselRef, showInfo]);
 
   return (
     <Modal showInfo={showInfo} showDetails={showDetails}>

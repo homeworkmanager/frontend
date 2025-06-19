@@ -1,6 +1,7 @@
 import React from 'react';
 
 import styles from './HomeworkAggregated.module.css';
+import { HomeworkAggregatedLoading } from './HomeworkAggregatedLoading';
 import { ScheduleHomework } from './ScheduleHomework/ScheduleHomework';
 import { SCHEDULE_BEGIN } from '@/utils/constants/dates';
 import { TIME_TO_HOMEWORKS_REFRESH } from '@/utils/constants/time';
@@ -51,21 +52,22 @@ export const HomeworkAggregated = () => {
   }, [getHomeworksResponse.isLoading]);
 
   return (
-    <ul className={styles.container}>
-      {getHomeworksResponse.data &&
-        Object.keys(getHomeworksResponse.data).map((date) => {
-          if (!getHomeworksResponse.data) return null;
-
-          return (
-            <li key={date} {...(date === startDate && { ref: targetRef })}>
-              <ScheduleHomework
-                Homeworks={getHomeworksResponse.data[date].homework}
-                DayDate={date}
-                CurrentDate={startDate}
-              />
-            </li>
-          );
-        })}
-    </ul>
+    <>
+      {getHomeworksResponse.isSuccess && (
+        <ul className={styles['container']}>
+          {getHomeworksResponse.data &&
+            Object.keys(getHomeworksResponse.data).map((date) => (
+              <li key={date} {...(date === startDate && { ref: targetRef })}>
+                <ScheduleHomework
+                  Homeworks={getHomeworksResponse.data[date].homework}
+                  DayDate={date}
+                  CurrentDate={startDate}
+                />
+              </li>
+            ))}
+        </ul>
+      )}
+      {getHomeworksResponse.isLoading && <HomeworkAggregatedLoading />}
+    </>
   );
 };

@@ -192,7 +192,7 @@ export const CarouselWeek = ({
                     >
                       <p className={styles['date']}>{day.day}</p>
                     </motion.div>
-                    {day.lessons.length > 0 && <LessonsList lessons={day.lessons} />}
+                    {<LessonsList lessons={day.lessons} />}
                   </motion.li>
                 ))}
               </motion.ul>

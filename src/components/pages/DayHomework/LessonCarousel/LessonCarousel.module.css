@@ -21,7 +21,7 @@
   opacity: 0.5;
   cursor: pointer;
   border: 2px solid transparent;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   transition: all 0.3s ease-in-out;
   width: fit-content;
   margin: auto;

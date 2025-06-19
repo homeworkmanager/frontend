@@ -20,8 +20,11 @@ import {
 } from './constants/lazyImports';
 import { AuthGuard } from './guards/AuthGuard';
 import { LocationGuard } from './guards/LocationGuard';
+import { AuthLoading } from '@/components/pages/Auth/AuthLoading';
+import { HomeworkAggregatedLoading } from '@/components/pages/HomeworkAggregated/HomeworkAggregatedLoading';
 import { JournalDesktopLoading } from '@/components/pages/Journal/Desktop/JournalDesktopLoading';
 import { JournalMobileLoading } from '@/components/pages/Journal/Mobile/JournalMobileLoading';
+import { SubjectNotesLoading } from '@/components/pages/SubjectsNote/SubjectsNoteLoading';
 import { Loader } from '@/components/ui/Loader';
 import {
   ADD_HOMEWORK_DESKTOP,
@@ -63,7 +66,7 @@ export const Router = () => {
         <Route
           path={AUTH}
           element={
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<AuthLoading />}>
               <Auth />
             </Suspense>
           }
@@ -155,7 +158,7 @@ export const Router = () => {
         <Route
           path={AGGREGATE_HOMEWORK}
           element={
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<HomeworkAggregatedLoading />}>
               <AuthGuard>
                 <HomeworkAggregated />
               </AuthGuard>
@@ -166,7 +169,7 @@ export const Router = () => {
         <Route
           path={NOTE}
           element={
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<SubjectNotesLoading />}>
               <AuthGuard>
                 <SubjectsNote />
               </AuthGuard>

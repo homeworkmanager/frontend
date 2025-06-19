@@ -1,4 +1,5 @@
 import styles from './LessonCarousel.module.css';
+import { LessonCarouselSkeleton } from './LessonCarouselSkeleton';
 import { Typhography } from '@/components/ui/Typhography';
 import clsx from 'clsx';
 import { Mousewheel } from 'swiper/modules';
@@ -24,7 +25,7 @@ export const LessonCarousel = ({
   return (
     <article className={styles['subjects']}>
       <Typhography tag="h3" variant="thirdy" className={styles['title']} children={`Предмет`} />
-      {(getSubjectsState.isLoading || getSubjectsState.isError) && <div className={styles['swiper-container']} />}
+      {(getSubjectsState.isLoading || getSubjectsState.isError) && <LessonCarouselSkeleton />}
       {getSubjectsState.isSuccess && (
         <Swiper
           ref={subjectRef}

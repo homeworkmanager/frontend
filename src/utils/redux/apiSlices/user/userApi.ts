@@ -1,5 +1,7 @@
-import { userSlice } from '../../storeSlices/user/slice';
+import { logOut, userSlice } from '../../storeSlices/user/slice';
 import { axiosBaseQuery } from '../axiosBaseQuery';
+import { noteApi } from '../note';
+import { scheduleApi } from '../schedule';
 
 import { patchAdminRole, PatchAdminRoleConfig } from '@/utils/api/requests/admin/role/id';
 import { getAdminUsers, GetAdminUsersConfig } from '@/utils/api/requests/admin/users';
@@ -7,9 +9,13 @@ import { postUserAuth, PostUserAuthConfig } from '@/utils/api/requests/user/auth
 import { getUserData } from '@/utils/api/requests/user/get';
 import { deleteUserLogout, DeleteUserLogoutConfig } from '@/utils/api/requests/user/logout';
 import { postUserRegister, PostUserRegisterConfig } from '@/utils/api/requests/user/register';
+import { UNIHELPER_DB_CONFIG } from '@/utils/configs/db.config';
+import { COOKIE_KEY } from '@/utils/constants/cookie';
 import { STORE_USER } from '@/utils/constants/dbStores';
 import { OFFLINE_ROLE } from '@/utils/constants/userRoles';
+import IndexedDBService from '@/utils/db/core';
 import dbRepositories from '@/utils/db/UniHelper';
+import { deleteCookie } from '@/utils/services/deleteCookie';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { AxiosError } from 'axios';
 
@@ -52,7 +58,18 @@ export const userApi = createApi({
       }
     }),
     deleteLogout: builder.mutation({
-      queryFn: (requestConfig?: DeleteUserLogoutConfig) => deleteUserLogout(requestConfig)
+      queryFn: (requestConfig?: DeleteUserLogoutConfig) => deleteUserLogout(requestConfig),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled;
+        if (!data.error) {
+          deleteCookie(COOKIE_KEY);
+
+          await IndexedDBService.dropDataBase(UNIHELPER_DB_CONFIG);
+          dispatch(logOut());
+          dispatch(scheduleApi.util.invalidateTags(['GetAllSchedule', 'GetScheduleHomework']));
+          dispatch(noteApi.util.invalidateTags(['GetNote']));
+        }
+      }
     }),
     getAdminUsers: builder.query<AdminUsersResponse, GetAdminUsersConfig>({
       queryFn: (requestConfig?: GetAdminUsersConfig) => getAdminUsers(requestConfig),

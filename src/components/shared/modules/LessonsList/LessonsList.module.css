@@ -6,6 +6,10 @@
   gap: 0.05rem;
 }
 
+.none-lessons {
+  color: transparent;
+}
+
 .unknown {
   color: var(--unknown-color);
 }
@@ -35,15 +39,15 @@
 }
 
 .item::before {
-  border: 0.5rem solid;
-  border-radius: 50%;
   content: '';
   display: inline-block;
+  border: 0.2rem solid;
+  border-radius: 50%;
 }
 
 @media (min-width: 547px) {
   .item::before {
-    border: 0.25em solid;
+    border: 0.25rem solid;
   }
 }
 
