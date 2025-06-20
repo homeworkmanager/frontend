@@ -1,22 +1,14 @@
-import { pad } from '../helpers/pad';
+const MAX_TIME_TO_COOKIE_REFRESH = 1000 * 60 * 60 * 24 * 27;
 
-const START_DATE: StartDateType = {
-  year: 2025,
-  month: 2,
-  day: 3
+const TIME_TO_GROUPS_REFRESH = 5 * 60 * 1000;
+const TIME_TO_SCHEDULE_REFRESH = 10 * 60 * 1000;
+const TIME_TO_HOMEWORKS_REFRESH = 10 * 60 * 1000;
+const TIME_TO_NOTES_REFRESH = 20 * 60 * 1000;
+
+export {
+  MAX_TIME_TO_COOKIE_REFRESH,
+  TIME_TO_GROUPS_REFRESH,
+  TIME_TO_SCHEDULE_REFRESH,
+  TIME_TO_HOMEWORKS_REFRESH,
+  TIME_TO_NOTES_REFRESH
 };
-
-const SEM_START = {
-  year: 2025,
-  month: 2,
-  day: 10
-};
-
-const SCHEDULE_BEGIN = {
-  date: new Date(
-    `${START_DATE.year}-${pad(START_DATE.month)}-${pad(START_DATE.day)}T00:00:00`.concat('.000+03:00')
-  ).toISOString(),
-  days: 161
-};
-
-export { START_DATE, SEM_START, SCHEDULE_BEGIN };

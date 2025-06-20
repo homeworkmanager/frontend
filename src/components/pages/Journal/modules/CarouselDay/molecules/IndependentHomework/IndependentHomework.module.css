@@ -1,0 +1,70 @@
+.container {
+  width: 100%;
+}
+
+.content {
+  background-color: var(--component-background-color);
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  padding: 1rem 0.7rem;
+  margin-top: 16px;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+/* @media (hover: hover) {
+  .content:hover {
+    background-color: var(--component-light-background-color);
+    transform: scale(1.015);
+  }
+} */
+
+.number {
+  white-space: pre;
+}
+
+.text {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  white-space: pre-line;
+}
+
+.files {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.number-complete {
+  color: gray;
+}
+
+.complete {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.loader {
+  margin: auto 10px;
+}
+
+.icon {
+  margin-left: 6px;
+  width: 24px;
+  height: 24px;
+}
+
+.delete-icon {
+  margin-left: 8px;
+  width: 28px;
+  height: 28px;
+}
+
+.active {
+  color: var(--button-accept-color);
+}
+
+.active {
+  scale: 1.1;
+}

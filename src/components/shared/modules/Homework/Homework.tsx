@@ -15,6 +15,7 @@ import { UploadFile } from '@/components/ui/Icons/UploadFile';
 import { Loader } from '@/components/ui/Loader';
 import { Modal } from '@/components/ui/Modal';
 import { MultiList } from '@/components/ui/MultiList/MultiList';
+import { Toast } from '@/components/ui/Toast';
 import { Typhography } from '@/components/ui/Typhography';
 import { MODERATOR_ROLE, OFFLINE_ROLE } from '@/utils/constants/userRoles';
 import { addDataAttr } from '@/utils/helpers/addDataAttr';
@@ -47,7 +48,7 @@ export const Homework = ({
 }: HomeworkProps) => {
   const userRole = useSelector(getUserRole);
 
-  const [deleteModeratorHomework, deleteHomeworkState] = useDeleteModeratorHomeworkMutation();
+  const [deleteModeratorHomework, deleteModeratorHomeworkState] = useDeleteModeratorHomeworkMutation();
   const [postHomeworkStatus, postHomeworkStatusState] = usePostHomeworkStatusMutation();
   const [postModeratorAddFile, postModeratorAddFileState] = usePostModeratorAddFileMutation();
 
@@ -89,8 +90,9 @@ export const Homework = ({
   const addHomeworkFile = async (files: File[]) => {
     const response = await postModeratorAddFile({ params: { homeworkId: homework.homeworkID, files } });
 
-    if (!response.error) {
-      const serverData = response.data;
+    const serverData = response.data;
+
+    if (!response.error && serverData?.data) {
       setFiles((prev) => [
         ...prev,
         ...Object.keys(serverData.filesIdMap).map((fileName) => {
@@ -152,13 +154,14 @@ export const Homework = ({
                 variant="logo"
                 onClick={() => deleteLessonHomework(homework)}
                 children={
-                  deleteHomeworkState.isLoading ? (
+                  deleteModeratorHomeworkState.isLoading ? (
                     <Loader spinnerSize={28} className={styles['loader']} />
                   ) : (
                     <DeleteLogo className={styles['delete-icon']} />
                   )
                 }
               />
+              {deleteModeratorHomeworkState.isError && <Toast type="mobile" text={'Ошибка удаления задания'} />}
             </>
           )}
         </MultiList.Column>
@@ -197,11 +200,7 @@ export const Homework = ({
       <AnimatePresence {...(updateHeight !== undefined && { onExitComplete: updateHeight })}>
         {isOpen && (
           <div ref={menuRef}>
-            <ChangeHomework
-              currentHomework={homework}
-              removeCurrentHomework={hideChangeSection}
-              changeHomework={changeHomework}
-            />
+            <ChangeHomework currentHomework={homework} onClose={hideChangeSection} changeHomework={changeHomework} />
           </div>
         )}
       </AnimatePresence>

@@ -1,3 +1,5 @@
+import { axiosBaseQuery } from '../axiosBaseQuery';
+
 import { patchAdminRefreshAllData, PatchAdminRefreshAllDataConfig } from '@/utils/api/requests/admin/refreshAllData';
 import { PatchAdminUpdateClasses, patchAdminUpdateClasses } from '@/utils/api/requests/admin/updateClasses';
 import { postHomeworkStatus, PostHomeworkStatusConfig } from '@/utils/api/requests/homework/status/homework_id';
@@ -20,14 +22,15 @@ import { getNote } from '@/utils/api/requests/note';
 import { getAllSchedule, GetAllScheduleConfig } from '@/utils/api/requests/schedule/get';
 import { getScheduleHomework, GetScheduleHomeworkConfig } from '@/utils/api/requests/schedule/homeworks';
 import { getSubjects, GetSubjectsConfig } from '@/utils/api/requests/subjects';
-import { STORE_HOMEWORK, STORE_NOTES, STORE_SCHEDULE } from '@/utils/configs/db.config';
-import { SCHEDULE_BEGIN } from '@/utils/constants/time';
+import { SCHEDULE_BEGIN } from '@/utils/constants/dates';
+import { STORE_HOMEWORK, STORE_NOTES, STORE_SCHEDULE } from '@/utils/constants/dbStores';
 import dbRepositories from '@/utils/db/UniHelper';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { AxiosError } from 'axios';
 
 export const scheduleApi = createApi({
   reducerPath: 'scheduleApi',
-  baseQuery: fetchBaseQuery(),
+  baseQuery: axiosBaseQuery(),
   tagTypes: ['GetAllSchedule', 'GetScheduleHomework', 'GetSubjects'],
   endpoints: (builder) => ({
     getAllSchedule: builder.query<AllScheduleResponse, GetAllScheduleConfig>({
@@ -59,16 +62,16 @@ export const scheduleApi = createApi({
           }
 
           return { data: scheduleResponse.data };
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
+        } catch (error) {
           const cached = await scheduleRepo.get(scheduleCacheKey);
 
           if (cached) return { data: cached?.data };
 
+          const err = error as AxiosError;
           return {
             error: {
-              status: error.response?.status,
-              data: error.response?.data || error.message
+              status: err.response?.status,
+              data: err.response?.data || err.message
             }
           };
         }
@@ -123,16 +126,16 @@ export const scheduleApi = createApi({
           await homeworkRepo.set(homeworkCacheKey, homeworkResponse.data);
 
           return { data: homeworkResponse.data };
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
+        } catch (error) {
           const cached = await homeworkRepo.get(homeworkCacheKey);
 
           if (cached) return { data: cached?.data };
 
+          const err = error as AxiosError;
           return {
             error: {
-              status: error.response?.status,
-              data: error.response?.data || error.message
+              status: err.response?.status,
+              data: err.response?.data || err.message
             }
           };
         }

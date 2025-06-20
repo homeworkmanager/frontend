@@ -2,7 +2,7 @@ import { UNIHELPER_DB_CONFIG } from '../configs/db.config';
 import { COOKIE_KEY } from '../constants/cookie';
 import { AUTH } from '../constants/routes';
 import IndexedDBService from '../db/core';
-import { deleteCookie } from '../helpers/deleteCookie';
+import { deleteCookie } from '../services/deleteCookie';
 
 import { routerNavigator } from '@/components/modules/Router/Navigator';
 import axios, { AxiosError } from 'axios';
@@ -10,7 +10,7 @@ import axios, { AxiosError } from 'axios';
 export const api = axios.create({
   withCredentials: true,
   baseURL: '/api',
-  timeout: 15000,
+  timeout: 8000,
   headers: {
     'Content-Type': 'application/json'
   }

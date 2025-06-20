@@ -26,7 +26,7 @@ export const KeyRefresh = ({ currentKey, groupId = -1, hideLabel = false }: KeyR
   const onRefresh = async () => {
     const response = await patchModeratorKeyRegenerate({ params: { group_id: groupId } });
 
-    if (!response.error) {
+    if (!response.error && response.data) {
       setKey(response.data?.register_key);
     }
   };

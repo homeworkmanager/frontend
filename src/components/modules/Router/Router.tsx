@@ -1,5 +1,4 @@
 import { Suspense } from 'react';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 
@@ -37,8 +36,8 @@ import {
   NOTE
 } from '@/utils/constants/routes';
 import { ADMIN_ROLE, MODERATOR_ROLE } from '@/utils/constants/userRoles';
-import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
 import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
+import { JournalChooseMedia } from '@/utils/services/chooseMedia';
 
 export const Router = () => {
   const userRole = useSelector(getUserRole);
@@ -185,8 +184,6 @@ export const Router = () => {
       </Route>
     )
   );
-
-  React.useEffect(() => {}, []);
 
   return <RouterProvider router={router} />;
 };
