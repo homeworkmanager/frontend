@@ -1,0 +1,84 @@
+.container {
+  max-width: 450px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 32px 0;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  color: var(--text-invert-color);
+}
+
+.form {
+  margin: 24px auto auto;
+  width: 88%;
+  display: flex;
+  flex-direction: column;
+}
+
+.active {
+  border-color: var(--border-focus-color) !important;
+}
+
+.label {
+  color: var(--text-invert-color);
+  font-size: 16px;
+  margin-bottom: 5px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.group-list {
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  right: 0;
+  width: 50%;
+  border-radius: 8px;
+  border: 2px solid var(--border-base-color);
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: var(--main-background-color);
+  color: var(--text-invert-color);
+  z-index: 1;
+}
+
+.error {
+  border: none;
+}
+
+.group-name {
+  padding: 0.625rem 0.875rem;
+  cursor: pointer;
+}
+
+.submit {
+  margin: 1.5rem 0;
+}
+
+.modal-key {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+  background-color: var(--component-background-color);
+  border-radius: 12px;
+
+  button {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.modal-header {
+  position: relative;
+
+  button {
+    width: fit-content;
+    position: absolute;
+    right: 0;
+  }
+}

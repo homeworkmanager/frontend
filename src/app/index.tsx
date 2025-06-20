@@ -3,13 +3,14 @@ import React from 'react';
 import { Router } from '@/components/modules/Router/Router';
 import { getUserRefresh } from '@/utils/api/requests/user/refresh';
 import { COOKIE_KEY } from '@/utils/constants/cookie';
-import { MAXT_TIME_TO_REFRESH } from '@/utils/constants/maxTimeToRefresh';
-import { checkUserData } from '@/utils/helpers/checkUserData';
+import { MAX_TIME_TO_COOKIE_REFRESH } from '@/utils/constants/time';
 import { useAppDispatch } from '@/utils/redux/store';
 import { logIn } from '@/utils/redux/storeSlices/user/slice';
+import { checkUserData } from '@/utils/services/checkUserData';
 
 function App() {
   const dispatch = useAppDispatch();
+
   const refreshCookie = async () => {
     try {
       await getUserRefresh();
@@ -46,7 +47,7 @@ function App() {
     if (!document.cookie.match(COOKIE_KEY)) return;
     setUserData();
 
-    if (getTimeUpdateSession(COOKIE_KEY) < MAXT_TIME_TO_REFRESH) {
+    if (getTimeUpdateSession(COOKIE_KEY) < MAX_TIME_TO_COOKIE_REFRESH) {
       refreshCookie();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

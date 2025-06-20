@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 
-import { JournalChooseMedia } from '@/utils/helpers/ChooseMedia';
+import { JournalChooseMedia } from '@/utils/services/chooseMedia';
 
 interface LocationGuardProps {
   children: React.ReactNode;

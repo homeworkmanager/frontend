@@ -1,4 +1,4 @@
-import { SEM_START } from '../constants/time';
+import { SEM_START } from '../constants/dates';
 
 const startDate = new Date(SEM_START.year, SEM_START.month - 1, SEM_START.day);
 

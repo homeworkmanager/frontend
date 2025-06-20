@@ -24,6 +24,7 @@ export const LessonsList = ({ lessons }: LessonsListProps) => {
           className={clsx(styles['item'], styles[lessonColor[lesson.class.category as keyof typeof lessonColor]])}
         />
       ))}
+      {lessons.length === 0 && <li className={clsx(styles['item'], styles['none-lessons'])} />}
     </ul>
   );
 };

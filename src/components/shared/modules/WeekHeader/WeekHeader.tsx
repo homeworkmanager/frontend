@@ -1,15 +1,14 @@
 import { calculateWeek } from '../../../../utils/helpers/calculateWeek';
-import { monthData } from '../../../Pages/Journal/constants';
+import { monthData } from '../../../pages/Journal/constants';
 
 import { Typhography } from '@/components/ui/Typhography';
-import { SEM_START } from '@/utils/constants/time';
+import { SEM_START } from '@/utils/constants/dates';
 
 type WeekHeaderVariant = 'mobile' | 'desktop';
 
 interface WeekHeaderProps {
   currentDate: { year: number; month: number; day: number };
   firstSessionDay: { year: number; month: number; day: number };
-  monthsNumbers: number[];
   variant: WeekHeaderVariant;
 }
 

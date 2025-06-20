@@ -1,0 +1,128 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--component-background-color);
+  width: 100%;
+  border-radius: 4px;
+  padding: 1rem 0.7rem;
+  color: var(--text-invert-color);
+  cursor: pointer;
+  gap: 5px;
+  transition: all 0.2s ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) {
+  .container:hover {
+    background-color: var(--component-light-background-color);
+    transform: scale(1.015);
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 5px;
+
+  @media (min-width: 1050px) {
+    flex-direction: row;
+  }
+}
+
+.subject {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.type {
+  height: fit-content;
+  padding: 0.1rem 0.6rem;
+  border-radius: 1rem;
+  color: var(--text-invert-color);
+  background-color: var(--time-color);
+  font-size: 0.9rem;
+}
+
+.time-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: var(--time-color);
+  font-size: 0.75rem;
+}
+
+.cabinet-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: gray;
+  gap: 5px;
+}
+
+.add-homework {
+  display: flex;
+  flex-direction: column;
+}
+
+.homework-title {
+  text-align: start;
+  font-size: 14px;
+}
+
+.homework-info {
+  margin: 0.3rem 0;
+  font-size: 1rem;
+}
+
+.task {
+  margin-top: 0.4rem;
+  color: gray;
+  padding: 0 1rem;
+  font-size: small;
+  display: flex;
+  flex-direction: column;
+  white-space: pre;
+}
+
+.task-text {
+  display: flex;
+}
+
+.homework {
+  width: 75%;
+  /* возможно оно было неспроста, но для чего хз*/
+  /* white-space: pre-line; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.complete {
+  text-decoration: line-through;
+}
+
+.lect {
+  background-color: var(--lect-background-color);
+}
+
+.pract {
+  background-color: var(--pract-background-color);
+}
+
+.lab {
+  background-color: var(--lab-background-color);
+}
+
+.cons {
+  background-color: var(--cons-background-color);
+}
+
+.zach {
+  background-color: var(--zach-background-color);
+}
+
+.exam {
+  background-color: var(--exam-background-color);
+}
