@@ -1,5 +1,4 @@
 import { Suspense } from 'react';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 
@@ -20,11 +19,6 @@ import {
 } from './constants/lazyImports';
 import { AuthGuard } from './guards/AuthGuard';
 import { LocationGuard } from './guards/LocationGuard';
-import { AuthLoading } from '@/components/pages/Auth/AuthLoading';
-import { HomeworkAggregatedLoading } from '@/components/pages/HomeworkAggregated/HomeworkAggregatedLoading';
-import { JournalDesktopLoading } from '@/components/pages/Journal/Desktop/JournalDesktopLoading';
-import { JournalMobileLoading } from '@/components/pages/Journal/Mobile/JournalMobileLoading';
-import { SubjectNotesLoading } from '@/components/pages/SubjectsNote/SubjectsNoteLoading';
 import { Loader } from '@/components/ui/Loader';
 import {
   ADD_HOMEWORK_DESKTOP,
@@ -66,7 +60,7 @@ export const Router = () => {
         <Route
           path={AUTH}
           element={
-            <Suspense fallback={<AuthLoading />}>
+            <Suspense fallback={<Loader />}>
               <Auth />
             </Suspense>
           }
@@ -74,7 +68,7 @@ export const Router = () => {
         <Route
           path={JOURNAL_MOBILE}
           element={
-            <Suspense fallback={<JournalMobileLoading />}>
+            <Suspense fallback={<Loader />}>
               <AuthGuard>
                 {journalType === JOURNAL_MOBILE ? <JournalMobile /> : <Navigate to={JOURNAL_DESKTOP} />}
               </AuthGuard>
@@ -96,7 +90,7 @@ export const Router = () => {
         <Route
           path={JOURNAL_DESKTOP}
           element={
-            <Suspense fallback={<JournalDesktopLoading />}>
+            <Suspense fallback={<Loader />}>
               <AuthGuard>
                 {journalType === JOURNAL_DESKTOP ? <JournalDesktop /> : <Navigate to={JOURNAL_MOBILE} />}
               </AuthGuard>
@@ -158,7 +152,7 @@ export const Router = () => {
         <Route
           path={AGGREGATE_HOMEWORK}
           element={
-            <Suspense fallback={<HomeworkAggregatedLoading />}>
+            <Suspense fallback={<Loader />}>
               <AuthGuard>
                 <HomeworkAggregated />
               </AuthGuard>
@@ -169,7 +163,7 @@ export const Router = () => {
         <Route
           path={NOTE}
           element={
-            <Suspense fallback={<SubjectNotesLoading />}>
+            <Suspense fallback={<Loader />}>
               <AuthGuard>
                 <SubjectsNote />
               </AuthGuard>
@@ -190,8 +184,6 @@ export const Router = () => {
       </Route>
     )
   );
-
-  React.useEffect(() => {}, []);
 
   return <RouterProvider router={router} />;
 };
