@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 
@@ -13,12 +12,13 @@ import {
   HomeworkAggregated,
   JournalDesktop,
   JournalMobile,
-  LessonModal,
   ModerPanel,
   SubjectsNote
 } from './constants/lazyImports';
 import { AuthGuard } from './guards/AuthGuard';
 import { LocationGuard } from './guards/LocationGuard';
+import { SuspenseBoundary } from './SuspenseBoundary';
+import { LessonModal } from '@/components/pages/Journal/modules/LessonModal/LessonModal';
 import { Loader } from '@/components/ui/Loader';
 import {
   ADD_HOMEWORK_DESKTOP,
@@ -41,7 +41,6 @@ import { JournalChooseMedia } from '@/utils/services/chooseMedia';
 
 export const Router = () => {
   const userRole = useSelector(getUserRole);
-
   const journalType = JournalChooseMedia;
 
   const router = createBrowserRouter(
@@ -60,29 +59,27 @@ export const Router = () => {
         <Route
           path={AUTH}
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseBoundary fallback={<Loader />}>
               <Auth />
-            </Suspense>
+            </SuspenseBoundary>
           }
         />
         <Route
           path={JOURNAL_MOBILE}
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseBoundary fallback={<Loader />} key={JOURNAL_MOBILE}>
               <AuthGuard>
                 {journalType === JOURNAL_MOBILE ? <JournalMobile /> : <Navigate to={JOURNAL_DESKTOP} />}
               </AuthGuard>
-            </Suspense>
+            </SuspenseBoundary>
           }
         >
           <Route
             path={LESSON_MODAL}
             element={
-              <Suspense>
-                <LocationGuard>
-                  <LessonModal />
-                </LocationGuard>
-              </Suspense>
+              <LocationGuard>
+                <LessonModal />
+              </LocationGuard>
             }
           />
         </Route>
@@ -90,21 +87,19 @@ export const Router = () => {
         <Route
           path={JOURNAL_DESKTOP}
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseBoundary fallback={<Loader />} key={JOURNAL_DESKTOP}>
               <AuthGuard>
                 {journalType === JOURNAL_DESKTOP ? <JournalDesktop /> : <Navigate to={JOURNAL_MOBILE} />}
               </AuthGuard>
-            </Suspense>
+            </SuspenseBoundary>
           }
         >
           <Route
             path={LESSON_MODAL}
             element={
-              <Suspense>
-                <LocationGuard>
-                  <LessonModal />
-                </LocationGuard>
-              </Suspense>
+              <LocationGuard>
+                <LessonModal />
+              </LocationGuard>
             }
           />
         </Route>
@@ -112,73 +107,73 @@ export const Router = () => {
         <Route
           path={ADMIN}
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseBoundary fallback={<Loader />} key={ADMIN}>
               <AuthGuard>{userRole === ADMIN_ROLE ? <AdminPanel /> : <Navigate to={journalType} />}</AuthGuard>
-            </Suspense>
+            </SuspenseBoundary>
           }
         />
 
         <Route
           path={MODER}
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseBoundary fallback={<Loader />} key={MODER}>
               <AuthGuard>{userRole === MODERATOR_ROLE ? <ModerPanel /> : <Navigate to={journalType} />}</AuthGuard>
-            </Suspense>
+            </SuspenseBoundary>
           }
         />
 
         <Route
           path={ADD_HOMEWORK_MOBILE}
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseBoundary fallback={<Loader />} key={ADD_HOMEWORK_MOBILE}>
               <AuthGuard>
                 {userRole >= MODERATOR_ROLE ? <DayHomeworkMobile /> : <Navigate to={JOURNAL_MOBILE} />}
               </AuthGuard>
-            </Suspense>
+            </SuspenseBoundary>
           }
         />
 
         <Route
           path={ADD_HOMEWORK_DESKTOP}
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseBoundary fallback={<Loader />} key={ADD_HOMEWORK_DESKTOP}>
               <AuthGuard>
                 {userRole >= MODERATOR_ROLE ? <DayHomeworkDesktop /> : <Navigate to={JOURNAL_DESKTOP} />}
               </AuthGuard>
-            </Suspense>
+            </SuspenseBoundary>
           }
         />
 
         <Route
           path={AGGREGATE_HOMEWORK}
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseBoundary fallback={<Loader />} key={AGGREGATE_HOMEWORK}>
               <AuthGuard>
                 <HomeworkAggregated />
               </AuthGuard>
-            </Suspense>
+            </SuspenseBoundary>
           }
         />
 
         <Route
           path={NOTE}
           element={
-            <Suspense fallback={<Loader />}>
+            <SuspenseBoundary fallback={<Loader />} key={NOTE}>
               <AuthGuard>
                 <SubjectsNote />
               </AuthGuard>
-            </Suspense>
+            </SuspenseBoundary>
           }
         />
 
         <Route
           path={FEATURES}
           element={
-            <Suspense>
+            <SuspenseBoundary key={FEATURES}>
               <AuthGuard>
                 <Features />
               </AuthGuard>
-            </Suspense>
+            </SuspenseBoundary>
           }
         />
       </Route>
