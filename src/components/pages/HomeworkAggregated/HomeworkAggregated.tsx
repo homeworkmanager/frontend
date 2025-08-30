@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './HomeworkAggregated.module.css';
 import { HomeworkAggregatedLoading } from './HomeworkAggregatedLoading';
 import { ScheduleHomework } from './ScheduleHomework/ScheduleHomework';
+import { Typhography } from '@/components/ui/Typhography';
 import { SCHEDULE_BEGIN } from '@/utils/constants/dates';
 import { TIME_TO_HOMEWORKS_REFRESH } from '@/utils/constants/time';
 import { pad } from '@/utils/helpers/pad';
@@ -23,7 +24,7 @@ export const HomeworkAggregated = () => {
     { pollingInterval: TIME_TO_HOMEWORKS_REFRESH }
   );
 
-  const findBeginDate = (): string => {
+  const findBeginDate = () => {
     if (targetRef.current || !getHomeworksResponse.data) return '';
     if (getHomeworksResponse.data[beginDate]) return beginDate;
 
@@ -53,18 +54,25 @@ export const HomeworkAggregated = () => {
 
   return (
     <>
-      {getHomeworksResponse.isSuccess && (
+      {getHomeworksResponse.isSuccess && getHomeworksResponse.data && (
         <ul className={styles['container']}>
-          {getHomeworksResponse.data &&
-            Object.keys(getHomeworksResponse.data).map((date) => (
-              <li key={date} {...(date === startDate && { ref: targetRef })}>
-                <ScheduleHomework
-                  Homeworks={getHomeworksResponse.data[date].homework}
-                  DayDate={date}
-                  CurrentDate={startDate}
-                />
-              </li>
-            ))}
+          {Object.keys(getHomeworksResponse.data).length === 0 && (
+            <Typhography
+              tag="h2"
+              style={{ textAlign: 'center' }}
+              variant="secondary"
+              children={'Домашних заданий нет!'}
+            />
+          )}
+          {Object.keys(getHomeworksResponse.data).map((date) => (
+            <li key={date} {...(date === startDate && { ref: targetRef })}>
+              <ScheduleHomework
+                Homeworks={getHomeworksResponse.data[date].homework}
+                DayDate={date}
+                CurrentDate={startDate}
+              />
+            </li>
+          ))}
         </ul>
       )}
       {getHomeworksResponse.isLoading && <HomeworkAggregatedLoading />}
