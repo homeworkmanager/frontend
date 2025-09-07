@@ -12,7 +12,7 @@ import { postUserRegister, PostUserRegisterConfig } from '@/utils/api/requests/u
 import { UNIHELPER_DB_CONFIG } from '@/utils/configs/db.config';
 import { COOKIE_KEY } from '@/utils/constants/cookie';
 import { STORE_USER } from '@/utils/constants/dbStores';
-import { OFFLINE_ROLE } from '@/utils/constants/userRoles';
+import { USER_ROLES } from '@/utils/constants/userRoles';
 import IndexedDBService from '@/utils/db/core';
 import dbRepositories from '@/utils/db/UniHelper';
 import { deleteCookie } from '@/utils/services/deleteCookie';
@@ -35,7 +35,7 @@ export const userApi = createApi({
         try {
           await postUserAuth({ params, config });
           const userResponse = await getUserData({ config });
-          await userRepo.set(cacheKey, { ...userResponse.data, role: OFFLINE_ROLE });
+          await userRepo.set(cacheKey, { ...userResponse.data, role: USER_ROLES.OFFLINE });
 
           return { data: userResponse.data };
         } catch (error) {
@@ -53,7 +53,9 @@ export const userApi = createApi({
           const { data } = await queryFulfilled;
           dispatch(userSlice.actions.logIn(data));
         } catch {
-          dispatch(userSlice.actions.logIn({ role: OFFLINE_ROLE, name: '', surname: '', email: '', group_name: '' }));
+          dispatch(
+            userSlice.actions.logIn({ role: USER_ROLES.OFFLINE, name: '', surname: '', email: '', group_name: '' })
+          );
         }
       }
     }),
