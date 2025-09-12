@@ -7,7 +7,7 @@ import { Button } from '@/shared/ui/Button';
 import { MultiList } from '@/shared/ui/MultiList';
 import { Typhography } from '@/shared/ui/Typhography';
 import { USER_ROLES } from '@/utils/constants/userRoles';
-import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
+import { getUserRole } from '@/utils/store/slices/user/selectors';
 
 interface DownloadFilesProps {
   files: FileElem[];

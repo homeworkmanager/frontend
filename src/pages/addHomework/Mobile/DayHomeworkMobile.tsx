@@ -15,11 +15,11 @@ import { Toast } from '@/shared/ui/Toast';
 import { Typhography } from '@/shared/ui/Typhography';
 import { formatText } from '@/utils/helpers/formatText';
 import { pad } from '@/utils/helpers/pad';
+import { scheduleDaysFindIndex } from '@/utils/services/scheduleDays/findIndex';
 import {
   useGetSubjectsQuery,
   usePostModeratorAddHomeworkDateMutation
-} from '@/utils/redux/apiSlices/schedule/scheduleApi';
-import { scheduleDaysFindIndex } from '@/utils/services/scheduleDays/findIndex';
+} from '@/utils/store/middleware/endpoints/schedule';
 import { CarouselWeek } from '@/widgets/CarouselWeek';
 import clsx from 'clsx';
 import { Mousewheel } from 'swiper/modules';

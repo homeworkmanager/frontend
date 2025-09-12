@@ -4,9 +4,9 @@ import { Router } from './modules/Router';
 import { getUserRefresh } from '@/utils/api/requests/user/refresh';
 import { COOKIE_KEY } from '@/utils/constants/cookie';
 import { MAX_TIME_TO_COOKIE_REFRESH } from '@/utils/constants/time';
-import { useAppDispatch } from '@/utils/redux/store';
-import { logIn } from '@/utils/redux/storeSlices/user/slice';
 import { checkUserData } from '@/utils/services/checkUserData';
+import { logIn } from '@/utils/store/slices/user/slice';
+import { useAppDispatch } from '@/utils/store/store';
 
 function App() {
   const dispatch = useAppDispatch();

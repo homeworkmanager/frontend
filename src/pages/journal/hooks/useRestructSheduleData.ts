@@ -4,9 +4,9 @@ import { today } from '../constants';
 
 import { SCHEDULE_BEGIN, START_DATE } from '@/utils/constants/dates';
 import { TIME_TO_SCHEDULE_REFRESH } from '@/utils/constants/time';
-import { useGetAllScheduleQuery } from '@/utils/redux/apiSlices/schedule/scheduleApi';
 import { scheduleDaysFindIndex } from '@/utils/services/scheduleDays/findIndex';
 import { scheduleDaysGenerate } from '@/utils/services/scheduleDays/generate';
+import { useGetAllScheduleQuery } from '@/utils/store/middleware/endpoints/schedule';
 
 export const useRestructSheduleData = () => {
   const getSchedule = useGetAllScheduleQuery(

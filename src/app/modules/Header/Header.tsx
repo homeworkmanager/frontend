@@ -10,8 +10,8 @@ import { Skeleton } from '@/shared/ui/Skeleton';
 import { Typhography } from '@/shared/ui/Typhography';
 import { PAGES } from '@/utils/constants/pages';
 import { USER_ROLES } from '@/utils/constants/userRoles';
-import { getUser } from '@/utils/redux/storeSlices/user/selectors';
 import { AddHomeworkChooseMedia, JournalChooseMedia } from '@/utils/services/chooseMedia';
+import { getUser } from '@/utils/store/slices/user/selectors';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 

@@ -1,4 +1,5 @@
-import { axiosBaseQuery } from '../axiosBaseQuery';
+import { TAGS } from '../../constants/middlewareTags';
+import { middlewareSlice } from '../../middlewareSlice';
 
 import { postModeratorNoteAdd, PostModeratorNoteAddConfig } from '@/utils/api/requests/moderator/note/add';
 import { deleteModeratorNote, DeleteModeratorNoteConfig } from '@/utils/api/requests/moderator/note/delete';
@@ -6,13 +7,9 @@ import { patchModeratorNoteUpdate, PatchModeratorNoteUpdateConfig } from '@/util
 import { getNote, GetNoteConfig } from '@/utils/api/requests/note';
 import { STORE_NOTES } from '@/utils/constants/dbStores';
 import dbRepositories from '@/utils/db/UniHelper';
-import { createApi } from '@reduxjs/toolkit/query/react';
 import { AxiosError } from 'axios';
 
-export const noteApi = createApi({
-  reducerPath: 'noteApi',
-  baseQuery: axiosBaseQuery(),
-  tagTypes: ['GetNote'],
+export const noteEndpoints = middlewareSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNote: builder.query<NoteResponse, GetNoteConfig>({
       async queryFn(requestConfig: GetNoteConfig) {
@@ -38,21 +35,21 @@ export const noteApi = createApi({
           };
         }
       },
-      providesTags: ['GetNote']
+      providesTags: [TAGS.GET_NOTE]
     }),
     postAddNote: builder.mutation({
       queryFn: ({ params, config }: PostModeratorNoteAddConfig) => postModeratorNoteAdd({ params, config }),
-      invalidatesTags: ['GetNote']
+      invalidatesTags: [TAGS.GET_NOTE]
     }),
     deleteNote: builder.mutation({
       queryFn: ({ params, config }: DeleteModeratorNoteConfig) => deleteModeratorNote({ params, config }),
-      invalidatesTags: ['GetNote']
+      invalidatesTags: [TAGS.GET_NOTE]
     }),
     patchNote: builder.mutation({
       queryFn: ({ params, config }: PatchModeratorNoteUpdateConfig) => patchModeratorNoteUpdate({ params, config }),
-      invalidatesTags: ['GetNote']
+      invalidatesTags: [TAGS.GET_NOTE]
     })
   })
 });
 
-export const { useGetNoteQuery, usePostAddNoteMutation, useDeleteNoteMutation, usePatchNoteMutation } = noteApi;
+export const { useGetNoteQuery, usePostAddNoteMutation, useDeleteNoteMutation, usePatchNoteMutation } = noteEndpoints;

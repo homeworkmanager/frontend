@@ -1,7 +1,5 @@
-import { logOut, userSlice } from '../../storeSlices/user/slice';
-import { axiosBaseQuery } from '../axiosBaseQuery';
-import { noteApi } from '../note';
-import { scheduleApi } from '../schedule';
+import { TAGS } from '../../constants/middlewareTags';
+import { middlewareSlice } from '../../middlewareSlice';
 
 import { patchAdminRole, PatchAdminRoleConfig } from '@/utils/api/requests/admin/role/id';
 import { getAdminUsers, GetAdminUsersConfig } from '@/utils/api/requests/admin/users';
@@ -16,13 +14,10 @@ import { USER_ROLES } from '@/utils/constants/userRoles';
 import IndexedDBService from '@/utils/db/core';
 import dbRepositories from '@/utils/db/UniHelper';
 import { deleteCookie } from '@/utils/services/deleteCookie';
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { logOut, userSlice } from '@/utils/store/slices/user';
 import { AxiosError } from 'axios';
 
-export const userApi = createApi({
-  reducerPath: 'userApi',
-  baseQuery: axiosBaseQuery(),
-  tagTypes: ['GetUserConfig', 'GetAdminUsers'],
+export const userEndpoints = middlewareSlice.injectEndpoints({
   endpoints: (builder) => ({
     postRegister: builder.mutation({
       queryFn: ({ params, config }: PostUserRegisterConfig) => postUserRegister({ params, config })
@@ -68,18 +63,19 @@ export const userApi = createApi({
 
           await IndexedDBService.dropDataBase(UNIHELPER_DB_CONFIG);
           dispatch(logOut());
-          dispatch(scheduleApi.util.invalidateTags(['GetAllSchedule', 'GetScheduleHomework']));
-          dispatch(noteApi.util.invalidateTags(['GetNote']));
+          dispatch(
+            middlewareSlice.util.invalidateTags([TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK, TAGS.GET_NOTE])
+          );
         }
       }
     }),
     getAdminUsers: builder.query<AdminUsersResponse, GetAdminUsersConfig>({
       queryFn: (requestConfig?: GetAdminUsersConfig) => getAdminUsers(requestConfig),
-      providesTags: ['GetAdminUsers']
+      providesTags: [TAGS.GET_ADMIN_USERS]
     }),
     patchAdminRole: builder.mutation<AdminRoleResponse, PatchAdminRoleConfig>({
       queryFn: ({ params, config }: PatchAdminRoleConfig) => patchAdminRole({ params, config }),
-      invalidatesTags: ['GetAdminUsers']
+      invalidatesTags: [TAGS.GET_ADMIN_USERS]
     })
   })
 });
@@ -90,4 +86,4 @@ export const {
   useDeleteLogoutMutation,
   useGetAdminUsersQuery,
   usePatchAdminRoleMutation
-} = userApi;
+} = userEndpoints;

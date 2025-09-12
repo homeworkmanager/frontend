@@ -2,7 +2,7 @@ import styles from './DeleteFile.module.css';
 import { DeleteLogo } from '@/shared/Icons/Delete';
 import { Button } from '@/shared/ui/Button';
 import { Loader } from '@/shared/ui/Loader';
-import { useDeleteModeratorFileMutation } from '@/utils/redux/apiSlices/schedule';
+import { useDeleteModeratorFileMutation } from '@/utils/store/middleware/endpoints/schedule';
 
 interface DeleteFileProps {
   file: FileElem;

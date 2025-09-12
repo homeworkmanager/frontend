@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import './styles/index.ts';
 
 import App from './app';
-import { store } from './utils/redux/store.ts';
+import { store } from './utils/store/store.ts';
 import { registerSW } from 'virtual:pwa-register';
 
 registerSW({ immediate: true });

@@ -6,7 +6,7 @@ import { Loader } from '@/shared/ui/Loader';
 import { Textarea } from '@/shared/ui/Textarea';
 import { Toast } from '@/shared/ui/Toast';
 import { formatText } from '@/utils/helpers/formatText';
-import { usePostAddNoteMutation } from '@/utils/redux/apiSlices/note/noteApi';
+import { usePostAddNoteMutation } from '@/utils/store/middleware/endpoints/note';
 import { motion } from 'framer-motion';
 
 interface AddNoteProps {

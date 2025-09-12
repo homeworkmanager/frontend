@@ -7,8 +7,8 @@ import { SubjectNotesLoading } from './SubjectsNoteLoading';
 import { Typhography } from '@/shared/ui/Typhography';
 import { TIME_TO_NOTES_REFRESH } from '@/utils/constants/time';
 import { USER_ROLES } from '@/utils/constants/userRoles';
-import { useGetNoteQuery } from '@/utils/redux/apiSlices/note/noteApi';
-import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
+import { useGetNoteQuery } from '@/utils/store/middleware/endpoints/note';
+import { getUserRole } from '@/utils/store/slices/user/selectors';
 import clsx from 'clsx';
 
 export default function SubjectsNote() {

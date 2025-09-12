@@ -14,7 +14,7 @@ import { Modal } from '@/shared/ui/Modal';
 import { Typhography } from '@/shared/ui/Typhography';
 import { PAGES } from '@/utils/constants/pages';
 import { USER_ROLES } from '@/utils/constants/userRoles';
-import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
+import { getUserRole } from '@/utils/store/slices/user/selectors';
 
 type ModuleVariants = 'profile' | 'theme' | 'none';
 

@@ -1,6 +1,6 @@
 import styles from './ModerPanel.module.css';
 import { KeyRefresh } from '@/shared/modules/molecules/KeyRefresh';
-import { useGetModeratorKeyQuery } from '@/utils/redux/apiSlices/group/groupApi';
+import { useGetModeratorKeyQuery } from '@/utils/store/middleware/endpoints/group';
 
 export default function ModerPanel() {
   const getModeatorKey = useGetModeratorKeyQuery(undefined);

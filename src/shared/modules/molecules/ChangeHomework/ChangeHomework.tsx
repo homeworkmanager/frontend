@@ -6,7 +6,7 @@ import { Loader } from '@/shared/ui/Loader';
 import { Textarea } from '@/shared/ui/Textarea';
 import { Toast } from '@/shared/ui/Toast';
 import { formatText } from '@/utils/helpers/formatText';
-import { usePatchModeratorHomeworkMutation } from '@/utils/redux/apiSlices/schedule/scheduleApi';
+import { usePatchModeratorHomeworkMutation } from '@/utils/store/middleware/endpoints/schedule';
 import { motion } from 'framer-motion';
 
 interface ChangeHomeworkProps {

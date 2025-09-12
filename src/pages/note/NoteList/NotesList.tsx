@@ -14,8 +14,8 @@ import { Toast } from '@/shared/ui/Toast';
 import { Typhography } from '@/shared/ui/Typhography';
 import { USER_ROLES } from '@/utils/constants/userRoles';
 import { formatText } from '@/utils/helpers/formatText';
-import { useDeleteNoteMutation } from '@/utils/redux/apiSlices/note/noteApi';
-import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
+import { useDeleteNoteMutation } from '@/utils/store/middleware/endpoints/note';
+import { getUserRole } from '@/utils/store/slices/user/selectors';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 

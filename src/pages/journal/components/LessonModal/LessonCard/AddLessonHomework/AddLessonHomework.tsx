@@ -9,7 +9,7 @@ import { Modal } from '@/shared/ui/Modal';
 import { Textarea } from '@/shared/ui/Textarea';
 import { Toast } from '@/shared/ui/Toast';
 import { formatText } from '@/utils/helpers/formatText';
-import { usePostModeratorAddHomeworkClassMutation } from '@/utils/redux/apiSlices/schedule/scheduleApi';
+import { usePostModeratorAddHomeworkClassMutation } from '@/utils/store/middleware/endpoints/schedule';
 
 interface ModeratorBlockProps {
   apiData: OutputClass;

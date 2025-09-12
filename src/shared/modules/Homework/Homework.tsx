@@ -24,8 +24,8 @@ import {
   useDeleteModeratorHomeworkMutation,
   usePostHomeworkStatusMutation,
   usePostModeratorAddFileMutation
-} from '@/utils/redux/apiSlices/schedule';
-import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
+} from '@/utils/store/middleware/endpoints/schedule';
+import { getUserRole } from '@/utils/store/slices/user/selectors';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 

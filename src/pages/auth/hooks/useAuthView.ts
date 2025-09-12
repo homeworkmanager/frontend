@@ -11,9 +11,9 @@ import {
 
 import { routerNavigator } from '@/app/modules/Navigator';
 import { TIME_TO_GROUPS_REFRESH } from '@/utils/constants/time';
-import { useLazyGetAllGroupsQuery } from '@/utils/redux/apiSlices/group/groupApi';
-import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/redux/apiSlices/user/userApi';
 import { JournalChooseMedia } from '@/utils/services/chooseMedia';
+import { useLazyGetAllGroupsQuery } from '@/utils/store/middleware/endpoints/group';
+import { usePostAuthMutation,usePostRegisterMutation } from '@/utils/store/middleware/endpoints/user';
 import { useFormik } from 'formik';
 
 type Stages = 'login' | 'profile' | 'register';

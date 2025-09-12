@@ -1,4 +1,5 @@
-import { axiosBaseQuery } from '../axiosBaseQuery';
+import { TAGS } from '../../constants/middlewareTags';
+import { middlewareSlice } from '../../middlewareSlice';
 
 import { patchAdminRefreshAllData, PatchAdminRefreshAllDataConfig } from '@/utils/api/requests/admin/refreshAllData';
 import { PatchAdminUpdateClasses, patchAdminUpdateClasses } from '@/utils/api/requests/admin/updateClasses';
@@ -25,13 +26,9 @@ import { getSubjects, GetSubjectsConfig } from '@/utils/api/requests/subjects';
 import { SCHEDULE_BEGIN } from '@/utils/constants/dates';
 import { STORE_HOMEWORK, STORE_NOTES, STORE_SCHEDULE } from '@/utils/constants/dbStores';
 import dbRepositories from '@/utils/db/UniHelper';
-import { createApi } from '@reduxjs/toolkit/query/react';
 import { AxiosError } from 'axios';
 
-export const scheduleApi = createApi({
-  reducerPath: 'scheduleApi',
-  baseQuery: axiosBaseQuery(),
-  tagTypes: ['GetAllSchedule', 'GetScheduleHomework', 'GetSubjects'],
+export const scheduleApi = middlewareSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllSchedule: builder.query<AllScheduleResponse, GetAllScheduleConfig>({
       async queryFn({ params, config }: GetAllScheduleConfig) {
@@ -76,45 +73,45 @@ export const scheduleApi = createApi({
           };
         }
       },
-      providesTags: ['GetAllSchedule']
+      providesTags: [TAGS.GET_ALL_SCHEDULE]
     }),
     patchAdminUpdateClasses: builder.mutation<AdminUpdateClassesResponse, PatchAdminUpdateClasses>({
       queryFn: (requestConfig?: PatchAdminUpdateClasses) => patchAdminUpdateClasses(requestConfig),
-      invalidatesTags: ['GetAllSchedule']
+      invalidatesTags: [TAGS.GET_ALL_SCHEDULE]
     }),
     patchAdminRefreshAllData: builder.mutation<AdminRefreshAllDataResponse, PatchAdminRefreshAllDataConfig>({
       queryFn: (requestConfig?: PatchAdminRefreshAllDataConfig) => patchAdminRefreshAllData(requestConfig),
-      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework', 'GetSubjects']
+      invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK, TAGS.GET_SUBJECTS]
     }),
     postModeratorAddHomeworkClass: builder.mutation({
       queryFn: ({ params, config }: PostModeratorAddHomeworkClassConfig) =>
         postModeratorAddHomeworkClass({ params, config }),
-      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+      invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK]
     }),
     postModeratorAddHomeworkDate: builder.mutation({
       queryFn: ({ params, config }: PostModeratorAddHomeworkDateConfig) =>
         postModeratorAddHomeworkDate({ params, config }),
-      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+      invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK]
     }),
     deleteModeratorHomework: builder.mutation({
       queryFn: ({ params, config }: DeleteModeratorHomeworkConfig) => deleteModeratorHomework({ params, config }),
-      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+      invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK]
     }),
     patchModeratorHomework: builder.mutation({
       queryFn: ({ params, config }: PatchModeratorHomeworkConfig) => patchModeratorHomework({ params, config }),
-      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+      invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK]
     }),
     postHomeworkStatus: builder.mutation({
       queryFn: ({ params, config }: PostHomeworkStatusConfig) => postHomeworkStatus({ params, config }),
-      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+      invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK]
     }),
     postModeratorAddFile: builder.mutation({
       queryFn: ({ params, config }: PostModeratorAddFileConfig) => postModeratorAddFile({ params, config }),
-      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+      invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK]
     }),
     deleteModeratorFile: builder.mutation({
       queryFn: ({ params, config }: DeleteModeratorFileConfig) => deleteModearatorFile({ params, config }),
-      invalidatesTags: ['GetAllSchedule', 'GetScheduleHomework']
+      invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK]
     }),
     getScheduleHomework: builder.query<ScheduleHomeworkResponse, GetScheduleHomeworkConfig>({
       async queryFn({ params, config }: GetScheduleHomeworkConfig) {
@@ -140,11 +137,11 @@ export const scheduleApi = createApi({
           };
         }
       },
-      providesTags: ['GetScheduleHomework']
+      providesTags: [TAGS.GET_SCHEDULE_HOMEWORK]
     }),
     getSubjects: builder.query<GetSubjectsResponse, GetSubjectsConfig>({
       queryFn: (requestConfig: GetSubjectsConfig) => getSubjects(requestConfig),
-      providesTags: ['GetSubjects']
+      providesTags: [TAGS.GET_SUBJECTS]
     })
   })
 });

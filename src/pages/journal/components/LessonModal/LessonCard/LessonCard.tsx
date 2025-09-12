@@ -12,7 +12,7 @@ import { Typhography } from '@/shared/ui/Typhography';
 import { USER_ROLES } from '@/utils/constants/userRoles';
 import { convertSummary } from '@/utils/helpers/convertSummary';
 import { formatText } from '@/utils/helpers/formatText';
-import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
+import { getUserRole } from '@/utils/store/slices/user/selectors';
 import { motion } from 'framer-motion';
 
 interface LessonInfoProps {

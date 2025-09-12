@@ -7,8 +7,7 @@ import { Modal } from '@/shared/ui/Modal';
 import { Typhography } from '@/shared/ui/Typhography';
 import {
   usePatchAdminRefreshAllDataMutation,
-  usePatchAdminUpdateClassesMutation
-} from '@/utils/redux/apiSlices/schedule/scheduleApi';
+  usePatchAdminUpdateClassesMutation} from '@/utils/store/middleware/endpoints/schedule';
 import { motion } from 'framer-motion';
 
 export const ScheduleAction = () => {

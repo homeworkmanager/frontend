@@ -11,8 +11,8 @@ import LessonModal from '@/pages/journal/components/LessonModal';
 import { Loader } from '@/shared/ui/Loader';
 import { PAGES } from '@/utils/constants/pages';
 import { USER_ROLES } from '@/utils/constants/userRoles';
-import { getUserRole } from '@/utils/redux/storeSlices/user/selectors';
 import { JournalChooseMedia } from '@/utils/services/chooseMedia';
+import { getUserRole } from '@/utils/store/slices/user/selectors';
 
 export const Router = () => {
   const userRole = useSelector(getUserRole);

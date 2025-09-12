@@ -3,7 +3,7 @@ import { KeyRefresh } from '@/shared/modules/molecules/KeyRefresh/KeyRefresh';
 import { Button } from '@/shared/ui/Button';
 import { Loader } from '@/shared/ui/Loader';
 import { Typhography } from '@/shared/ui/Typhography';
-import { useGetAdminGroupsQuery, usePatchAdminKeysRegenerateMutation } from '@/utils/redux/apiSlices/group/groupApi';
+import { useGetAdminGroupsQuery, usePatchAdminKeysRegenerateMutation } from '@/utils/store/middleware/endpoints/group';
 
 export const GroupsKeys = () => {
   const getAdminGroupsResponse = useGetAdminGroupsQuery(undefined);

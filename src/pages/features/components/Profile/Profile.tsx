@@ -7,8 +7,8 @@ import { Loader } from '@/shared/ui/Loader';
 import { Typhography } from '@/shared/ui/Typhography';
 import { PAGES } from '@/utils/constants/pages';
 import { USER_ROLES } from '@/utils/constants/userRoles';
-import { useDeleteLogoutMutation } from '@/utils/redux/apiSlices/user/userApi';
-import { getUser } from '@/utils/redux/storeSlices/user/selectors';
+import { useDeleteLogoutMutation } from '@/utils/store/middleware/endpoints/user';
+import { getUser } from '@/utils/store/slices/user/selectors';
 
 export const Profile = () => {
   const user = useSelector(getUser);

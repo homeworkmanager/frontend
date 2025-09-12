@@ -7,7 +7,7 @@ import { Typhography } from '@/shared/ui/Typhography';
 import { SCHEDULE_BEGIN } from '@/utils/constants/dates';
 import { TIME_TO_HOMEWORKS_REFRESH } from '@/utils/constants/time';
 import { pad } from '@/utils/helpers/pad';
-import { useGetScheduleHomeworkQuery } from '@/utils/redux/apiSlices/schedule';
+import { useGetScheduleHomeworkQuery } from '@/utils/store/middleware/endpoints/schedule';
 
 const beginDate = `${new Date().getFullYear()}-${pad(new Date().getMonth() + 1)}-${pad(new Date().getDate())}`;
 
