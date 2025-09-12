@@ -1,3 +1,1 @@
-const COOKIE_KEY = 'session_key';
-
-export { COOKIE_KEY };
+export const COOKIE_KEY = 'session_key';

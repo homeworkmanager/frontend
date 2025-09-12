@@ -1,10 +1,10 @@
 import { UNIHELPER_DB_CONFIG } from '../configs/db.config';
 import { COOKIE_KEY } from '../constants/cookie';
-import { AUTH } from '../constants/routes';
+import { PAGES } from '../constants/pages';
 import IndexedDBService from '../db/core';
 import { deleteCookie } from '../services/deleteCookie';
 
-import { routerNavigator } from '@/components/modules/Router/Navigator';
+import { routerNavigator } from '@/app/modules/Navigator';
 import axios, { AxiosError } from 'axios';
 
 export const api = axios.create({
@@ -24,7 +24,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       IndexedDBService.dropDataBase(UNIHELPER_DB_CONFIG);
       deleteCookie(COOKIE_KEY);
-      routerNavigator.to(AUTH, { replace: true });
+      routerNavigator.to(PAGES.AUTH, { replace: true });
     }
 
     return Promise.reject(error);
