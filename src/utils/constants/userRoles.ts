@@ -1,6 +1,6 @@
-const OFFLINE_ROLE = 0;
-const BASE_ROLE = 1;
-const MODERATOR_ROLE = 2;
-const ADMIN_ROLE = 3;
-
-export { BASE_ROLE, MODERATOR_ROLE, ADMIN_ROLE, OFFLINE_ROLE };
+export const USER_ROLES = {
+  OFFLINE: 0,
+  BASE: 1,
+  MODERATOR: 2,
+  ADMIN: 3
+} as const;

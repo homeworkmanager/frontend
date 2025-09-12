@@ -1,0 +1,134 @@
+import React, { ChangeEvent } from 'react';
+
+import styles from './UploadFiles.module.css';
+import { DeleteLogo } from '@/shared/Icons/Delete';
+import { QuitLogo } from '@/shared/Icons/Quit';
+import { Button } from '@/shared/ui/Button';
+import { Loader } from '@/shared/ui/Loader';
+import { MultiList } from '@/shared/ui/MultiList';
+import { Typhography } from '@/shared/ui/Typhography';
+import clsx from 'clsx';
+
+type FileUploadStateType = {
+  isLoading: boolean;
+  isError: boolean;
+};
+
+interface UploadFilesProps {
+  currentFilesCount?: number;
+  fileUploadState?: FileUploadStateType;
+  addHomeworkFile: (files: File[]) => Promise<void> | void;
+  onClose: () => void;
+}
+
+const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+  e.preventDefault();
+  e.stopPropagation();
+};
+
+export const UploadFiles = ({ currentFilesCount, fileUploadState, addHomeworkFile, onClose }: UploadFilesProps) => {
+  const [files, setFiles] = React.useState<File[]>([]);
+
+  const deleteFile = (currentFile: File) => {
+    setFiles((prev) => [...prev.filter((file) => file.name !== currentFile.name)]);
+  };
+
+  const uploadFiles = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    if (files.length + (currentFilesCount ?? 0) === 10) return;
+
+    const newFile = Array.from(e.target.files)[0];
+
+    setFiles((prev) => [...prev.filter((file) => file.name !== newFile.name), newFile]);
+
+    e.target.value = '';
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const newFiles = Array.from(e.dataTransfer.files);
+
+    if (files.length + newFiles.length + (currentFilesCount ?? 0) > 10) return;
+
+    setFiles((prev) => [
+      ...prev.filter((prevFile) => !newFiles.some((newFile) => newFile.name === prevFile.name)),
+      ...newFiles
+    ]);
+  };
+
+  return (
+    <div className={styles['env']}>
+      <div className={styles['container']}>
+        <div className={styles['header']}>
+          <Typhography tag="h2" variant="secondary" children="Добавить файлы" />
+          <Button variant="logo" children={<QuitLogo />} onClick={onClose} />
+        </div>
+        <div className={styles['body']}>
+          <label
+            htmlFor="file-upload"
+            typeof="file"
+            className={clsx(
+              styles['file-upload-label'],
+              files.length + (currentFilesCount ?? 0) >= 10 && styles['disabled']
+            )}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+          >
+            {files.length === 0 && (
+              <Typhography tag="span" variant="thirdy" className={styles['empty']}>
+                Выберите файлы
+              </Typhography>
+            )}
+
+            {files.length > 0 && (
+              <MultiList className={styles['files']}>
+                {files.map((file, index) => (
+                  <MultiList.Row key={index}>
+                    <MultiList.Column icons={3}>
+                      <div className={styles['file-info']}>
+                        <p className={styles['disc']} />
+                        <Typhography tag="span" variant="thirdy" children={file.name} />
+                      </div>
+                    </MultiList.Column>
+                    <MultiList.Column>
+                      <Button
+                        variant="logo"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          deleteFile(file);
+                        }}
+                        children={<DeleteLogo className={styles['delete-icon']} />}
+                      />
+                    </MultiList.Column>
+                  </MultiList.Row>
+                ))}
+              </MultiList>
+            )}
+            {files.length + (currentFilesCount ?? 0) < 10 && (
+              <input
+                multiple={true}
+                id="file-upload"
+                type="file"
+                className={styles['file-input']}
+                onChange={uploadFiles}
+              />
+            )}
+          </label>
+        </div>
+
+        <div className={styles['footer']}>
+          <Button variant="cancel" children={'Отмена'} onClick={onClose} />
+          <Button
+            variant="accept"
+            disabled={files.length === 0 || fileUploadState?.isLoading}
+            onClick={() => addHomeworkFile(files)}
+            children={!fileUploadState?.isLoading ? 'Добавить' : <Loader spinnerSize={18} />}
+          />
+          {fileUploadState?.isError && <Typhography tag="p" variant="small" children={'Ошибка загрузки'} />}
+        </div>
+      </div>
+    </div>
+  );
+};

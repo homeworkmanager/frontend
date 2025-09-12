@@ -1,5 +1,20 @@
 import { pad } from '../helpers/pad';
 
+const MONTH_DATA: Months = {
+  1: 'Январь',
+  2: 'Февраль',
+  3: 'Март',
+  4: 'Апрель',
+  5: 'Май',
+  6: 'Июнь',
+  7: 'Июль',
+  8: 'Август',
+  9: 'Сентябрь',
+  10: 'Октябрь',
+  11: 'Ноябрь',
+  12: 'Декабрь'
+} as const;
+
 const START_DATE: StartDateType = {
   year: 2025,
   month: 8,
@@ -19,4 +34,6 @@ const SCHEDULE_BEGIN = {
   days: 364
 };
 
-export { START_DATE, SEM_START, SCHEDULE_BEGIN };
+const FIRST_SESSION_DAY: CustomDate = { year: 2025, month: 12, day: 22 };
+
+export { MONTH_DATA, START_DATE, SEM_START, SCHEDULE_BEGIN, FIRST_SESSION_DAY };
