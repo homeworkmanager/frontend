@@ -13,7 +13,7 @@ import { routerNavigator } from '@/app/modules/Navigator';
 import { TIME_TO_GROUPS_REFRESH } from '@/utils/constants/time';
 import { JournalChooseMedia } from '@/utils/services/chooseMedia';
 import { useLazyGetAllGroupsQuery } from '@/utils/store/middleware/endpoints/group';
-import { usePostAuthMutation,usePostRegisterMutation } from '@/utils/store/middleware/endpoints/user';
+import { usePostAuthMutation, usePostRegisterMutation } from '@/utils/store/middleware/endpoints/user';
 import { useFormik } from 'formik';
 
 type Stages = 'login' | 'profile' | 'register';
@@ -32,6 +32,12 @@ const authInitValues = {
   email: '',
   password: ''
 };
+
+const schemas = {
+  login: LogInSchema,
+  profile: ProfileSchema,
+  register: RegisterSchema
+} as const;
 
 export const useAuthView = () => {
   const [stage, setStage] = React.useState<Stages>('login');
@@ -107,12 +113,6 @@ export const useAuthView = () => {
       console.log(postRegisterResponse.error);
     }
   };
-
-  const schemas = {
-    login: LogInSchema,
-    profile: ProfileSchema,
-    register: RegisterSchema
-  } as const;
 
   const form = useFormik({
     initialValues: authInitValues,

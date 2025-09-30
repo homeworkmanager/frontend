@@ -1,10 +1,17 @@
-import React from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 const preventDropdown = 'data-prevent-dropdown';
 
+type DropdownType<T extends HTMLElement = HTMLDivElement> = {
+  menuRef: React.RefObject<T>;
+  isOpen: boolean;
+  action: { open: () => void; close: () => void; toggle: () => void };
+  preventDropdown: string;
+};
+
 const useDropdown = <T extends HTMLElement = HTMLDivElement>() => {
-  const menuRef = React.useRef<T>(null);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const menuRef = useRef<T>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const action = {
     open: () => setIsOpen(true),
@@ -12,7 +19,7 @@ const useDropdown = <T extends HTMLElement = HTMLDivElement>() => {
     toggle: () => setIsOpen((prev) => !prev)
   };
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     const handler = (event: MouseEvent | TouchEvent) => {
       const target = event.target as HTMLElement;
 
@@ -32,13 +39,6 @@ const useDropdown = <T extends HTMLElement = HTMLDivElement>() => {
   }, [isOpen]);
 
   return { menuRef, isOpen, action, preventDropdown };
-};
-
-type DropdownType<T extends HTMLElement = HTMLDivElement> = {
-  menuRef: React.RefObject<T>;
-  isOpen: boolean;
-  action: { open: () => void; close: () => void; toggle: () => void };
-  preventDropdown: string;
 };
 
 export { useDropdown, type DropdownType as DropDownType };
