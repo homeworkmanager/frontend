@@ -28,7 +28,7 @@ import { STORE_HOMEWORK, STORE_NOTES, STORE_SCHEDULE } from '@/utils/constants/d
 import dbRepositories from '@/utils/db/UniHelper';
 import { AxiosError } from 'axios';
 
-export const scheduleApi = middlewareSlice.injectEndpoints({
+export const scheduleEndpoints = middlewareSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllSchedule: builder.query<AllScheduleResponse, GetAllScheduleConfig>({
       async queryFn({ params, config }: GetAllScheduleConfig) {
@@ -159,4 +159,4 @@ export const {
   usePostHomeworkStatusMutation,
   useGetScheduleHomeworkQuery,
   useGetSubjectsQuery
-} = scheduleApi;
+} = scheduleEndpoints;

@@ -1,11 +1,11 @@
 import { Layout } from '../Layout/Layout';
-import { NavigationInitializer } from '../Navigator/Navigator';
-
-import { ThemeProvider } from '@/utils/contexts/theme/ThemeProvider';
+import { NavigationInitializer } from '../Navigator';
+// import { NetworkWatcher } from '../NetworkWatcher';
 
 export const Root = () => (
-  <ThemeProvider>
+  <>
     <Layout />
     <NavigationInitializer />
-  </ThemeProvider>
+    {/* <NetworkWatcher /> */}
+  </>
 );
