@@ -1,1 +1,1 @@
-export * from './scheduleApi';
+export * from './scheduleEndpoints';

@@ -1,6 +1,6 @@
 import { STORE_HOMEWORK, STORE_NOTES, STORE_SCHEDULE, STORE_USER } from '../constants/dbStores';
 
-const UNIHELPER_DB_CONFIG: DBConfig = {
+export const UNIHELPER_DB_CONFIG: DBConfig = {
   name: 'UniHelperDB',
   version: 1,
   stores: [
@@ -50,5 +50,3 @@ const UNIHELPER_DB_CONFIG: DBConfig = {
     }
   ]
 };
-
-export { UNIHELPER_DB_CONFIG };
