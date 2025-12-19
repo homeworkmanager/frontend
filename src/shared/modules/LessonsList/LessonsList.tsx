@@ -9,10 +9,10 @@ const lessonColor = {
   '': 'unknown',
   ЛК: 'lect',
   ПР: 'pract',
-  Лаб: 'lab',
-  Зачет: 'zach',
-  Консультация: 'cons',
-  Экзамен: 'exam'
+  ЛАБ: 'lab',
+  ЗАЧ: 'zach',
+  Конс: 'cons',
+  Э: 'exam'
 };
 
 export const LessonsList = ({ lessons }: LessonsListProps) => {

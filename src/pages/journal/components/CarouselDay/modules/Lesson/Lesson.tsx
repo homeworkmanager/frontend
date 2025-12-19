@@ -20,13 +20,14 @@ const lessonsNumbers = {
   '19:40': 7
 };
 
-const lessonColor = {
-  ЛК: 'lect',
-  ПР: 'pract',
-  Лаб: 'lab',
-  Зачет: 'zach',
-  Консультация: 'cons',
-  Экзамен: 'exam'
+const lessonNames = {
+  '': '-',
+  ЛК: 'ЛК',
+  ПР: 'ПР',
+  ЛАБ: 'ЛАБ',
+  ЗАЧ: 'Зачёт',
+  Конс: 'Консультация',
+  Э: 'Экзамен'
 };
 
 const getTeacher = (rawDescrciption: string) => {
@@ -60,8 +61,8 @@ export const Lesson = ({ apiData }: LessonProps) => {
     <section className={styles['container']} onClick={showDetails}>
       <header className={styles['header']}>
         <h3 className={styles['subject']}>{convertSummary(para.summary)}</h3>
-        <p className={clsx(styles['type'], styles[lessonColor[para.category as keyof typeof lessonColor]])}>
-          {para.category}
+        <p className={clsx(styles['type'], styles[lessonNames[para.category as keyof typeof lessonNames]])}>
+          {lessonNames[para.category as keyof typeof lessonNames]}
         </p>
       </header>
       {apiData.homework.length > 0 && (
