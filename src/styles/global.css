@@ -33,6 +33,7 @@
 
 [data-theme='dark'] {
   --main-background-color: #17171c;
+  --new-year-background-color: #1c2230;
 
   --text-invert-color: #f8f9fa;
   --header-background-color: #000;
@@ -49,6 +50,7 @@
 
 [data-theme='light'] {
   --main-background-color: #fcf3f3;
+  --new-year-background-color: #d9e9f1;
 
   --text-invert-color: #17171c;
   --header-background-color: #e2dddd;

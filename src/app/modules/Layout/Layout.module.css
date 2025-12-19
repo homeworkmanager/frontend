@@ -7,6 +7,8 @@
   height: 100vh;
   margin: 0 auto;
   max-width: var(--max-width-mobile);
+  position: relative;
+  z-index: 1;
 
   @media (min-width: 1050px) {
     max-width: var(--max-width-desktop);

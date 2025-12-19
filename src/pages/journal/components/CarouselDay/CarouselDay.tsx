@@ -30,13 +30,7 @@ export const CarouselDay = ({
           tag="ul"
           ref={dayCarouselRef}
           modules={[Virtual]}
-          virtual={{
-            slides: apiDates ?? [],
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            renderExternal: (swiper: any) => {
-              if (swiper.virtual?.cache) swiper.virtual.cache = {};
-            }
-          }}
+          virtual={{ slides: apiDates }}
           slidesPerView={1}
           initialSlide={currentDateIndex}
           onSlideChange={onDayNodeScroll}
