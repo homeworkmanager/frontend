@@ -14,4 +14,4 @@ export const PAGES = {
   FEATURES: BASE + 'features',
   ADMIN: BASE + 'admin',
   MODER: BASE + 'moderator'
-} as const;
+};
