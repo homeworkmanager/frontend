@@ -1,6 +1,6 @@
 import { pad } from '../helpers/pad';
 
-const MONTH_DATA: Months = {
+export const MONTH_DATA: Months = {
   1: 'Январь',
   2: 'Февраль',
   3: 'Март',
@@ -13,27 +13,25 @@ const MONTH_DATA: Months = {
   10: 'Октябрь',
   11: 'Ноябрь',
   12: 'Декабрь'
-} as const;
+};
 
-const START_DATE: StartDateType = {
+export const START_DATE: StartDateType = {
   year: 2025,
   month: 8,
   day: 25
 };
 
-const SEM_START = {
+export const SEM_START = {
   year: 2025,
   month: 9,
   day: 1
 };
 
-const SCHEDULE_BEGIN = {
+export const SCHEDULE_BEGIN = {
   date: new Date(
     `${START_DATE.year}-${pad(START_DATE.month)}-${pad(START_DATE.day)}T00:00:00`.concat('.000+03:00')
   ).toISOString(),
   days: 364
 };
 
-const FIRST_SESSION_DAY: CustomDate = { year: 2025, month: 12, day: 22 };
-
-export { MONTH_DATA, START_DATE, SEM_START, SCHEDULE_BEGIN, FIRST_SESSION_DAY };
+export const FIRST_SESSION_DAY: CustomDate = { year: 2025, month: 12, day: 23 };
