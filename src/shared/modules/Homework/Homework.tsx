@@ -79,7 +79,7 @@ export const Homework = ({
 
   const changeLessonHomeworkStatus = async (homework: RestructHomeworkElement) => {
     const response = await postHomeworkStatus({
-      params: { homeworkID: homework.homeworkID, status: !homework.isCompleted }
+      params: { homeworkID: homework.homeworkID, isCompleted: !homework.isCompleted, dueDate: homework.dueDate }
     });
 
     if (!response.error) {

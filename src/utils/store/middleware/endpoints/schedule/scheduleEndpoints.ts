@@ -75,6 +75,32 @@ export const scheduleEndpoints = middlewareSlice.injectEndpoints({
       },
       providesTags: [TAGS.GET_ALL_SCHEDULE]
     }),
+    getScheduleHomework: builder.query<ScheduleHomeworkResponse, GetScheduleHomeworkConfig>({
+      async queryFn({ params, config }: GetScheduleHomeworkConfig) {
+        const homeworkCacheKey = STORE_HOMEWORK;
+        const homeworkRepo = await dbRepositories.homework;
+
+        try {
+          const homeworkResponse = await getScheduleHomework({ params, config });
+          await homeworkRepo.set(homeworkCacheKey, homeworkResponse.data);
+
+          return { data: homeworkResponse.data };
+        } catch (error) {
+          const cached = await homeworkRepo.get(homeworkCacheKey);
+
+          if (cached) return { data: cached?.data };
+
+          const err = error as AxiosError;
+          return {
+            error: {
+              status: err.response?.status,
+              data: err.response?.data || err.message
+            }
+          };
+        }
+      },
+      providesTags: [TAGS.GET_SCHEDULE_HOMEWORK]
+    }),
     patchAdminUpdateClasses: builder.mutation<AdminUpdateClassesResponse, PatchAdminUpdateClasses>({
       queryFn: (requestConfig?: PatchAdminUpdateClasses) => patchAdminUpdateClasses(requestConfig),
       invalidatesTags: [TAGS.GET_ALL_SCHEDULE]
@@ -103,7 +129,75 @@ export const scheduleEndpoints = middlewareSlice.injectEndpoints({
     }),
     postHomeworkStatus: builder.mutation({
       queryFn: ({ params, config }: PostHomeworkStatusConfig) => postHomeworkStatus({ params, config }),
-      invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK]
+      async onQueryStarted({ params }, { dispatch, queryFulfilled, getState }) {
+        const scheduleParams: GetScheduleHomeworkConfig | GetAllScheduleConfig = {
+          params: {
+            from_time: SCHEDULE_BEGIN.date,
+            days_count: SCHEDULE_BEGIN.days
+          }
+        };
+
+        const currentHomeworkDate = params.dueDate.split('T')[0];
+
+        try {
+          await queryFulfilled;
+
+          dispatch(
+            scheduleEndpoints.util.updateQueryData('getAllSchedule', scheduleParams, (draft) => {
+              const currentDateData = draft[currentHomeworkDate];
+
+              for (const outputClass of currentDateData.outputClasses || []) {
+                const homeworkItem = outputClass.homework?.find((h) => h.homeworkID === params.homeworkID);
+
+                if (homeworkItem) {
+                  homeworkItem.isCompleted = params.isCompleted;
+                  return;
+                }
+              }
+
+              const independentHomework = currentDateData.independentHomeworks?.find(
+                (h) => h.homeworkID === params.homeworkID
+              );
+
+              if (independentHomework) {
+                independentHomework.isCompleted = params.isCompleted;
+              }
+            })
+          );
+
+          dispatch(
+            scheduleEndpoints.util.updateQueryData('getScheduleHomework', scheduleParams, (draft) => {
+              const selectedHomework = draft[currentHomeworkDate].homework.find(
+                (homework) => homework.homeworkID === params.homeworkID
+              );
+
+              if (selectedHomework) {
+                selectedHomework.isCompleted = params.isCompleted;
+              }
+            })
+          );
+
+          const scheduleData = scheduleEndpoints.endpoints.getAllSchedule.select(scheduleParams)(getState());
+
+          if (scheduleData.isSuccess) {
+            const scheduleCacheKey = STORE_SCHEDULE;
+            const scheduleRepo = await dbRepositories.schedule;
+            await scheduleRepo.set(scheduleCacheKey, scheduleData.data);
+          }
+
+          const homeworkData = scheduleEndpoints.endpoints.getScheduleHomework.select(scheduleParams)(getState());
+
+          if (homeworkData.isSuccess) {
+            const homeworkCacheKey = STORE_HOMEWORK;
+            const homeworkRepo = await dbRepositories.homework;
+
+            await homeworkRepo.set(homeworkCacheKey, homeworkData.data);
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err);
+        }
+      }
     }),
     postModeratorAddFile: builder.mutation({
       queryFn: ({ params, config }: PostModeratorAddFileConfig) => postModeratorAddFile({ params, config }),
@@ -112,32 +206,6 @@ export const scheduleEndpoints = middlewareSlice.injectEndpoints({
     deleteModeratorFile: builder.mutation({
       queryFn: ({ params, config }: DeleteModeratorFileConfig) => deleteModearatorFile({ params, config }),
       invalidatesTags: [TAGS.GET_ALL_SCHEDULE, TAGS.GET_SCHEDULE_HOMEWORK]
-    }),
-    getScheduleHomework: builder.query<ScheduleHomeworkResponse, GetScheduleHomeworkConfig>({
-      async queryFn({ params, config }: GetScheduleHomeworkConfig) {
-        const homeworkCacheKey = STORE_HOMEWORK;
-        const homeworkRepo = await dbRepositories.homework;
-
-        try {
-          const homeworkResponse = await getScheduleHomework({ params, config });
-          await homeworkRepo.set(homeworkCacheKey, homeworkResponse.data);
-
-          return { data: homeworkResponse.data };
-        } catch (error) {
-          const cached = await homeworkRepo.get(homeworkCacheKey);
-
-          if (cached) return { data: cached?.data };
-
-          const err = error as AxiosError;
-          return {
-            error: {
-              status: err.response?.status,
-              data: err.response?.data || err.message
-            }
-          };
-        }
-      },
-      providesTags: [TAGS.GET_SCHEDULE_HOMEWORK]
     }),
     getSubjects: builder.query<GetSubjectsResponse, GetSubjectsConfig>({
       queryFn: (requestConfig: GetSubjectsConfig) => getSubjects(requestConfig),

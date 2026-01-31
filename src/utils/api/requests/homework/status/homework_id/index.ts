@@ -1,9 +1,6 @@
 import { api } from '@/utils/api/instance';
 
-type PostHomeworkStatusParams = {
-  homeworkID: number;
-  status: boolean;
-};
+type PostHomeworkStatusParams = Omit<ScheduleHomeworkElement, 'subjectName' | 'homeworkText' | 'files'>;
 
 export type PostHomeworkStatusConfig = AxiosRequestConfig<PostHomeworkStatusParams>;
 
