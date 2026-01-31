@@ -29,6 +29,7 @@ export const ChangeHomework = ({ changeHomework, currentHomework, onClose }: Cha
         homeworkID: currentHomework.homeworkID,
         homeworkText: formatText(homeworkText),
         isCompleted: false,
+        dueDate: currentHomework.dueDate,
         files: currentHomework.files
       });
       onClose();
