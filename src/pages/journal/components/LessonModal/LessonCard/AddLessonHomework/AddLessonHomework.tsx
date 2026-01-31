@@ -49,6 +49,7 @@ export const AddLessonHomework = ({ apiData, addHomework }: ModeratorBlockProps)
         homeworkText: homeworkText,
         homeworkID: serverData.homework_id,
         isCompleted: false,
+        dueDate: apiData.class.startTime,
         files: Object.keys(serverData.filesIdMap).map((fileName) => {
           const fileId = serverData.filesIdMap[fileName];
           return {

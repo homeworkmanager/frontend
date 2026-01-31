@@ -175,5 +175,12 @@ export const Router = () => {
     )
   );
 
-  return <RouterProvider router={router} />;
+  return (
+    <RouterProvider
+      router={router}
+      future={{
+        v7_startTransition: false
+      }}
+    />
+  );
 };

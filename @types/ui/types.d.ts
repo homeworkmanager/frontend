@@ -69,8 +69,15 @@ type ValuesDates = ValuesDate[];
 type CustomDates = CustomDate[];
 type CustomDatesByWeeks = CustomDate[][];
 
-type RestructHomeworkElement = { homeworkText: string; homeworkID: number; isCompleted: boolean; files: FileElem[] };
+type RestructHomeworkElement = {
+  homeworkText: string;
+  homeworkID: number;
+  isCompleted: boolean;
+  dueDate: string;
+  files: FileElem[];
+};
+
 type RestructHomeworkArray = RestructHomeworkElement[];
 
-type RestructIndependentHomeworkElement = RestructHomeworkElement & { dueDate: string; subjectName: string };
+type RestructIndependentHomeworkElement = RestructHomeworkElement & { subjectName: string };
 type RestructIndependentHomeworkArray = RestructIndependentHomeworkElement[];
